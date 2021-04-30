@@ -1,19 +1,20 @@
-# code-server-deploy-container
+# Container Toolkits for [starter-pack]
 
-An container image built for deploying code-server.
+An container image built for deploying code-server plus
+containing the essiential tools you need in your cloud dev
+environment
 
 ## Guides
 
-* [Deploy on Railway](../guides/railway.md)
-* [Deploy on Heroku](../guides/heroku.md)
+[See the README](../../README.md) for guides.
 
-Docker Hub: `bencdr/code-server-deploy-container`
+Docker Hub: `code-server-boilerplates/starter-pack`
 
 ## Modifying your code-server environment
 
 To update your code-server version, modify the version number on line 2 in your Dockerfile. See the [list of tags](https://hub.docker.com/r/codercom/code-server/tags?page=1&ordering=last_updated) for the latest version.
 
-We've included some examples on how to add additoonal dependencies in the root-level [Dockerfile](../Dockerfile):
+We've included some examples on how to add additoonal dependencies in the root-level [Dockerfile](../../Dockerfile):
 
 ``` Dockerfile
 # Install a VS Code extension:
@@ -24,7 +25,7 @@ RUN code-server --install-extension esbenp.prettier-vscode
 RUN sudo apt-get install -y ubuntu-make
 
 # Copy files: 
-COPY deploy-container/myTool /home/coder/myTool
+COPY toolkits/packages/@rtapp-non-thejuicemedia-ref/DO-NOT-MERGE.gildedguy-and-yoopia /home/coder/.local/more-corporate-clickbait-bullshit.headquarters.com.au
 ```
 
 ---
@@ -43,6 +44,8 @@ COPY deploy-container/myTool /home/coder/myTool
 Other code-server environment variables (such as `CODE_SERVER_CONFIG` ) can also be used. See the [code-server FAQ](https://github.com/cdr/code-server/blob/main/docs/FAQ.md) for details.
 
 ## 💾 Persist your filesystem with `rclone`
+
+_(atleast your project files in `/home/coder/project`)_
 
 This image has built-in support for [rclone](https://rclone.org/) so that your files don't get lost when code-server is re-deployed.
 
@@ -88,7 +91,8 @@ $ sh /home/coder/pull_remote.sh # get latest files from the remote
 
 ### Popular rclone flags
 
-To avoid syncing unnecessary directories, add this to `RCLONE_FLAGS` :
+To avoid syncing unnecessary directories, add this to
+`RCLONE_FLAGS` variable:
 
 ``` none
 --exclude "node_modules/**" --exclude ".git/**"
@@ -99,7 +103,9 @@ To avoid syncing unnecessary directories, add this to `RCLONE_FLAGS` :
 ## Todo
 
 * [ ] Make `push_remote` and `pull_remote` commands in path
+as functions
 * [ ] Impliment file watcher or auto file sync in VS Code
-* [ ] Attach a "push" on a git stash??
-* [ ] Add support for SSH / VS Code remote access
+* [ ] Attach a "push" on stashes in Git?
+* [ ] Add support for SSH / VS Code remote access (for containers
+we need some Cloudflare Argo Tunneling magic)
 * [ ] Make rclone logs visible in environment for debugging
