@@ -1,12 +1,15 @@
 # Start from the code-server Debian base image
-FROM codercom/code-server:3.9.3 
+FROM codercom/code-server:3.9.3
+
+USER root
+RUN su coder chsh -s "$(which bash)"
 
 USER coder
 
 # Apply VS Code settings
-COPY deploy-container/settings.json .local/share/code-server/User/settings.json
+COPY toolkots/containers/settings.json .local/share/code-server/User/settings.json
 
-# Use bash shell
+# Use bash shell, just in case.
 ENV SHELL=/bin/bash
 
 # Install unzip + rclone (support for remote filesystem)
@@ -23,15 +26,16 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # -----------
 
 # Install a VS Code extension:
-# Note: we use a different marketplace than VS Code. See https://github.com/cdr/code-server/blob/main/docs/FAQ.md#differences-compared-to-vs-code
+# Note: we use Open VSIX as the extension marketplace.
+# See https://github.com/cdr/code-server/blob/main/docs/FAQ.md#differences-compared-to-vs-code
 # RUN code-server --install-extension esbenp.prettier-vscode
 
 # Install apt packages:
 # RUN sudo apt-get install -y ubuntu-make
 
-# Copy files: 
-# COPY deploy-container/myTool /home/coder/myTool
-
+# Copy files:
+# COPY toolkits/packages/@rtapp-non-thejuicemedia-refs/DO-NOT-MERGE.gildedguy-and-yoopia /home/coder/.local/more-corporate-clickbait-bullshit.headquarters.com.au
+# TL;DR: Honest Government Ads reference ahead above
 # -----------
 
 # Port
