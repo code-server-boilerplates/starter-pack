@@ -5,7 +5,7 @@ In this boilerplate, we included the following packages out of the box:
   * Add extensions here
 * [`cloudflared`](https://todo.io) for accessing other ports through to Cloudflare Argo Tunnel
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
-* Add more tools her
+* Add more tools here
 
 This template repository is good for:
 * people who want to start their own Code Server Boilerplates
@@ -16,7 +16,30 @@ This template repository is good for:
 * [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case.
 * [ ] Replace any placeholder references such as `[Example Project]` and `code-server-boilerplates/starter-pack` in README and also in `toolkits/containers/README.md`.
 * [ ] Add your tools you want into `Dockerfile`. Just remember that anything requires `systemd` will not work (particularly Snaps and Flatpaks, AppImages are fine).
-* [ ] Edit `toolkits/virtual-machines/*bootstrapper` scripts to include needed tools lile what you did in your Dockerfile (optional, but recommended). Now, feel free to add systemd-required tools like Snaps.
+* [ ] Edit `toolkits/virtual-machines/*bootstrapper` scripts to include needed tools lile what you did in your Dockerfile (optional, but recommended). Now, feel free to add systemd-required tools like Snaps, just look for these lines.
+
+```sh
+############################################################
+# Add your tools your users want to install on an fresh machine here ⬇
+
+# For userland installs, like Node Version Manager,
+# you may need to prefix "su coder" before the command.
+# For global installs, nuke the sudo part since we're root.
+
+# Cloudflared
+wget TODO
+apt install ./cloudflared-stabed-amd64.deb
+
+# croc
+curl TODO | sudo sh
+
+# rclone? (we commented out, but you can add back)
+# TODO
+
+# Add your tools your users want to install on an fresh machine here 
+############################################################
+```
+
 * [ ] Update deployment docs below! Ensure that replace any `https://cdrs-deploy.repohubdev.tk/<METHOD>/example-project` into `https://cdrs-deploy.repohubdev.tk/<METHOD>/<SLUGGIFIED-PROJECT-NAME-HERE>`. (`<METHOD>` is either `railway`, `heroku`, or `divio`, but every PaaS with Dockerfile support should be fine)
 * [ ] Have any referral links for Linode or Digital Ocean? Replace `https://rtapp.tk/SERVICEHERE-thepinsteam` into `(https://rtapp.tk/SERVICEHERE-thepinsteam`. Remember to create these shortlinks using our Kutt.it instance at <https://rtapp.tk>. (`SERVICEHERE` is either `linode` or `digitalocean`
 * [ ] Finally, register your Code Server Boilerplate [here](https://cdr-deploy.repohubdev.tk/register) and our robots will send you both an invite into `@code-server-boilerplates` org through mail and also an new issue in your repo on instructions.
@@ -24,7 +47,7 @@ This template repository is good for:
 
 ## Deploy
 
-### As an base image
+### As an base image in your Dockerfile
 
 In your Dockerfile, use `code-server-boilerplates/starter-pack` as your base image
 and then add your needed tools and finally the `CMD ["cdr-launchpad-server]` stuff at the end.
