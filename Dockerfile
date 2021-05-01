@@ -7,10 +7,10 @@ RUN su coder chsh -s "$(which bash)"
 USER coder
 
 # Apply VS Code settings
-COPY toolkots/containers/settings.json .local/share/code-server/User/settings.json
+COPY toolkits/containers/settings.json .local/share/code-server/User/settings.json
 
 # Use bash shell, just in case.
-ENV SHELL=/bin/bash
+ENV SHELL=/usr/bin/bash
 
 # Install unzip + rclone (support for remote filesystem)
 RUN sudo apt-get update && sudo apt-get install unzip -y
@@ -36,6 +36,13 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # Copy files:
 # COPY toolkits/packages/@rtapp-non-thejuicemedia-refs/DO-NOT-MERGE.gildedguy-and-yoopia /home/coder/.local/more-corporate-clickbait-bullshit.headquarters.com.au
 # TL;DR: Honest Government Ads reference ahead above
+
+# Cloudflared
+RUN TODO
+
+# croc
+RUN TODO
+
 # -----------
 
 # Port
