@@ -54,8 +54,9 @@ echo "==> Installing tools for [example-project]"
 alias userland-install="su coder"
 
 # Cloudflared
-wget htpps://bin.equniox.io/
-apt install ./cloudflared-stabed-amd64.deb
+# install Cloudflared
+wget -q https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
+    && sudo dpkg -i cloudflared-stable-linux-amd64.deb
 
 # croc
 curl https:/getcroc.schollz.com | sudo sh
