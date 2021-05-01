@@ -1,12 +1,21 @@
 # Boilerplate for [Example Project]
 
+<!--
+Note to new boilerplate maintainers: Please update this part
+to include the tools you're added into the bootstrapper
+scripts and into the main Dockerfile.
+-->
 In this boilerplate, we included the following packages out of the box:
 * [`code-server`](https://github.com/cdr/code-server) for the VS Code in the browser
   * Add extensions here
-* [`cloudflared`](https://todo.io) for accessing other ports through to Cloudflare Argo Tunnel
+* [`cloudflared`]() for accessing other ports through to Cloudflare Argo Tunnel
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
 * Add more tools here
 
+<!--
+Note to new boilerplate maintainers: Explain what this
+template repo is for.
+-->
 This template repository is good for:
 * people who want to start their own Code Server Boilerplates
 * just want to have the bare minimum dependencies in their `code-server` instance.
@@ -26,15 +35,7 @@ This template repository is good for:
 # you may need to prefix "su coder" before the command.
 # For global installs, nuke the sudo part since we're root.
 
-# Cloudflared
-wget TODO
-apt install ./cloudflared-stabed-amd64.deb
-
-# croc
-curl TODO | sudo sh
-
-# rclone? (we commented out, but you can add back)
-# TODO
+# ...
 
 # Add your tools your users want to install on an fresh machine here 
 ############################################################
@@ -103,7 +104,7 @@ Once your server starts, you can simply navigate to the IP address
 and get forwarded to a secure version of code-server, which will
 be proxied behind your GitHub account. For information on
 how this works, see [`code-server --link`](https://github.com/cdr/code-server#cloud-program-%EF%B8%8F).
-5. **Optional but recommended** To change the URL in the address bar
+5. **Optional but recommended**: To change the URL in the address bar
 from `linode-[xxxx]` to something more descriptive, you just
 need to change your hostname and restart code-server:
 
@@ -117,3 +118,9 @@ sudo systemctl restart code-server@coder
 ### As an VM in Digital Ocean
 
 WIP
+
+## License and Contributing
+
+This repository is licensed under TODO. By contributing to
+this repository, you agree to [Developer's Certificate of Origin][dco]
+and [our code of conduct](CODE_OF_CONDUCT.md).
