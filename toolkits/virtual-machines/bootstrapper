@@ -23,6 +23,7 @@ cp coder-cloud-redirect.service /etc/systemd/system/
 cp coder-cloud-redirect.py /usr/bin/
 
 # create a code-server user
+echo "==> Creating user coder with sudo permissions..."
 adduser --disabled-password --gecos "" coder
 echo "coder ALL=(ALL:ALL) NOPASSWD: ALL" | sudo tee /etc/sudoers.d/coder
 usermod -aG sudo coder
@@ -37,7 +38,7 @@ echo "==> Installing tools for [example-project]"
 
 # For userland installs, like Node Version Manager,
 # you may need to prefix "su coder" before the command.
-# To keep thongs shorter, we made an alias you cannot
+# To keep things shorter, we made an alias you cannot
 # refuse for userland installs.
 # For global installs, nuke the sudo part since we're root
 
@@ -83,6 +84,7 @@ chown -R coder:coder /home/coder/.config
 systemctl enable --now code-server@coder
 systemctl enable --now coder-cloud-redirect
 
-echo "You're now ready to rumble! Check the logs with systemctl status code-server@coder for the link"
-echo "Having coding!"
+echo "You're now ready to rumble! Check the logs for the link with:"
+echo "   systemctl status code-server@coder"
+echo "Having coding-slash-cloud developing!"
 
