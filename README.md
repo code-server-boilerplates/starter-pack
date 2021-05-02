@@ -8,7 +8,7 @@ scripts and into the main Dockerfile.
 In this boilerplate, we included the following packages out of the box:
 * [`code-server`](https://github.com/cdr/code-server) for the VS Code in the browser
   * Add extensions here
-* [`cloudflared`]() for accessing other ports through to Cloudflare Argo Tunnel
+* [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps) for accessing other ports through to [Cloudflare Argo Tunnel](https://www.cloudflare.com/en-gb/products/argo-tunnel/)
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
 * Add more tools here
 
