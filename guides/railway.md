@@ -1,0 +1,13 @@
+# Deploying `code-server` an container with Railway
+
+1. Open this link: https://cdrs-deploy.repohubdev.tk/railway/example-project
+2. Fill the variables `GIT_REPO` and `PASSWORD` (preferrly using an generated password with
+`openssl rand -hex 32` or with `Cmd+K` > **Generate Secret** and paste the resulting key).
+3. Hit deploy and wait for the image build to succeed.
+4. Open your project's publicly-accessible URL and hit the road.
+   * When prompted for the password, copy the contents `PASSWORD` from the web UI.
+
+## Supported environment variables
+
+Please see [this documentation](/toolkits/containers/README.md) for full list of supported environment variables.
+
