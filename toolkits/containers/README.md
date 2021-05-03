@@ -6,15 +6,17 @@ environment
 
 ## Guides
 
-[See the README](../../README.md) for guides.
+[See the guides directory](/guides) for deployment instructions.
 
-Docker Hub: `code-server-boilerplates/starter-pack`
+Docker Hub Image: `code-server-boilerplates/starter-pack`
+
+GitHub Container Registry Image; `ghrc.io/code-server-boilerplates/starter-pack`
 
 ## Modifying your code-server environment
 
 To update your code-server version, modify the version number on line 2 in your Dockerfile. See the [list of tags](https://hub.docker.com/r/codercom/code-server/tags?page=1&ordering=last_updated) for the latest version.
 
-We've included some examples on how to add additoonal dependencies in the root-level [Dockerfile](../../Dockerfile):
+We've included some examples on how to add additoonal dependencies in the root-level [Dockerfile](/Dockerfile):
 
 ``` Dockerfile
 # Install a VS Code extension:
