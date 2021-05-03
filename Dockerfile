@@ -13,7 +13,9 @@ COPY toolkits/containers/settings.json .local/share/code-server/User/settings.js
 ENV SHELL=/usr/bin/bash
 
 # Install unzip + rclone (support for remote filesystem)
-RUN sudo apt-get update && sudo apt-get install unzip -y
+RUN sudo apt-get update \
+    && sudo apt-get install unzip jq -y \
+    && sudo rm -rvf /var/lib/apt/lists/*
 RUN curl https://rclone.org/install.sh | sudo bash
 
 # Copy rclone tasks to /tmp, to potentially be used
@@ -38,12 +40,18 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # TL;DR: Honest Government Ads reference ahead above
 
 # Cloudflared
-RUN TODO
+RUN wget -q https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
+    && sudo dpkg -i cloudflared-stable-linux-amd64.deb
 
 # croc
-RUN TODO
+RUN curl https://getcroc.schollz.com | sudo bash
+ENV PATH="/usr/local/bin:$PATH"
 
 # -----------
+
+# Cleanup
+RUN rm -rv /home/coder/*.deb \
+    && sudo apt clean
 
 # Port
 ENV PORT=8080
