@@ -1,0 +1,25 @@
+name: "Docker Builds CI"
+
+on:
+  push:
+    branches: [ main ]
+  pull_requests:
+    branches: [ main ]
+
+jobs:
+  test:
+     name: "Test Docker build for any flags"
+     matrix:
+       # archs supported by the official CDRS image
+       arch: ["amd64", "arm64"]
+     runs-on: "ubuntu-latest"
+     steps:
+       - name: "Create checkmates"
+         uses: "actions/checkout@v2"
+   publish:
+      name: "Publish to registries"
+      matrix: ["amd64", "arm64"]
+      needs: [ test ]
+      runs-on: "ubuntu-latest"
+      steps:
+    
