@@ -3,18 +3,19 @@ FROM codercom/code-server:3.9.3
 
 USER root
 # use Bash by default
-RUN chsh -s /usr/bin/bash coder && chsh -s /usr/bin/bash
+RUN chsh -s /bin/bash coder && chsh -s /bin/bash
 
 USER coder
 # Apply VS Code settings
 COPY toolkits/containers/settings.json .local/share/code-server/User/settings.json
 
 # Use bash shell, just in case.
-ENV SHELL=/usr/bin/bash
+ENV SHELL=/bin/bash
 
 # Install unzip + rclone (support for remote filesystem)
+# Also don't forget wget for that. jq included too
 RUN sudo apt-get update \
-    && sudo apt-get install unzip jq -y \
+    && sudo apt-get install unzip jq wget -y \
     && sudo rm -rvf /var/lib/apt/lists/*
 RUN curl https://rclone.org/install.sh | sudo bash
 
