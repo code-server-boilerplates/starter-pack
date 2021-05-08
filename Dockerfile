@@ -4,6 +4,8 @@ FROM codercom/code-server:3.9.3
 USER root
 # use Bash by default
 RUN chsh -s /bin/bash coder && chsh -s /bin/bash
+# this should fix any errors on missing system-wide Bash completion directory
+RUN mkdir /etc/bash_completion.d
 
 USER coder
 # Apply VS Code settings

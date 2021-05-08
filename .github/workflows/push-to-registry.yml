@@ -25,7 +25,7 @@ jobs:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
        - name: Build image
-         run: echo $IMAGE_NAME | docker build . --file Dockerfile --tag $IMAGE_NAME
+         run: echo "Image name: $IMAGE_NAME" && docker build . --file Dockerfile --tag $IMAGE_NAME
        - name: Log into registry
          # change the username into yours if not using our bot
          run: echo "${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}" | docker login ghcr.io -u RecapTimeBot --password-stdin
