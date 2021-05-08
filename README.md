@@ -10,6 +10,8 @@ In this boilerplate, we included the following packages out of the box:
   * Add extensions here
 * [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps) for accessing other ports through to [Cloudflare Argo Tunnel](https://www.cloudflare.com/en-gb/products/argo-tunnel/)
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
+* `jq` for prettifying your JSON stuff, especially if parsing JSON responses from some APIs.
+* Basics like `curl`, `wget`, and more.
 * Add more tools here
 
 <!--
