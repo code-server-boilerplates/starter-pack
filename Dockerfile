@@ -3,9 +3,10 @@ FROM codercom/code-server:3.9.3
 
 USER root
 # use Bash by default
-RUN chsh -s /bin/bash coder && chsh -s /bin/bash
+RUN echo "[code-server] Image build starts" \
+    && chsh -s /bin/bash coder && chsh -s /bin/bash
 # this should fix any errors on missing system-wide Bash completion directory
-RUN mkdir /etc/bash_completion.d
+#RUN mkdir /etc/bash_completion.d
 
 USER coder
 # Apply VS Code settings
@@ -53,8 +54,10 @@ ENV PATH="/usr/local/bin:$PATH"
 # -----------
 
 # Cleanup
-RUN rm -rv /home/coder/*.deb \
-    && sudo apt clean
+RUN echo "[code-server] Cleanup has been started" \
+    && rm -rv /home/coder/*.deb \
+    && sudo apt clean \
+    && echo "[code-server] Cleanup done"
 
 # Port, remember to use other env for this or do these:
 #   PORT=3000 node server.js
@@ -63,4 +66,5 @@ ENV PORT=8080
 # Use our custom entrypoint script first
 COPY toolkits/containers/entrypoint.sh /usr/bin/cdr-server-launchpad
 RUN sudo chmod +x /usr/bin/cdr-server-launchpad
+RUN echo "[code-server] Workspace image ready to deploy"
 ENTRYPOINT ["/usr/bin/cdr-server-launchpad"]
