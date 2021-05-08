@@ -18,11 +18,11 @@ jobs:
          uses: "actions/checkout@v2"
        - name: Run tests
          run: docker build . --file Dockerfile
-   publish:
-      needs: [ test ]
-      runs-on: "ubuntu-latest"
-      if: ${{ github.ref == 'refs/heads/main' }}
-      steps:
+  publish:
+     needs: [ test ]
+     runs-on: "ubuntu-latest"
+     if: ${{ github.ref == 'refs/heads/main' }}
+     steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
        - name: Build image
