@@ -18,12 +18,12 @@ jobs:
          uses: "actions/checkout@v2"
        - name: Run tests
          run: |
-          if [ -f docker-compose.test.yml ]; then
-            docker-compose --file docker-compose.test.yml build
-            docker-compose --file docker-compose.test.yml run sut
-          else
-            docker build . --file Dockerfile
-          fi
+           if [ -f docker-compose.test.yml ]; then
+             docker-compose --file docker-compose.test.yml build
+             docker-compose --file docker-compose.test.yml run sut
+           else
+             docker build . --file Dockerfile
+           fi
    publish:
       needs: [ test ]
       runs-on: "ubuntu-latest"
