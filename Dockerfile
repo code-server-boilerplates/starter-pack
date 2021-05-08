@@ -2,10 +2,10 @@
 FROM codercom/code-server:3.9.3
 
 USER root
-RUN su coder chsh -s "$(which bash)"
+# use Bash by default
+RUN chsh -s /usr/bin/bash coder && chsh -s /usr/bin/bash
 
 USER coder
-
 # Apply VS Code settings
 COPY toolkits/containers/settings.json .local/share/code-server/User/settings.json
 
@@ -53,7 +53,8 @@ ENV PATH="/usr/local/bin:$PATH"
 RUN rm -rv /home/coder/*.deb \
     && sudo apt clean
 
-# Port
+# Port, remember to use other env for this or do these:
+#   PORT=3000 node server.js
 ENV PORT=8080
 
 # Use our custom entrypoint script first

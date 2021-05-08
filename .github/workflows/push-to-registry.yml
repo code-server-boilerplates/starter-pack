@@ -8,7 +8,6 @@ on:
 
 jobs:
   test:
-     name: "Test Docker build for any flags"
      #matrix:
        # archs supported by the official CDRS image
      #  arch: ["amd64", "arm64"]
