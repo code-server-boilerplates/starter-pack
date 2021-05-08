@@ -17,7 +17,7 @@ jobs:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
        - name: Run tests
-        run: |
+         run: |
           if [ -f docker-compose.test.yml ]; then
             docker-compose --file docker-compose.test.yml build
             docker-compose --file docker-compose.test.yml run sut
@@ -25,10 +25,9 @@ jobs:
             docker build . --file Dockerfile
           fi
    publish:
-      name: "Publish to registries"
-      #matrix: ["amd64", "arm64"]
       needs: [ test ]
       runs-on: "ubuntu-latest"
+      if: ${{ github.ref == 'refs/heads/main' }}
       steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
