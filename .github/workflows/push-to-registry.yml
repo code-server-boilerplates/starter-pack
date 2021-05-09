@@ -51,12 +51,13 @@ jobs:
          uses: docker/build-push-action@v2
          with:
            push: true
+           # version mapping:
+           # - latest -> cdr-latest -> cdr-latest.debian10
+           # - cdr-3.9.3 -> cdr.3.9.3.debian10
            tags: |
-             # latest -> cdr-latest -> cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:latest
-             # cdr-3.9.3 -> cdr.3.9.3.debian10
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3.debian10
            context: .
@@ -69,12 +70,11 @@ jobs:
          uses: docker/build-push-action@v2
          with:
            push: true
+           # see line 53 for notes regarding how we map versions into image tags
            tags: |
-             # latest -> cdr-latest -> cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:latest
-             # cdr-3.9.3 -> cdr.3.9.3.debian10
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3.debian10
            context: .
