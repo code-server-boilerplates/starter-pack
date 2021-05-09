@@ -52,9 +52,13 @@ jobs:
          with:
            push: true
            tags: |
+             # latest -> cdr-latest -> cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:latest
+             # cdr-3.9.3 -> cdr.3.9.3.debian10
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3.debian10
            context: .
            platforms: linux/amd64
        - name: Echo imahe digest (amd64)
@@ -66,9 +70,13 @@ jobs:
          with:
            push: true
            tags: |
+             # latest -> cdr-latest -> cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:latest
+             # cdr-3.9.3 -> cdr.3.9.3.debian10
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3.debian10
            context: .
            platforms: linux/arm64
            file: arm64.Dockerfile
