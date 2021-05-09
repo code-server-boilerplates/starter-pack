@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Updater script for Cloudflared
+# Basically it's an script for installing Cloudflared
+# during image build btw
+
+# pull the builder's arch first
+ARCH_TO_USE=$IMAGE_ARCH_TO_USE

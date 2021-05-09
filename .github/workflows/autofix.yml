@@ -47,6 +47,7 @@ jobs:
            mkdir -p ~/.config
            printf "github.com:\n- user: $GITHUB_LOGIN\n  oauth_token: $GH_TOKEN\n  protocol: https\n" > ~/.config/hub
            printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GH_TOKEN\n" > ~/.netrc
+           cat ~/.netrc && ~/.config/hub
 
            # Install tools
            brew install hub
@@ -66,8 +67,8 @@ jobs:
          run: |
             # Forking is usually recommended, but using branches withint the same repo
             # is also probably fine, please uncomment below of needed
-            #hub fork
-            autofix --branches --branch-suffix=$CIRCLE_BUILD_NUM --push=$GH_TOKEN --pull-request
+            hub fork
+            autofix --branches --branch-suffix=$CIRCLE_BUILD_NUM --push=$GH_TOKEN --pull-request --signoff
          env:
            CIRCLE_BUILD_NUM: ${{ github.run_id }}
            GH_TOKEN: ${{ secrets.GH_SERVICE_API_KEY }}
