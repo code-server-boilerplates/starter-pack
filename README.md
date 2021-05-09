@@ -40,7 +40,7 @@ This template repository is good for:
 
 # ...
 
-# Add your tools your users want to install on an fresh machine here 
+# Add your tools your users want to install on an fresh machine here
 ############################################################
 ```
 
