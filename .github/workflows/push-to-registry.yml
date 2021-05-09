@@ -3,8 +3,6 @@ name: "Docker Builds CI"
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   test:
@@ -24,33 +22,34 @@ jobs:
      steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
-       - name: Build image
-         run: docker build . --file Dockerfile --tag $IMAGE_NAME
-       - name: Log into registry
-         # change the username into yours if not using our bot
-         run: echo "${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}" | docker login ghcr.io -u RecapTimeBot --password-stdin
 
-       - name: Push image
-         run: |
-           # change the path after ghcr.io, preferrly owner/repo
-           # note: you must enable enhanced container support first
-           # in your account/org in order to push to ghcr.io
-           IMAGE_ID=ghcr.io/code-server-boilerplates/starter-pack
+       # Setup QEMU for multiarch builds
+       - name: Set up QEMU
+         uses: docker/setup-qemu-action@v1
 
-           # Change all uppercase to lowercase
-           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+       # repeat this for other registries you want to use
+       # especially the official Docker Hub Registry
+       - name: Login to GitHub Container Registry
+         uses: docker/login-action@v1
+         with:
+          registry: ghcr.io
+          # change the username into yours if not using our bot
+          username: RecapTimeBot
+          # may not work on personal accounts if using our PAT
+          # we may try soon
+          password: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
 
-           # Strip git ref prefix from version
-           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+       # after building, we may retag them for DockerHub instead
+       # of building again
+       - name: Build and push to GHCR
+         id: docker_build
+         uses: docker/build-push-action@v2
+         with:
+           push: true
+           tags: "ghcr.io/code-server-boilerplates/starter-pack"           context: .
+           platforms: linux/amd64,linux/arm64
 
-           # Strip "v" prefix from tag name
-           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-
-           # Use Docker `latest` tag convention
-           [ "$VERSION" == "main" ] && VERSION=latest
-
-           echo IMAGE_ID=$IMAGE_ID
-           echo VERSION=$VERSION
-
-           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-           docker push $IMAGE_ID:$VERSION
+       - name: Echo image digest
+         run: echo ${{ steps.docker_build.outputs.digest }}
+       - name: Check built images
+         run: docker images | grep "code-server-boilerplates" || true
