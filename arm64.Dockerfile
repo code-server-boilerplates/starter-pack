@@ -43,10 +43,11 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # COPY toolkits/packages/@rtapp-non-thejuicemedia-refs/DO-NOT-MERGE.gildedguy-and-yoopia /home/coder/.local/more-corporate-clickbait-bullshit.headquarters.com.au
 # TL;DR: Honest Government Ads reference ahead above
 
-# Cloudflared
+# Cloudflared (no arm64 debs for now, but binaries should be fine)
 # TODO: Implement an updater script for that
-RUN wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
-    && sudo dpkg -i cloudflared-stable-linux-amd64.deb
+ARG CLOUDFLARED_VERSION
+ENV CLOUDFLARED_VERSION=${CLOUDFLARED_VERSION:2021.4.0}
+RUN sudo wget https://github.com/cloudflare/cloudflared/releases/download/2021.4.0/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash

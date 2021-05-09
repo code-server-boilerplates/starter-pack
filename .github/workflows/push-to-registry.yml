@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  test-main:
      #matrix:
        # archs supported by the official CDRS image
      #  arch: ["amd64", "arm64"]
@@ -15,8 +15,8 @@ jobs:
          uses: "actions/checkout@v2"
        - name: Run tests
          run: docker build . --file Dockerfile
-  publish:
-     needs: [ test ]
+  publish-main:
+     needs: [ test-main ]
      runs-on: "ubuntu-latest"
      if: ${{ github.ref == 'refs/heads/main' }}
      steps:
@@ -46,19 +46,31 @@ jobs:
 
        # after building, we may retag them for DockerHub instead
        # of building again
-       - name: Build and push to GHCR
-         id: docker_build
+       - name: Build and push to GHCR + DockerHub (amd64)
+         id: build-amd64
          uses: docker/build-push-action@v2
          with:
            push: true
            tags: |
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
-             ghcr.io/code-server-boilerplates/starterpack:cdr-latest.debian10
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
              ghcr.io/code-server-boilerplates/starter-pack:latest
            context: .
-           platforms: linux/amd64,linux/arm64
-
+           platforms: linux/amd64
+       # with an exception for arm64 builds
+       - name: Build and push to GHCR + DockerHub (arm64)
+         id: buuld-arm64
+         uses: docker/build-push-action@v2
+         with:
+           push: true
+           tags: |
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
+             ghcr.io/code-server-boilerplates/starter-pack:latest
+           context: .
+           platforms: linux/arm64
+           file: arm64.Dockerfile
        - name: Echo image digest
-         run: echo ${{ steps.docker_build.outputs.digest }}
-       - name: Check built images
-         run: docker images | grep "code-server-boilerplates" || true
+         run: |
+           echo AMD64 image - ${{ steps.build_amd64.outputs.digest }}
+           echo ARM64 image - ${{ steps.build_arm64.outputs.digest }}
