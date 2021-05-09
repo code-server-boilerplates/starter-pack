@@ -26,6 +26,9 @@ jobs:
        # Setup QEMU for multiarch builds
        - name: Set up QEMU
          uses: docker/setup-qemu-action@v1
+       # and of course, we need to setup Buildx
+       - name: Set up Docker Buildx
+         uses: docker/setup-buildx-action@v1
 
        # repeat this for other registries you want to use
        # especially the official Docker Hub Registry
