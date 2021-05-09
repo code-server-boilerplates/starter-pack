@@ -57,6 +57,8 @@ jobs:
              ghcr.io/code-server-boilerplates/starter-pack:latest
            context: .
            platforms: linux/amd64
+       - name: Echo imahe digest (amd64)
+         run: echo AMD64 image - ${{ steps.build_amd64.outputs.digest }}
        # with an exception for arm64 builds
        - name: Build and push to GHCR + DockerHub (arm64)
          id: buuld-arm64
@@ -70,7 +72,5 @@ jobs:
            context: .
            platforms: linux/arm64
            file: arm64.Dockerfile
-       - name: Echo image digest
-         run: |
-           echo AMD64 image - ${{ steps.build_amd64.outputs.digest }}
-           echo ARM64 image - ${{ steps.build_arm64.outputs.digest }}
+       - name: Echo image digest (arm64)
+         run: echo ARM64 image - ${{ steps.build_arm64.outputs.digest }}

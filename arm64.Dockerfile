@@ -1,5 +1,5 @@
 # Start from the code-server Debian base image
-FROM codercom/code-server:3.9.3
+FROM --platform=linux/arm64 codercom/code-server:3.9.3
 
 USER root
 # use Bash by default
@@ -45,9 +45,9 @@ RUN sudo chown -R coder:coder /home/coder/.local
 
 # Cloudflared (no arm64 debs for now, but binaries should be fine)
 # TODO: Implement an updater script for that
-ARG CLOUDFLARED_VERSION
-ENV CLOUDFLARED_VERSION=${CLOUDFLARED_VERSION:2021.4.0}
-RUN sudo wget https://github.com/cloudflare/cloudflared/releases/download/2021.4.0/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared
+ARG CLOUDFLARED_VERSION=2021.4.0
+ENV CLOUDFLARED_VERSION=${CLOUDFLARED_VERSION}
+RUN sudo wget https://github.com/cloudflare/cloudflared/releases/download/$CLOUDFLARED_VERSION/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash

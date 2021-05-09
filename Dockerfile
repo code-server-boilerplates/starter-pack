@@ -1,5 +1,5 @@
 # Start from the code-server Debian base image
-FROM codercom/code-server:3.9.3
+FROM --platform=linux/amd64 codercom/code-server:3.9.3
 
 USER root
 # use Bash by default
