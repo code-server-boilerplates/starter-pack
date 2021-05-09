@@ -14,7 +14,7 @@ on:
 
 jobs:
   main:
-     runs-on: "ubunth-latest"
+     runs-on: "ubuntu-latest"
      steps:
        - uses: actions/checkout@v2
          with:
