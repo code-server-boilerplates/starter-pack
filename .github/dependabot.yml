@@ -1,0 +1,20 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "ci/github-actions"
+      - "dependencies"
+      - "Updated by Dependabot" # needed to automagically approve and merge
+  # Also our Dockerfiles should be up-to-date too
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "packages/docker-base-images"
+      - "dependencies"
+      - "Updated by Dependabot" # needed to automagically approve and merge
