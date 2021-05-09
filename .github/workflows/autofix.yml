@@ -15,6 +15,8 @@ on:
 jobs:
   main:
      runs-on: "ubuntu-latest"
+     container:
+       image: gitpod/workspace-full
      steps:
        - uses: actions/checkout@v2
          with:
@@ -23,18 +25,6 @@ jobs:
            # preferrly your own service account bot or request for one
            # at rtapp.tk/ghp-request-form, pleqse read terms at rtapp.tk/ghp-tos
            token: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
-
-       # first things first, setup both Node.js and Python
-       - name: Setup Node.js 14.x
-         uses: actions/setup-node@v2
-         with:
-           # only switch to 16.x once its officially an LTS
-           # or when 12.x is now EOL
-           version: 14.x
-       - name: Setup Python 3.9.x
-         uses: actions/setup-python@v2
-         with:
-           python-version: "3.9.2"
 
        - name: Install tools for Autofix
          run: |
