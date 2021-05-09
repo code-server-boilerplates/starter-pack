@@ -7,14 +7,18 @@ environment
 ## Guides
 
 [See the guides directory](/guides) for deployment instructions.
+## Available Images
 
-Docker Hub Image: `code-server-boilerplates/starter-pack`
+<!--
+Note to maintainers: Update links to your Docker images below!
+-->
 
-GitHub Container Registry Image; `ghrc.io/code-server-boilerplates/starter-pack`
+* Docker Hub Image: [`code-server-boilerplates/starter-pack`](https://hub.docker.com/r/code-server-boilerplates/starter-pack)
+* GitHub Container Registry Image; [`ghrc.io/code-server-boilerplates/starter-pack`](https://github.com/)
 
 ## Modifying your code-server environment
 
-To update your code-server version, modify the version number on line 2 in your Dockerfile. See the [list of tags](https://hub.docker.com/r/codercom/code-server/tags?page=1&ordering=last_updated) for the latest version.
+To update your code-server version, modify the version number on line 2 in your Dockerfile. See the [list of tags](https://hub.docker.com/r/codercom/code-server/tags?page=1&ordering=last_updated) for the latest version. (Please don't use `latest` tag to avoid unwanted surprises.)
 
 We've included some examples on how to add additoonal dependencies in the root-level [Dockerfile](/Dockerfile):
 
