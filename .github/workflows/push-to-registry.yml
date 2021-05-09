@@ -29,6 +29,8 @@ jobs:
        # and of course, we need to setup Buildx
        - name: Set up Docker Buildx
          uses: docker/setup-buildx-action@v1
+         with:
+           driver-opts: "image=moby/buildkit:master,network=host"
 
        # repeat this for other registries you want to use
        # especially the official Docker Hub Registry
@@ -49,7 +51,10 @@ jobs:
          uses: docker/build-push-action@v2
          with:
            push: true
-           tags: "ghcr.io/code-server-boilerplates/starter-pack"
+           tags: |
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
+             ghcr.io/code-server-boilerplates/starterpack:cdr-latest.debian10
+             ghcr.io/code-server-boilerplates/starter-pack:latest
            context: .
            platforms: linux/amd64,linux/arm64
 

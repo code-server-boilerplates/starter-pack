@@ -67,7 +67,8 @@ and then add your needed tools and finally the `CMD ["cdr-launchpad-server]` stu
 
 ```dockerfile
 # Latest tag tracks the latest version of code-server
-# Tags are formatted in form of BASE-IMAGE-NAME:cdr<CODE-SERVER-VER>
+# Tags are formatted in form of BASE-IMAGE-NAME:cdr-<CODE-SERVER-VER>.<distro-version>
+# e.g.: BASE-IMAGE-NAME:cdr-latest or cdr-latest.debian10
 # For the base OS (we might do reproducible builds soon), use the format
 # BASE-IMAGE-NAME:debian10 or BASE-IMAGE-NAME:ubuntu-latest (tl;dr: ubuntu-latest == latest LTS)
 # Also using the latest tag will use the image we built using the same Dockerfile.
