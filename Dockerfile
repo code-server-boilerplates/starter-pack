@@ -62,6 +62,7 @@ RUN echo "[code-server] Cleanup has been started" \
 # Port, remember to use other env for this or do these:
 #   PORT=3000 node server.js
 ENV PORT=8080
+EXPOSE 8080
 
 # Use our custom entrypoint script first
 COPY toolkits/containers/entrypoint.sh /usr/bin/cdr-server-launchpad

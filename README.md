@@ -53,9 +53,12 @@ This template repository is good for:
 * [ ] Cheer, you just made it here! Congratulate yourself!
   * Probably now create new boilerplates straight to the org or even [join The Pins Team](https://rtapp.tk/join-thepinsteam) (it's optional btw, and if you're interested you'll be invited into `@MadeByThePinsHub/Community-Hubs-Network-Board` first by humans soon once you maintain atleast 3 boilerplates here, you can leave anytime) to help us maintain them, among other tasks.
 
+Additional documentation for managing GitHub Actions workflows, issue templates and Dependabot are on [this README](/.github/README.md).
+For base images we maintain for different Linux distros (Ubuntu, Arch Linux/Manjaro and Alpine), please see <https://github.com/code-server-boilerplates/base-docker-images>. The Debian base image in the root Dockerfile uses the official image from Coder called `codercom/code-server` in Docker Hub.
+
 ## Deploy
 
-More deployment documentation are available in [the Guides section](/guides).
+Most deployment documentation are moved into  [the Guides section](/guides).
 
 ### As an base image in your Dockerfile
 
@@ -80,11 +83,10 @@ RUN git clone https://gitlab.com/MadeByThePinsHub/dotfiles /home/coder/.dotfiles
 RUN bash /home/coder/.dotfiles/setup.sh --no-secrets-repo --noprompt --nosystemd
 
 # finally, hit the road
-PORT 8080
 CMD ["/usr/bin/cdr-launchpad-server"]
 ```
 
-## code-server on a VM vs. a Container
+## Virtual machines/private servers or containers?
 
 - VMs are deployed once, and then can be modified to install new software
   - You need to save "snapshots" to use your latest images  - Storage is always persistent, and you can usually add extra volumes
@@ -98,8 +100,9 @@ CMD ["/usr/bin/cdr-launchpad-server"]
 
 ## License and Contributing
 
-This repository's contents is licensed under MIT License. By contributing to
-this repository, you agree to [Developer's Certificate of Origin][dco]
-and [The Pins Team Community Code of conduct](CODE_OF_CONDUCT.md).
+This repository's contents is licensed under the MIT License.
+By contributing to this repository, you agree to
+[Developer's Certificate of Origin][dco] and
+[The Pins Team Community Code of conduct](CODE_OF_CONDUCT.md).
 
 [dco]: https://developercertificate.org
