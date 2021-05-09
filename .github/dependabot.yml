@@ -9,6 +9,10 @@ updates:
       - "ci/github-actions"
       - "dependencies"
       - "Updated by Dependabot" # needed to automagically approve and merge
+    reviewers:
+      # if using your own robot account, change this into your
+      # service account's GitHub username
+      - "RecapTimeBot"
   # Also our Dockerfiles should be up-to-date too
   - package-ecosystem: "docker"
     directory: "/"
@@ -18,3 +22,7 @@ updates:
       - "packages/docker-base-images"
       - "dependencies"
       - "Updated by Dependabot" # needed to automagically approve and merge
+    reviewers:
+      # if using your own robot account, change this into your
+      # service account's GitHub username
+      - "RecapTimeBot"
