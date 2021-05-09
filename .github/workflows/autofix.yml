@@ -1,0 +1,73 @@
+name: Autofix CI
+
+# This workflow is the Autofix stuff we're adopted from friends
+# at Gitpod on autofix-dev/cronjob, originally as an Circle CI
+# config, but we'll revamp this into an GitHub Action.
+
+on:
+  schedule:
+    # run this on bi-weekly basis
+    # if you prefer to run Autofix on monthly basis, change
+    # this to "3 3 9 * *"
+    - cron: "3 3 * * 0,3"
+  workflow_dispatch:
+
+jobs:
+  main:
+     runs-on: "ubunth-latest"
+     steps:
+       - uses: actions/checkout@v2
+         with:
+           # in @code-server-boilerplates repos, it uses RecapTimeBot's API key
+           # for repos outside of the org, you need to either generate your own PAT,
+           # preferrly your own service account bot or request for one
+           # at rtapp.tk/ghp-request-form, pleqse read terms at rtapp.tk/ghp-tos
+           token: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
+
+       # first things first, setup both Node.js and Python
+       - name: Setup Node.js 14.x
+         uses: actions/setup-node@v2
+         with:
+           # only switch to 16.x once its officially an LTS
+           # or when 12.x is now EOL
+           version: 14.x
+       - name: Setup Python 3.9.x
+         uses: actions/setup-python@v2
+         with:
+           python-version: "3.9.2"
+
+       - name: Install tools for Autofix
+         run: |
+           # Configure Git first
+           git config --global user.name "$GIT_USER_NAME"
+           git config --global user.email "$GIT_USER_EMAIL"
+           git config --global hub.protocol "https"
+
+           # Ensure GitHub API stuff for Hub is configured ahead of time
+           mkdir -p ~/.config
+           printf "github.com:\n- user: $GITHUB_LOGIN\n  oauth_token: $GH_TOKEN\n  protocol: https\n" > ~/.config/hub
+           printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GH_TOKEN\n" > ~/.netrc
+
+           # Install tools
+           brew install hub
+           # all spelling bugs shall be shallow
+           pip3 install -U codespell
+           npm install -g autofix
+         env:
+           # Replace RecapTimeBot with your bot's username
+           GIT_USER_EMAIL: "RecapTimeBot@users.noreply.github.com"
+           # Replace this with your bot's screen name on GitHub
+           GIT_USER_NAME: "Recap Time Bot"
+           GH_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
+           # also repeat that for this
+           GITHUB_LOGIN: RecapTimeBot
+
+       - name: Launch Autofix
+         run: |
+            # Forking is usually recommended, but using branches withint the same repo
+            # is also probably fine, please uncomment below of needed
+            #hub fork
+            autofix --branches --branch-suffix=$CIRCLE_BUILD_NUM --push=$GH_TOKEN --pull-request
+         env:
+           CIRCLE_BUILD_NUM: ${{ github.run_id }}
+           GH_TOKEN: ${{ secrets.GH_SERVICE_API_KEY }}
