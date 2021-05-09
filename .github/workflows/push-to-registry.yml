@@ -46,7 +46,8 @@ jobs:
          uses: docker/build-push-action@v2
          with:
            push: true
-           tags: "ghcr.io/code-server-boilerplates/starter-pack"           context: .
+           tags: "ghcr.io/code-server-boilerplates/starter-pack"
+           context: .
            platforms: linux/amd64,linux/arm64
 
        - name: Echo image digest
