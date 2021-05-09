@@ -1,11 +1,11 @@
-name: "Docker Builds CI"
+name: "Docker Builds CI (using official code-server images)"
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  test-main:
+  test:
      #matrix:
        # archs supported by the official CDRS image
      #  arch: ["amd64", "arm64"]
@@ -15,8 +15,8 @@ jobs:
          uses: "actions/checkout@v2"
        - name: Run tests
          run: docker build . --file Dockerfile
-  publish-main:
-     needs: [ test-main ]
+  publish:
+     needs: [ test ]
      runs-on: "ubuntu-latest"
      if: ${{ github.ref == 'refs/heads/main' }}
      steps:

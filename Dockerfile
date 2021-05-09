@@ -67,6 +67,5 @@ EXPOSE 8080
 
 # Use our custom entrypoint script first
 COPY toolkits/containers/entrypoint.sh /usr/bin/cdr-server-launchpad
-RUN sudo chmod +x /usr/bin/cdr-server-launchpad
 RUN echo "[code-server] Workspace image ready to deploy"
 ENTRYPOINT ["/usr/bin/cdr-server-launchpad"]

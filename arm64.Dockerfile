@@ -57,7 +57,7 @@ ENV PATH="/usr/local/bin:$PATH"
 
 # Cleanup
 RUN echo "[code-server] Cleanup has been started" \
-    && rm -rv /home/coder/*.deb \
+    #&& rm -rv /home/coder/*.deb \
     && sudo apt clean \
     && echo "[code-server] Cleanup done"
 
@@ -68,6 +68,5 @@ EXPOSE 8080
 
 # Use our custom entrypoint script first
 COPY toolkits/containers/entrypoint.sh /usr/bin/cdr-server-launchpad
-RUN sudo chmod +x /usr/bin/cdr-server-launchpad
 RUN echo "[code-server] Workspace image ready to deploy"
 ENTRYPOINT ["/usr/bin/cdr-server-launchpad"]
