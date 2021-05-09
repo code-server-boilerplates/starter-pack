@@ -3,6 +3,10 @@ name: "Docker Builds CI (using official code-server images)"
 on:
   push:
     branches: [ main ]
+    paths:
+      - "Dockerfile"
+      - "arm64.Dockerfile"
+      - ".trigger-rebuuld"
 
 jobs:
   test:
