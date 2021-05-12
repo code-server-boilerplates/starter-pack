@@ -56,7 +56,7 @@ ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH"
 
 # Cleanup
 RUN echo "[code-server] Cleanup has been started" \
-    && rm -rv /home/coder/*.deb \
+    && rm -rv /home/coder/*.deb || true \
     && sudo apt clean \
     && echo "[code-server] Cleanup done"
 
