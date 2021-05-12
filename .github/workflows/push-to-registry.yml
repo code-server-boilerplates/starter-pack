@@ -5,7 +5,6 @@ on:
     branches: [ main ]
     paths:
       - "Dockerfile"
-      - "arm64.Dockerfile"
       - ".trigger-rebuuld"
 
 jobs:
@@ -60,29 +59,11 @@ jobs:
            # - cdr-3.9.3 -> cdr.3.9.3.debian10
            tags: |
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian-10
              ghcr.io/code-server-boilerplates/starter-pack:latest
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3.debian10
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.0
+             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.debian-10
            context: .
            platforms: linux/amd64
        - name: Echo imahe digest (amd64)
          run: echo AMD64 image - ${{ steps.build_amd64.outputs.digest }}
-       # with an exception for arm64 builds
-       - name: Build and push to GHCR + DockerHub (arm64)
-         id: buuld-arm64
-         uses: docker/build-push-action@v2
-         with:
-           push: true
-           # see line 53 for notes regarding how we map versions into image tags
-           tags: |
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian10
-             ghcr.io/code-server-boilerplates/starter-pack:latest
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.9.3.debian10
-           context: .
-           platforms: linux/arm64
-           file: arm64.Dockerfile
-       - name: Echo image digest (arm64)
-         run: echo ARM64 image - ${{ steps.build_arm64.outputs.digest }}
