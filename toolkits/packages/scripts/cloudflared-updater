@@ -18,10 +18,11 @@ fi
 
 echo "[cloudflared-updater] Installing latest version of Argo Tunnel agent.."
 if [[ $ARCH_TO_USE == "arm64" ]]; then
-  sudo wget https://github.com/cloudflare/cloudflared/releases/download/2021.4.0/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared
+  sudo wget https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared
 else
-  sudo wget https://github.com/cloudflare/cloudflared/releases/download/latest/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared
+  sudo wget https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared
 fi
+sudo chmod +x /usr/local/bin/cloudflared
 
 if [[ $? == "0" ]]; then
   echo "[cloudflared-installer] Successfully updated!"

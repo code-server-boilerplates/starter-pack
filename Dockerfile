@@ -48,7 +48,8 @@ RUN sudo chown -R coder:coder /home/coder/.local
 COPY toolkits/packages/scripts/ /home/coder/.local/bin/
 
 # Cloudflared
-RUN ls /home/coder/.local && tree . -ah
+# update this var when new release are publicized
+ENV CLOUDFLARED_VERSION=2021.4.0
 RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater || true
 
 # croc
