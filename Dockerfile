@@ -5,7 +5,7 @@ USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
     && chsh -s /bin/bash coder && chsh -s /bin/bash \
-    && mkdir /home/coder/.local/bin
+    && mkdir /home/coder/.local/bin -p
 # this should fix any errors on missing system-wide Bash completion directory
 #RUN mkdir /etc/bash_completion.d
 
