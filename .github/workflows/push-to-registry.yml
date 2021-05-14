@@ -6,6 +6,9 @@ on:
     paths:
       - "Dockerfile"
       - ".trigger-rebuuld"
+      - "toolkits/containers/*"
+      - "toolkits/packages/scripts/*"
+      - ".github/workflows/push-to-registry.tml"
 
 jobs:
   test:
@@ -65,5 +68,5 @@ jobs:
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.debian-10
            context: .
            platforms: linux/amd64,linux/arm64
-       - name: Echo imahe digest (amd64)
+       - name: Echo image digest
          run: echo ${{ steps.image-build.outputs.digest }}
