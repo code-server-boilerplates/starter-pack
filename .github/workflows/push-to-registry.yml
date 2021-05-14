@@ -50,7 +50,7 @@ jobs:
        # after building, we may retag them for DockerHub instead
        # of building again
        - name: Build and push to GHCR + DockerHub (amd64)
-         id: build-amd64
+         id: image-build
          uses: docker/build-push-action@v2
          with:
            push: true
@@ -64,6 +64,6 @@ jobs:
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.0
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.debian-10
            context: .
-           platforms: linux/amd64
+           platforms: linux/amd64,linux/arm64
        - name: Echo imahe digest (amd64)
-         run: echo AMD64 image - ${{ steps.build_amd64.outputs.digest }}
+         run: echo ${{ steps.image-build.outputs.digest }}
