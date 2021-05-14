@@ -45,10 +45,11 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # TL;DR: Honest Government Ads reference ahead above
 
 # Helper scripts
-COPY toolkits/packages/scripts/ .local/bin/
+COPY toolkits/packages/scripts/ /home/coder/.local/bin/
 
 # Cloudflared
-RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
+RUN ls /home/coder/.local && tree . -ah
+RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater || true
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
