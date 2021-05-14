@@ -3,7 +3,7 @@ FROM codercom/code-server:3.10.0
 
 USER root
 # use Bash by default
-RUN echo "[code-server] Image build starts" \
+RUN echo "[code-server] Image build starts on $(arch)" \
     && chsh -s /bin/bash coder && chsh -s /bin/bash
 # this should fix any errors on missing system-wide Bash completion directory
 #RUN mkdir /etc/bash_completion.d
@@ -45,10 +45,10 @@ RUN sudo chown -R coder:coder /home/coder/.local
 
 # Cloudflared
 # Copy our helper scripts first
-COPY toolkits/packages/scripts/cloudflared-updater /home/coder/.local/bin/cloudflared-updater
-COPY toolkits/packages/scripts/cloudflare-updater /home/coder/.local/bin/cloudflare-updater
+COPY toolkits/packages/scripts/cloudflared-updater .local/bin/cloudflared-updater
+COPY toolkits/packages/scripts/cloudflare-updater .local/bin/cloudflare-updater
 # amd hit the road!
-RUN IMAGE_ARCH=$(arch) /home/coder/.local/bin/cloudflare-updater
+RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
