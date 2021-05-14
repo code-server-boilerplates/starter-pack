@@ -44,13 +44,14 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # TL;DR: Honest Government Ads reference ahead above
 
 # Cloudflared
-# TODO: Implement an updater script for that
-COPY toolkits/packages/scripts/ /home/coder/.local/bin/
+# Copy our helper scripts first
+COPY toolkits/packages/scripts/cloudflared-updater /home/coder/.local/bin/cloudflared-updater
+COPY toolkits/packages/scripts/cloudflare-updater /home/coder/.local/bin/cloudflare-updater
+# amd hit the road!
 RUN IMAGE_ARCH=$(arch) /home/coder/.local/bin/cloudflare-updater
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
-
 ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH"
 
 # -----------
