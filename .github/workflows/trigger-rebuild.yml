@@ -1,0 +1,21 @@
+name: Trigger Docker Builds CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  main:
+     runs-on: ubuntu-latest
+     steps:
+      - name: Checkout stuff
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
+      - name: Configure Git
+        run: 'git config user.name "Recap Time Bot" && git config user.email "RecapTimeBot@users.noreply.github.com"'
+      - name: Update contents of the .trigger-rebuild file
+        run: |
+           date | base64 > .trigger-rebuild
+           git add .trigger-rebuild
+           git commit --signoff -m 'chore(github-actions): Manually trigger Docker builds CI'
+           git push
