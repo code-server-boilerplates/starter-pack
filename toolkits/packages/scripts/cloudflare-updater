@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 echo "[toolkit-scripts] Installing Argo Tunnel agent"
 /home/coder/.local/bin/cloudflared-updater
