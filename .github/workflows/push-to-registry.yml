@@ -6,7 +6,7 @@ on:
     paths:
       - "Dockerfile"
       - ".trigger-rebuild"
-      - ".github/workflows/push-to-registry.tml"
+      - ".github/workflows/push-to-registry.yml"
 
 jobs:
   test:
