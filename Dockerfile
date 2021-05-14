@@ -45,11 +45,12 @@ RUN sudo chown -R coder:coder /home/coder/.local
 
 # Cloudflared
 # TODO: Implement an updater script for that
-#COPY toolkits/packages/scripts/ /home/coder/.local/bin/
-#RUN /home/coder/.local/bin/cloudflare-updater
+COPY toolkits/packages/scripts/ /home/coder/.local/bin/
+RUN IMAGE_ARCH=$(arch) /home/coder/.local/bin/cloudflare-updater
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
+
 ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH"
 
 # -----------
