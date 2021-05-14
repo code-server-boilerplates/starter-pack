@@ -5,9 +5,7 @@ USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
     && chsh -s /bin/bash coder && chsh -s /bin/bash \
-    && mkdir /home/coder/.local/bin -p \
-    # install tree first
-    && apt-get install tree -y
+    && mkdir /home/coder/.local/bin -p
 # this should fix any errors on missing system-wide Bash completion directory
 #RUN mkdir /etc/bash_completion.d
 
@@ -21,7 +19,7 @@ ENV SHELL=/bin/bash
 # Install unzip + rclone (support for remote filesystem)
 # Also don't forget wget for that. jq included too
 RUN sudo apt-get update \
-    && sudo apt-get install unzip jq wget -y \
+    && sudo apt-get install unzip jq wget tree -y \
     && sudo rm -rvf /var/lib/apt/lists/*
 RUN curl https://rclone.org/install.sh | sudo bash
 
