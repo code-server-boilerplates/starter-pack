@@ -17,7 +17,7 @@ if [[ -f /usr/local/bin/cloudflared ]]; then
 fi
 
 echo "[cloudflared-updater] Installing latest version of Argo Tunnel agent.."
-if [[ $ARCH_TO_USE == "arm64" ]]; then
+if [[ $ARCH_TO_USE == "aarch64" ]]; then
   sudo wget https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared
 else
   sudo wget https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared
