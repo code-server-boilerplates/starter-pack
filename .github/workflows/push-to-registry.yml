@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths:
       - "Dockerfile"
-      - ".trigger-rebuuld"
+      - ".trigger-rebuild"
       - "toolkits/containers/*"
       - "toolkits/packages/scripts/*"
       - ".github/workflows/push-to-registry.tml"
