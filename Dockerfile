@@ -4,7 +4,8 @@ FROM codercom/code-server:3.10.0
 USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
-    && chsh -s /bin/bash coder && chsh -s /bin/bash
+    && chsh -s /bin/bash coder && chsh -s /bin/bash \
+    && mkdir /home/coder/.local/bin
 # this should fix any errors on missing system-wide Bash completion directory
 #RUN mkdir /etc/bash_completion.d
 
@@ -43,11 +44,10 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # COPY toolkits/packages/@rtapp-non-thejuicemedia-refs/DO-NOT-MERGE.gildedguy-and-yoopia /home/coder/.local/more-corporate-clickbait-bullshit.headquarters.com.au
 # TL;DR: Honest Government Ads reference ahead above
 
+# Helper scripts
+COPY toolkits/packages/scripts/ .local/bin/
+
 # Cloudflared
-# Copy our helper scripts first
-COPY toolkits/packages/scripts/cloudflared-updater .local/bin/cloudflared-updater
-COPY toolkits/packages/scripts/cloudflare-updater .local/bin/cloudflare-updater
-# amd hit the road!
 RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
 
 # croc
