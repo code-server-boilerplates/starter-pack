@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+echo "[toolkit-scripts] Installing Argo Tunnel agent"
+/home/coder/.local/bin/cloudflared-updater
+echo "[toolkit-scripts] Installer script exited with $?, please bug the image maintainers"
+echo "[toolkit-scripts] if the exit code isn't zero."
+
