@@ -17,7 +17,7 @@ updates:
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     labels:
       - "packages/docker-base-images"
       - "dependencies"
