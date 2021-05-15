@@ -54,12 +54,12 @@ This template repository is good for:
 * [ ] Cheer, you just made it here! Congratulate yourself!
   * Probably now create new boilerplates straight to the org or even [join The Pins Team](https://rtapp.tk/join-thepinsteam) (it's optional btw, and if you're interested you'll be invited into `@MadeByThePinsHub/Community-Hubs-Network-Board` first by humans soon once you maintain atleast 3 boilerplates here, you can leave anytime) to help us maintain them, among other tasks.
 
-Additional documentation for managing GitHub Actions workflows, issue templates and Dependabot are on [this README](/.github/README.md).
+Additional documentation for managing GitHub Actions workflows, issue templates and Dependabot are on [this documentation page](/docs/dotgithub-files.md).
 For base images we maintain for different Linux distros (Ubuntu, Arch Linux/Manjaro and Alpine), please see <https://github.com/code-server-boilerplates/base-docker-images>. The Debian base image in the root Dockerfile uses the official image from Coder called `codercom/code-server` in Docker Hub.
 
 ## Deploy
 
-Most deployment documentation are moved into  [the Guides section](/guides).
+Most deployment documentation are moved into  [the Guides section](/docs/deployment-guides).
 
 ### As an base image in your Dockerfile
 

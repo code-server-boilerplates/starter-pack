@@ -10,8 +10,8 @@ $(command -v curl>>/dev/null && echo "curl" | echo "wget") https://cdrs-deploy.r
 
 ## Platform-specific Instructions
 
-* [Linode, with our Community Scripts in StackScripts](/guides/linode.md)
-* [Digital Ocean](/guides/digital-ocean.md)
-* [In any macbine with the generic bootstrapper](/guides/on-permise.md)
-* [Add your VPS provider here](/guides/your-provider-here.md)
-* Want an better way to share workspaces between team members without setting up an Gitpod install? [Read Coder docs](https://coder.com/docs)
+* [Linode, with our Community Scripts in StackScripts](/docs/deployment-guides/linode.md)
+* [Digital Ocean](/docs/deployment-guides/digital-ocean.md)
+* [In any macbine with the generic bootstrapper](/docs/deployment-guides/on-permise.md)
+* [Add your VPS provider here](/docs/deployment-guides/your-provider-here.md)
+* Want an better way to share workspaces between team members with Coder instead of Gitpod on-permises? [Read Coder docs](https://coder.com/docs).
