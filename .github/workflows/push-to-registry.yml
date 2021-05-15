@@ -2,11 +2,9 @@ name: "Docker Builds CI (using official code-server images)"
 
 on:
   push:
-    branches: [ main ]
     paths:
       - "Dockerfile"
       - ".trigger-rebuild"
-      - ".github/workflows/push-to-registry.yml"
 
 jobs:
   test:
@@ -47,6 +45,15 @@ jobs:
            # may not work on personal accounts if using our PAT
            # we may try soon
            password: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
+       - name: Login to Red Hat Quay Container Registry
+         uses: docker/login-action@v1
+         with:
+           registry: quay.io
+           # change the username into yours if not using our bot
+           username: ${{ secrets.QUAYIO_USERNAME }}
+           # may not work on personal accounts if using our PAT
+           # we may try soon
+           password: ${{ secrets.QUAYIO_PASSWORD }}
 
        # after building, we may retag them for DockerHub instead
        # of building again
@@ -57,14 +64,19 @@ jobs:
            push: true
            # version mapping:
            # - latest -> cdr-latest -> cdr-latest.debian10
-           # - cdr-3.9.3 -> cdr.3.9.3.debian10
+           # - cdr-MJ.MN.PT -> cdr.MJ.MN.PT.debian10
            tags: |
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian-10
              ghcr.io/code-server-boilerplates/starter-pack:latest
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.0
              ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.debian-10
+             quay.io/code-server-boilerplates/starter-pack:cdr-latest
+             quay.io/code-server-boilerplates/starter-pack:cdr-latest.debian-10
+             quay.io/code-server-boilerplates/starter-pack:latest
+             quay.io/code-server-boilerplates/starter-pack:cdr-3.10.0
+             quay.io/code-server-boilerplates/starter-pack:cdr-3.10.debian-10
            context: .
            platforms: linux/amd64,linux/arm64
        - name: Echo image digest
-         run: echo ${{ steps.image-build.outputs.digest }}
+         run: echo Image digest is ${{ steps.image-build.outputs.digest }}
