@@ -26,6 +26,25 @@ project_init () {
        git config --global user.name "$GIT_USER_NAME"
        git config --global user.email "$GIT_USER_EMAIL"
     fi
+    
+    # handle auth token saving to gitconfig stuff here
+    # SPOILER: WIP - PROCEED AT YOUR OWN RISK!
+    if [[ $GITHUB_TOKEN != "" ]]; then
+      echo "[$PREFIX] Setting up auth for GitHub"
+      git config --global http.https://github.com/.extraheader "Authorization: basic $GITHUB_TOKEN"
+    else
+      echo "[$PREFIX] No GitHub.com SaaS access token found. You may need to manually copy your PATs from"
+      echo "[$PREFIX] your password manager or generate one if you have. Implementing SSH storage is still an"
+      echo "[$PREFIX] work-in-progress thing for now. See https://cdrs-docs.rtapp.tk/setup-gh-pat for details."
+    fi
+    if [[ $GITLAB_SAAS_TOKEN != "" ]]; then
+      echo "[$PREFIX] Setting up auth for GitLab SaaS"
+      git config --global http.https://gitlab.com/.extraheader "Authorization: basic $GITLAB_SAAS_TOKEN"
+    else
+      echo "[$PREFIX] No GitLab SaaS access token found. You may need to manually copy your PATs from your"
+      echo "[$PREFIX] password manager or generate one if you have. Implementing SSH storage is still an"
+      echo "[$PREFIX] work-in-progress thing for now. See https://cdrs-docs.rtapp.tk/setup-gh-pat for details."
+    fi
 
     [ -z "${GIT_REPO}" ] && echo "[$PREFIX] No GIT_REPO specified" && echo "Example file. Have questions? Join us at https://community.coder.com" > $START_DIR/coder.txt || git clone $GIT_REPO $START_DIR
 }
