@@ -1,6 +1,12 @@
 # Start from the code-server Debian base image
 FROM codercom/code-server:3.10.1
 
+# Add image labels here, but read comments as you edit
+# Replace code-server-boilerplates with username-here/repo
+LABEL org.opencontainers.image.source="https://github.com/code-server-boilerplates/starter-pack" \
+      org.opencontainers.image.vendor="code-server Community" \
+      org.opencontainers.image.documentation="https://rtapp.tk/cdrs-boilerplates-docs"
+
 USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
