@@ -76,13 +76,9 @@ jobs:
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest
              ghcr.io/code-server-boilerplates/starter-pack:cdr-latest.debian-10
              ghcr.io/code-server-boilerplates/starter-pack:latest
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.0
-             ghcr.io/code-server-boilerplates/starter-pack:cdr-3.10.debian-10
              quay.io/code-server-boilerplates/starter-pack:cdr-latest
              quay.io/code-server-boilerplates/starter-pack:cdr-latest.debian-10
              quay.io/code-server-boilerplates/starter-pack:latest
-             quay.io/code-server-boilerplates/starter-pack:cdr-3.10.0
-             quay.io/code-server-boilerplates/starter-pack:cdr-3.10.debian-10
            context: .
            platforms: linux/amd64,linux/arm64
        - name: Echo image digest

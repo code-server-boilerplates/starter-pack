@@ -6,6 +6,11 @@ pull_request_rules:
     actions:
       review:
         type: APPROVE
-        message: Approving @dependabot's pull request, merging...
+        message: |
+           Approving @dependabot's pull request, this will only update the following tags: `latest`, `cdr-latest` and `cdr-latest.debian-10`.
+
+           Maintainers have been advised to to enable an CI for release-based builds to avoid newer versions being pushed into older version tags. See https://cdrs-docs.rtapp.tk/release-based-builds-ci for details
+
+           /cc @AndreiJirohHaliliDev2006 @code-server-boilerplates/starter-pack-builders
       merge:
         method: merge
