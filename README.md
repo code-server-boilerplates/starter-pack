@@ -27,7 +27,7 @@ This template repository is good for:
 * [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case.
 * [ ] Replace any placeholder references such as `[Example Project]` and `code-server-boilerplates/starter-pack` in README and also in `toolkits/containers/README.md`.
 * [ ] Add your tools you want into `Dockerfile`. Just remember that anything requires `systemd` will not work (particularly Snaps and Flatpaks, AppImages are fine).
-  * [ ] Repeat this on `arm64.Dockerfile`, just make sure tools you about to add have ARM64-compartible binaries/packages.
+  * Carefullu read the comments as you edit the file
 * [ ] Edit `toolkits/virtual-machines/*bootstrapper` scripts to include needed tools lile what you did in your Dockerfile (optional, but recommended). Now, feel free to add systemd-required tools like Snaps, just look for these lines.
 
 ```sh
@@ -88,7 +88,7 @@ RUN bash /home/coder/.dotfiles/setup.sh --no-secrets-repo --noprompt --nosystemd
 CMD ["/usr/bin/cdr-launchpad-server"]
 ```
 
-## Virtual machines/private servers or containers?
+## Virtual machines/private servers or Docker containers?
 
 - VMs are deployed once, and then can be modified to install new software
   - You need to save "snapshots" to use your latest images  - Storage is always persistent, and you can usually add extra volumes
