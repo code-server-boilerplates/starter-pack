@@ -89,9 +89,10 @@ else
     # Full path to the remote filesystem
     RCLONE_REMOTE_PATH=${RCLONE_REMOTE_NAME:-code-server-remote}:${RCLONE_DESTINATION:-code-server-files}
     RCLONE_SOURCE_PATH=${RCLONE_SOURCE:-$START_DIR}
-    echo "rclone sync $RCLONE_SOURCE_PATH $RCLONE_REMOTE_PATH $RCLONE_FLAGS -vv" > /home/coder/push_remote.sh
-    echo "rclone sync $RCLONE_REMOTE_PATH $RCLONE_SOURCE_PATH $RCLONE_FLAGS -vv" > /home/coder/pull_remote.sh
-    chmod +x push_remote.sh pull_remote.sh
+    echo "rclone sync $RCLONE_SOURCE_PATH $RCLONE_REMOTE_PATH $RCLONE_FLAGS -vv" > /home/coder/.local/bin/rclone-push
+    echo "rclone sync $RCLONE_REMOTE_PATH $RCLONE_SOURCE_PATH $RCLONE_FLAGS -vv" > /home/coder/.local/bin/rclone-pull
+    chmod +x $HOME/.local/bin/push_remote.sh $HOME/.local/bin/pull_remote.sh
+    ln -s $HOME/.local/bin/rclone-{pull,push} $HOME/{pull,push}_remote.sh
 
     if rclone ls $RCLONE_REMOTE_PATH; then
 
@@ -119,6 +120,9 @@ else
     fi
 
 fi
+
+echo "[$PREIFX] Updating package list caches..."
+sudo apt update
 
 echo "[$PREFIX] Starting code-server..."
 # Now we can run code-server with the default entrypoint
