@@ -10,7 +10,7 @@ LABEL org.opencontainers.image.source="https://github.com/code-server-boilerplat
 USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
-    && chsh -s /bin/bash coder && chsh -s /bin/bash \
+    && chsh -s /bin/bash coder && chsh -s /bin/bash
 
 USER coder
 # Apply VS Code settings
@@ -58,7 +58,8 @@ RUN curl https://getcroc.schollz.com | sudo bash
 # Update PATH to enusre both user-wide scripts and our stuff
 # on /usr/local/bin are available to summon
 ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
-    # prefix for thr entrypoint logs
+    # prefix for thr entrypoint logs, in which you should update into
+    # @namespace/template-slug
     TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/example-project"
 
 # -----------
