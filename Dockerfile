@@ -7,6 +7,13 @@ LABEL org.opencontainers.image.source="https://github.com/code-server-boilerplat
       org.opencontainers.image.vendor="code-server Community" \
       org.opencontainers.image.documentation="https://rtapp.tk/cdrs-boilerplates-docs"
 
+# Update PATH to enusre both user-wide scripts and our stuff
+# on /usr/local/bin are available to summon
+ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
+    # prefix for thr entrypoint logs, in which you should update into
+    # @namespace/template-slug
+    TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/example-project"
+
 USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
@@ -54,13 +61,6 @@ RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
-
-# Update PATH to enusre both user-wide scripts and our stuff
-# on /usr/local/bin are available to summon
-ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
-    # prefix for thr entrypoint logs, in which you should update into
-    # @namespace/template-slug
-    TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/example-project"
 
 # -----------
 
