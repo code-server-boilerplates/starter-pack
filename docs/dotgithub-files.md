@@ -76,22 +76,5 @@ curl -i -H "Authorization: Bearer GH_TOKEN_HERE" \
 
 ### Upgrading code-server base images
 
-Before you upgrade, you may need to also update the `tags` stanza on the image build part (L64-65), after the `:` part.
-
-```yml
-# L75-85, only L68 and L79-80 are visible for the GHCR part
-# includes L84-85 for quay.io
-# copied from workflows/push-to-registry.yml
-           tags: |
-             ...
-             ghcr.io/owner/repo:cdr-3.10.0
-             ghcr.io/owner/repo:cdr-3.10.debian-10
-             ...
-             quay.io/namespace/template-slug:cdr-3.10.0
-             quay.io/namespace/template-slug:cdr-3.10.debian-10
-```
-
-Where `owner/repo` for GHCR is your GitHub repo URL after the `https://github.com/` part.
-In case of Quay.io and Docker Hub, `namespace` (or `org`) is either your
-personal GitHub account or an GitHub org (maybe not the same based on your case)
-and `template-slug` is `repo`.`
+Base image upgrades are automagically handled by [Dependabot][dbot]
+(the same bot is used for updating GitHub Actions)
