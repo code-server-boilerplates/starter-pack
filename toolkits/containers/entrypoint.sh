@@ -2,50 +2,58 @@
 
 START_DIR="${START_DIR:-/home/coder/project}"
 
-PREFIX="deploy-code-server"
+PREFIX=${TEMPLATE_SLUG_PREFIX}
 
 mkdir -p $START_DIR
 
 useDefaultConfig() {
        git config  --global user.name "Recap Time Bot"
-       git config --global user.email "57515506+RecapTimeBot@users.noreply.github.com"
+       git config --global user.email "service-accounts@madebythepins.tk"
 }
+
+
+if [[ $GIT_USER_EMAIL == "" ]] && [[ $GIT_USER_NAME == "" ]]; then
+  echo "[$PREFIX] No email address and name found for configuring Git. Git will prompt you to configure them"
+  echo "[$PREFIX] before ever commiting something. Falling back to defaults using github:RecapTimeBot user info..."
+  useDefaultConfig
+elif [[ $GIT_USER_EMAIL == "" ]]; then
+  echo "[$PREFIX] Git user email found, but name isn't found. Using defaults based on"
+  echo "[$PREFIX] github:RecapTimeBot user info..."
+  useDefaultConfig
+elif [[ $GIT_USER_NAME == "" ]]; then
+  echo "[$PREFIX] Git user name found, but email isn't found. Using defaults based on"
+  echo "[$PREFIX] github:RecapTimeBot user info..."
+  useDefaultConfig
+else
+  git config --global user.name "$GIT_USER_NAME"
+  git config --global user.email "$GIT_USER_EMAIL"
+fi
+
+# handle auth token saving to gitconfig stuff here
+### GITHUB / GHE ###
+if [[ $GITHUB_TOKEN != "" ]]; then
+  echo "[$PREFIX] Setting up auth for GitHub"
+  git config --global http.https://github.com/.extraheader "Authorization: basic $GITHUB_TOKEN"
+elif [[ $GITHUB_TOKEN != "" ]] && [[ $GHE_HOST != "" ]]; then
+  echo "[$PTEFIX]"
+else
+  echo "[$PREFIX] No GitHub.com access token found. You may need to manually copy your PATs from"
+  echo "[$PREFIX] your password manager or generate one if you have. Implementing SSH storage is still an"
+  echo "[$PREFIX] work-in-progress thing for now. See https://cdrs-docs.rtapp.tk/setup-gh-pat for details."
+  echo "[$PREFIX] Atleast repo (for private repos) or TODO (for public repos)"
+fi
+### GITLAB SAAS (gitlab.com) ###
+if [[ $GITLAB_SAAS_TOKEN != "" ]]; then
+  echo "[$PREFIX] Setting up auth for GitLab SaaS"
+  printf "machine gitlab.com\nlogin $GITLAB_SAAS_LOGIN\npassword $GITLAB_SAAS_TOKEN\n" > ~/.netrc
+else
+  echo "[$PREFIX] No GitLab SaaS access token found. You may need to manually copy your PATs from your"
+  echo "[$PREFIX] password manager or generate one if you have. Implementing SSH storage is still an"
+  echo "[$PREFIX] work-in-progress thing for now. See https://cdrs-docs.rtapp.tk/setup-gh-pat for details."
+fi
 
 # function to clone the git repo or add a user's first file if no repo was specified.
 project_init () {
-
-    if [[ $GIT_USER_EMAIL == "" ]] && [[ $GIT_USER_NAME == "" ]]; then
-       echo "[$PREFIX] No email address and name found for configuring Git. Git will prompt you to configure them"
-       echo "          before ever commiting something. Falling back to defaults using github:RecapTimeBot user info..."
-       useDefaultConfig
-    elif [[ $GIT_USER_EMAIL == "" ]]; then
-       echo "[$PREFIX] Git user email found, but name isn't found. Using defaults based on"
-       echo "          github:RecapTimeBot user info..."
-       useDefaultConfig
-    else
-       git config --global user.name "$GIT_USER_NAME"
-       git config --global user.email "$GIT_USER_EMAIL"
-    fi
-    
-    # handle auth token saving to gitconfig stuff here
-    # SPOILER: WIP - PROCEED AT YOUR OWN RISK!
-    if [[ $GITHUB_TOKEN != "" ]]; then
-      echo "[$PREFIX] Setting up auth for GitHub"
-      git config --global http.https://github.com/.extraheader "Authorization: basic $GITHUB_TOKEN"
-    else
-      echo "[$PREFIX] No GitHub.com access token found. You may need to manually copy your PATs from"
-      echo "[$PREFIX] your password manager or generate one if you have. Implementing SSH storage is still an"
-      echo "[$PREFIX] work-in-progress thing for now. See https://cdrs-docs.rtapp.tk/setup-gh-pat for details."
-    fi
-    if [[ $GITLAB_SAAS_TOKEN != "" ]]; then
-      echo "[$PREFIX] Setting up auth for GitLab SaaS"
-      printf "machine gitlab.com\nlogin $GITLAB_SAAS_LOGIN\npassword $GITLAB_SAAS_TOKEN\n" > ~/.netrc
-    else
-      echo "[$PREFIX] No GitLab SaaS access token found. You may need to manually copy your PATs from your"
-      echo "[$PREFIX] password manager or generate one if you have. Implementing SSH storage is still an"
-      echo "[$PREFIX] work-in-progress thing for now. See https://cdrs-docs.rtapp.tk/setup-gh-pat for details."
-    fi
-
     [ -z "${GIT_REPO}" ] && echo "[$PREFIX] No GIT_REPO specified" && echo "Example file. Have questions? Join us at https://community.coder.com" > $START_DIR/coder.txt || git clone $GIT_REPO $START_DIR
 }
 
@@ -77,8 +85,6 @@ else
         # user specified they don't want to apply the tasks
         echo "[$PREFIX] Skipping VS Code tasks for rclone"
     fi
-
-
 
     # Full path to the remote filesystem
     RCLONE_REMOTE_PATH=${RCLONE_REMOTE_NAME:-code-server-remote}:${RCLONE_DESTINATION:-code-server-files}
