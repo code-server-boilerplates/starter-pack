@@ -11,9 +11,6 @@ USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
     && chsh -s /bin/bash coder && chsh -s /bin/bash \
-    && mkdir /home/coder/.local/bin -p
-# this should fix any errors on missing system-wide Bash completion directory
-#RUN mkdir /etc/bash_completion.d
 
 USER coder
 # Apply VS Code settings
@@ -26,8 +23,7 @@ ENV SHELL=/bin/bash
 # Also don't forget wget for that. jq included too
 RUN sudo apt-get update \
     && sudo apt-get install unzip jq wget tree -y \
-    && sudo rm -rvf /var/lib/apt/lists/*
-RUN curl https://rclone.org/install.sh | sudo bash
+    && curl https://rclone.org/install.sh | sudo bash
 
 # Copy rclone tasks to /tmp, to potentially be used
 COPY toolkits/containers/rclone-tasks.json /tmp/rclone-tasks.json
@@ -54,25 +50,29 @@ RUN sudo chown -R coder:coder /home/coder/.local
 COPY toolkits/packages/scripts/ /home/coder/.local/bin/
 
 # Cloudflared
-# update this var when new release are publicized
-ENV CLOUDFLARED_VERSION=2021.4.0
-RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater || true
+RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
-ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH"
+
+# Update PATH to enusre both user-wide scripts and our stuff
+# on /usr/local/bin are available to summon
+ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
+    # prefix for thr entrypoint logs
+    TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/example-project"
 
 # -----------
 
 # Cleanup
-RUN echo "[code-server] Cleanup has been started" \
+RUN echo "[code-server] Dependency installation completed, cleaning up..." \
     && rm -rv /home/coder/*.deb || true \
+    && sudo rm -rvf /var/lib/apt/lists/* \
     && sudo apt clean \
     && echo "[code-server] Cleanup done"
 
-# Port, remember to use other env for this or do these:
-#   PORT=3000 node server.js
-ENV PORT=8080
+# Since the entrypoint script is running the server in port 8080
+# we just need to expose the main port instead of hardcoding the
+# PORT variable.
 EXPOSE 8080
 
 # Use our custom entrypoint script first
