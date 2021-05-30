@@ -2,7 +2,7 @@ apiVersion: v2
 
 # For name, it should be cdrs-<template-slug-here>
 name: cdrs-starter-pack
-description: A Helm chart for code-server-boilerplate
+description: A Helm chart for cdrs-starter-pack-boilerplate
 
 # A chart can be either an 'application' or a 'library' chart.
 #

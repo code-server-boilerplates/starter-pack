@@ -1,0 +1,19 @@
+# https://github.com/cdr/cdrs-starter-pack/tree/main/ci/helm-chart#extra-containers
+extraInitContainers: |
+  - name: customization
+    image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+    imagePullPolicy: IfNotPresent
+    env:
+      - name: SERVICE_URL
+        value: https://open-vsx.org/vscode/gallery
+      - name: ITEM_URL
+        value: https://open-vsx.org/vscode/item
+    command:
+      - sh
+      - -c
+      - |
+        cdrs-starter-pack --install-extension ms-python.python
+        cdrs-starter-pack --install-extension golang.Go
+    volumeMounts:
+      - name: data
+        mountPath: /home/coder
