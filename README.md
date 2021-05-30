@@ -6,6 +6,7 @@ to include the tools you're added into the bootstrapper
 scripts and into the main Dockerfile.
 -->
 In this boilerplate, we included the following packages out of the box:
+
 * [`code-server`](https://github.com/cdr/code-server) for the VS Code in the browser
   * Add extensions here
 * [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps) for accessing other ports through to [Cloudflare Argo Tunnel](https://www.cloudflare.com/en-gb/products/argo-tunnel/)
@@ -19,13 +20,15 @@ Note to new boilerplate maintainers: Explain what this
 template repo is for.
 -->
 This template repository is good for:
-* people who want to start their own Code Server Boilerplates
-* just want to have the bare minimum dependencies in their `code-server` instance.
+
+* people who want to start their own `deploy-code-server` template with all the things needed (including Helm Charts)
+* just want to have the bare minimum dependencies in their `code-server` instance
 
 ## Checklist
 
 * [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case.
-* [ ] Replace any placeholder references such as `[Example Project]` and `code-server-boilerplates/starter-pack` in README and also in `toolkits/containers/README.md`.
+* [ ] Replace any references by using the Search and Replace feature in VS Code (or any modern IDE).
+  * Old reference to search: `{cdrs-starter-pack, [Example Project], code-server-boilerplates/starter-pack, example-project}`. (Proceed at your own risk if replacing all files using this regexp.)
 * [ ] Add your tools you want into `Dockerfile`. Just remember that anything requires `systemd` will not work (particularly Snaps and Flatpaks, AppImages are fine).
   * Carefullu read the comments as you edit the file
 * [ ] Edit `toolkits/virtual-machines/*bootstrapper` scripts to include needed tools lile what you did in your Dockerfile (optional, but recommended). Now, feel free to add systemd-required tools like Snaps, just look for these lines.
