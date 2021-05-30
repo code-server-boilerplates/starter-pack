@@ -1,1 +1,169 @@
-charts/config/values-example.yml
+# NOTE: This was copied from ./config/values-examples.yml for compartiblity reasons
+
+# Default values for cdrs-starter-pack.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+# While the maintainers of this template has made this template for you
+# you should make your own based on this example file to customize for
+# your own needs.
+
+image:
+  # We'll use our Red Hat Quay Container Registry image for this one
+  repository: quay.io/code-server-boilerplates/starter-pack
+  tag: 'cdr-latest.debian-10'
+  pullPolicy: Always
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+hostnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+## Pod Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+securityContext:
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: false
+  annotations:
+    # For users outside of Okteto Cloud, uncomment these
+    # lines to use Nginx as reverse-proxy and probably use
+    # Let's Encrypt for certificates.
+    #kubernetes.io/ingress.class: nginx
+    #kubernetes.io/tls-acme: "true"
+
+    # Configuration for Okteto Cloud
+    # Comment them out if you're not on Okteto Cloud
+    dev.okteto.com/generate-host: "true"
+    # If password is unset, make sure to enable Private Endpoints
+    #dev.okteto.com/auto-ingress: "private"
+
+    ports:
+      - port: 8080
+        protocol: TCP
+        targetPort: http
+
+# Optional additional arguments
+extraArgs:
+  - --allow-http
+  # Only uncomment this if you use Okteto Cloud's Private Endpoints
+  #- --no-auth
+
+# Optional additional environment variables
+extraVars: {}
+  # Spoiler: We don't know if it will be sent to Microsoft servers or to
+  # Coder's telemetry servers, so we'll left the decision to you.
+  #- name: DISABLE_TELEMETRY
+  #  value: true
+
+##
+## Init containers parameters:
+## volumePermissions: Change the owner of the persist volume mountpoint to RunAsUser:fsGroup
+##
+volumePermissions:
+  enabled: true
+  securityContext:
+    runAsUser: 0
+
+resources:
+  # Please edit these files as needed
+   limits:
+     cpu: 1
+     memory: 1200Mi
+   requests:
+    cpu: 1
+    memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+## Persist data to a persistent volume
+persistence:
+  enabled: true
+  ## cdrs-starter-pack data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessMode: ReadWriteOnce
+  # Since Okteto Cloud's free tier is up to 5 GB for storage
+  # you may need to upgrade if needed.
+  size: 2Gi
+  annotations: {}
+  # existingClaim: ""
+  # hostPath: /data
+
+
+## Enable an Specify container in extraContainers.
+## This is meant to allow adding cdrs-starter-pack dependencies, like docker-dind.
+#extraContainers: |
+#  - name: docker-dind
+#    image: docker:20.10-dind
+#    imagePullPolicy: IfNotPresent
+#    resources:
+#      requests:
+#       cpu: 512m
+#       memory: 1Gi
+#    securityContext:
+#      privileged: false
+#      procMount: Default
+#    env:
+#      - name: DOCKER_TLS_CERTDIR
+#        value: ""
+#      - name: DOCKER_DRIVER
+#        value: "overlay2"
+
+## Additional cdrs-starter-pack secret mounts
+extraSecretMounts: []
+  # - name: secret-files
+  #   mountPath: /etc/secrets
+  #   secretName: cdrs-starter-pack-secret-files
+  #   readOnly: true
+
+## Additional cdrs-starter-pack volume mounts
+extraVolumeMounts: []
+  # - name: extra-volume
+  #   mountPath: /mnt/volume
+  #   readOnly: true
+  #   existingClaim: volume-claim
+  #   hostPath: ""
+
+extraConfigmapMounts: []
+  # - name: certs-configmap
+  #   mountPath: /etc/cdrs-starter-pack/ssl/
+  #   subPath: certificates.crt # (optional)
+  #   configMap: certs-configmap
+  #   readOnly: true

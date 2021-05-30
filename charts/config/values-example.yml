@@ -1,3 +1,5 @@
+# NOTE: This was copied from ./config/values-examples.yml for compartiblity reasons
+
 # Default values for cdrs-starter-pack.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -10,7 +12,7 @@ replicaCount: 1
 
 image:
   # We'll use our Red Hat Quay Container Registry image for this one
-  repository: quay.io/cdrs-starter-pack-boilerplates/starter-pack
+  repository: quay.io/code-server-boilerplates/starter-pack
   tag: 'cdr-latest.debian-10'
   pullPolicy: Always
 
@@ -75,13 +77,11 @@ extraArgs:
   #- --no-auth
 
 # Optional additional environment variables
-extraVars:
-  # We'll disable telemetry for you, but if you want to help the cdrs-starter-pack devs
-  # to fix bugs and improve cdrs-starter-pack, you probably set this to false.
+extraVars: {}
   # Spoiler: We don't know if it will be sent to Microsoft servers or to
   # Coder's telemetry servers, so we'll left the decision to you.
-  - name: DISABLE_TELEMETRY
-    value: true
+  #- name: DISABLE_TELEMETRY
+  #  value: true
 
 ##
 ## Init containers parameters:
@@ -95,10 +95,10 @@ volumePermissions:
 resources:
   # Please edit these files as needed
    limits:
-     cpu: 1200m
+     cpu: 1
      memory: 1200Mi
    requests:
-    cpu: 1200m
+    cpu: 1
     memory: 1Gi
 
 nodeSelector: {}
@@ -129,22 +129,22 @@ persistence:
 
 ## Enable an Specify container in extraContainers.
 ## This is meant to allow adding cdrs-starter-pack dependencies, like docker-dind.
-extraContainers: |
- - name: docker-dind
-   image: docker:20.10-dind
-   imagePullPolicy: IfNotPresent
-   resources:
-     requests:
-      cpu: 512m
-      memory: 1Gi
-   securityContext:
-    privileged: true
-    procMount: Default
-   env:
-  - name: DOCKER_TLS_CERTDIR
-    value: ""
-  - name: DOCKER_DRIVER
-    value: "overlay2"
+#extraContainers: |
+#  - name: docker-dind
+#    image: docker:20.10-dind
+#    imagePullPolicy: IfNotPresent
+#    resources:
+#      requests:
+#       cpu: 512m
+#       memory: 1Gi
+#    securityContext:
+#      privileged: false
+#      procMount: Default
+#    env:
+#      - name: DOCKER_TLS_CERTDIR
+#        value: ""
+#      - name: DOCKER_DRIVER
+#        value: "overlay2"
 
 ## Additional cdrs-starter-pack secret mounts
 extraSecretMounts: []
