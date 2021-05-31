@@ -3,6 +3,7 @@ pull_request_rules:
     conditions:
       - author~=^dependabot(|-preview)\[bot\]$
       - label=Updated by Dependabot
+      - label=packages/docker-base-images
     actions:
       review:
         type: APPROVE
