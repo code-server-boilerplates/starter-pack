@@ -16,16 +16,15 @@ module.exports = {
           "dpes-optional", // CI, CHORE
           "commitlint", // CI, CHORE
           "commitizen", // mostly CHORE
-          "toolkits/containers",
-          "toolkits/virtual-machines",
+          "containers", // FIX, CHORE, FEAT
+          "virtual-machines", // FIX, FEAT, CHORE
           "github-org-files", // CHORE
           "deployment-guides", // DOCS
-          "dockerfiles", // FIX, CHORE, or FEAT
           "readme", // DOCS, CHORE
           "lockfiles", // CHORE
           "deployment-guides", // CHORE, DOCS
-          "toolkits-packages/scripts",
-          "toolkits-packages/nonsense-bullshit" // probably for our example packages
+          "toolkits-packages:scripts",
+          "toolkits-packages:nonsense-bullshit" // probably for our example packages
         ],
       ],
     },
