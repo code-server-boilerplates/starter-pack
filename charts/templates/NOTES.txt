@@ -1,4 +1,11 @@
-1. Get the application URL by running these commands:
+WELCOME TO YOUR CODE-SERVER INSTANCE ON KUBERNETES!
+Thanks for trying to deploy this into your cluster. Now, check at the logs to see if it's still warming up before logging in.
+
+GETTING STARTED
+To start using your code-server instance in Kubernetes:
+
+1. Copy the instance URL or run an port forwarder on your machine:
+
 {{- if .Values.ingress.enabled }}
 {{- range $host := .Values.ingress.hosts }}
   {{- range .paths }}
@@ -20,6 +27,14 @@
   kubectl port-forward $POD_NAME 8080:80
 {{- end }}
 
-Administrator credentials:
+2. After reaching the login screen, get the Web IDE password:
 
-  Password: echo $(kubectl get secret --namespace {{ .Release.Namespace }} {{ template "cdrs-starter-pack.fullname" . }} -o jsonpath="{.data.password}" | base64 --decode)
+  echo $(kubectl get secret --namespace {{ .Release.Namespace }} {{ template "cdrs-starter-pack.fullname" . }} -o jsonpath="{.data.password}" | base64 --decode)
+
+3. Volia! Enjoy your cloud dev environment in Kubernetes!
+
+NEED HELP?
+* The code-server community is available at Slack through https://community.coder.com. The code-server-boilerplates community is also available through https://github.com/code-server-boilerplates/community/discussions, https://discord.rtapp.tk/thepinsteam, and https://rtapp.tk/thepinsteam.community-matrix
+* Access the documentation at https://cdrs-docs.rtapp.tk.
+* Found an issue in the Docker image? File a new issue at https://github.com/code-server-boilerplates/starter-pack/issues.
+* Found an bug in code-server? Let its maintainers know at https://github.com/cdr/code-server/issues.

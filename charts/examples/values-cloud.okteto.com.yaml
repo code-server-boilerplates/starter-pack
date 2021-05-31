@@ -1,8 +1,3 @@
-# NOTE: This was generated from ./examples/values-cloud.okteto.com.yml
-# Changes to this file may lost, but the values.yaml file generator ensures that
-# no configuration loss will happen as we'll back up the old one in .old direcotry
-# Remeber not to commit any secrets here!
-
 # Default values for cdrs-starter-pack.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.

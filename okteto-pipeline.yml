@@ -1,0 +1,6 @@
+#icon: https://apps.okteto.com/movies/icon.png
+deploy:
+  - helm upgrade --install cdrs-starter-pack charts -f charts/values.yaml
+#devs:
+#  - api/okteto.yml
+#  - frontend/okteto.yml
