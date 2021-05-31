@@ -9,6 +9,13 @@ module.exports = {
           "global",
           "helm-charts", // BUILD, FEAT, or CHORE
           "github-actions", // CI, BUILD, or CHORE
+          "mergify-config",
+          "deps", // CI, CHORE
+          "deps-dev", // CI, CHORE
+          "deps-peer", // CI, CHORE
+          "dpes-optional", // CI, CHORE
+          "commitlint", // CI, CHORE
+          "commitizen", // mostly CHORE
           "toolkits/containers",
           "toolkits/virtual-machines",
           "github-org-files", // CHORE
