@@ -21,6 +21,9 @@ module.exports = {
           "github-org-files", // CHORE
           "deployment-guides", // DOCS
           "dockerfiles", // FIX, CHORE, or FEAT
+          "readme", // DOCS, CHORE
+          "lockfiles", // CHORE
+          "deployment-guides", // CHORE, DOCS
           "toolkits-packages/scripts",
           "toolkits-packages/nonsense-bullshit" // probably for our example packages
         ],

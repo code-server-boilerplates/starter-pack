@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ ! -d "node_modules" ]; then
+   echo "node_modules not found, installing Node deps..."
+   npm i
+fi
+
+npm run commit
