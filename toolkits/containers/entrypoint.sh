@@ -33,10 +33,10 @@ fi
 ### GITHUB / GHE ###
 if [[ $GITHUB_TOKEN != "" ]]; then
   echo "[$PREFIX] Setting up auth for GitHub"
-  git config --global http.https://github.com/.extraheader "Authorization: basic $GITHUB_TOKEN"
+  printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GITHUB_TOKEN\n" > ~/.netrc
 elif [[ $GITHUB_TOKEN != "" ]] && [[ $GHE_HOST != "" ]]; then
   echo "[$PREFIX] GHE user detected, setting up config..."
-  git config --global http.$GHE_HOST/.extraheader "Authorization: basic $GITHUB_TOKEN"
+  printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GITHUB_TOKEN\n" > ~/.netrc
 else
   echo "[$PREFIX] No GitHub.com access token found. You may need to manually copy your PATs from"
   echo "[$PREFIX] your password manager or generate one if you have. Implementing SSH storage is still an"
@@ -47,11 +47,11 @@ fi
 if [[ $GITLAB_TOKEN != "" ]] && [[ $GITLAB_LOGIN != "" ]]; then
   echo "[$PREFIX] Setting up auth for GitLab SaaS"
   # shellcheck disable=SC2059
-  printf "machine gitlab.com\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" > ~/.netrc
+  printf "machine gitlab.com\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" >> ~/.netrc
 elif [[ $GITLAB_TOKEN != "" ]] && [[ $GITLAB_LOGIN == "" ]] && [[ $GITLAB_HOST != "" ]]; then
   echo "[$PREFIX] Setting up auth for GitLab self-hosted"
   # shellcheck disable=SC2059
-  printf "machine $GITLAB_HOST\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" > ~/.netrc
+  printf "machine $GITLAB_HOST\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" >> ~/.netrc
 else
   echo "[$PREFIX] No GitLab SaaS access token found. You may need to manually copy your PATs from your"
   echo "[$PREFIX] password manager or generate one if you have. Implementing SSH storage is still an"
