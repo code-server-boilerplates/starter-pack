@@ -35,7 +35,8 @@ if [[ $GITHUB_TOKEN != "" ]]; then
   echo "[$PREFIX] Setting up auth for GitHub"
   git config --global http.https://github.com/.extraheader "Authorization: basic $GITHUB_TOKEN"
 elif [[ $GITHUB_TOKEN != "" ]] && [[ $GHE_HOST != "" ]]; then
-  echo "[$PTEFIX]"
+  echo "[$PREFIX] GHE user detected, setting up config..."
+  git config --global http.$GHE_HOST/.extraheader "Authorization: basic $GITHUB_TOKEN"
 else
   echo "[$PREFIX] No GitHub.com access token found. You may need to manually copy your PATs from"
   echo "[$PREFIX] your password manager or generate one if you have. Implementing SSH storage is still an"
@@ -43,9 +44,14 @@ else
   echo "[$PREFIX] Atleast repo (for private repos) or TODO (for public repos)"
 fi
 ### GITLAB SAAS (gitlab.com) ###
-if [[ $GITLAB_SAAS_TOKEN != "" ]]; then
+if [[ $GITLAB_TOKEN != "" ]] && [[ $GITLAB_LOGIN != "" ]]; then
   echo "[$PREFIX] Setting up auth for GitLab SaaS"
-  printf "machine gitlab.com\nlogin $GITLAB_SAAS_LOGIN\npassword $GITLAB_SAAS_TOKEN\n" > ~/.netrc
+  # shellcheck disable=SC2059
+  printf "machine gitlab.com\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" > ~/.netrc
+elif [[ $GITLAB_TOKEN != "" ]] && [[ $GITLAB_LOGIN == "" ]] && [[ $GITLAB_HOST != "" ]]; then
+  echo "[$PREFIX] Setting up auth for GitLab self-hosted"
+  # shellcheck disable=SC2059
+  printf "machine $GITLAB_HOST\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" > ~/.netrc
 else
   echo "[$PREFIX] No GitLab SaaS access token found. You may need to manually copy your PATs from your"
   echo "[$PREFIX] password manager or generate one if you have. Implementing SSH storage is still an"
@@ -54,7 +60,12 @@ fi
 
 # function to clone the git repo or add a user's first file if no repo was specified.
 project_init () {
-    [ -z "${GIT_REPO}" ] && echo "[$PREFIX] No GIT_REPO specified" && echo "Example file. Have questions? Join us at https://community.coder.com" > $START_DIR/coder.txt || git clone $GIT_REPO $START_DIR
+    if [ -f "$START_DIR" ]; then
+      echo "[$PREFIX] Fetching updates from remotes..."
+      git fetch --all
+    else
+      [ -z "${GIT_REPO}" ] && echo "[$PREFIX] No GIT_REPO specified" && echo "Example file. Have questions? Join us at https://community.coder.com" > $START_DIR/coder.txt || git clone $GIT_REPO $START_DIR
+    fi
 }
 
 # add rclone config and start rclone, if supplied
@@ -68,14 +79,14 @@ else
     echo "[$PREFIX] Copying rclone config..."
     mkdir -p /home/coder/.config/rclone/
     touch /home/coder/.config/rclone/rclone.conf
-    echo $RCLONE_DATA | base64 -d > /home/coder/.config/rclone/rclone.conf
+    echo "$RCLONE_DATA" | base64 -d > /home/coder/.config/rclone/rclone.conf
 
     # defasult to true
     RCLONE_VSCODE_TASKS="${RCLONE_VSCODE_TASKS:-true}"
     RCLONE_AUTO_PUSH="${RCLONE_AUTO_PUSH:-true}"
     RCLONE_AUTO_PULL="${RCLONE_AUTO_PULL:-true}"
 
-    if [ $RCLONE_VSCODE_TASKS = "true" ]; then
+    if [ "$RCLONE_VSCODE_TASKS" = "true" ]; then
         # copy our tasks config to VS Code
         echo "[$PREFIX] Applying VS Code tasks for rclone"
         cp /tmp/rclone-tasks.json /home/coder/.local/share/code-server/User/tasks.json
@@ -91,10 +102,10 @@ else
     RCLONE_SOURCE_PATH=${RCLONE_SOURCE:-$START_DIR}
     echo "rclone sync $RCLONE_SOURCE_PATH $RCLONE_REMOTE_PATH $RCLONE_FLAGS -vv" > /home/coder/.local/bin/rclone-push
     echo "rclone sync $RCLONE_REMOTE_PATH $RCLONE_SOURCE_PATH $RCLONE_FLAGS -vv" > /home/coder/.local/bin/rclone-pull
-    chmod +x $HOME/.local/bin/push_remote.sh $HOME/.local/bin/pull_remote.sh
-    ln -s $HOME/.local/bin/rclone-{pull,push} $HOME/{pull,push}_remote.sh
+    chmod +x "$HOME"/.local/bin/push_remote.sh "$HOME"/.local/bin/pull_remote.sh
+    ln -s "$HOME"/.local/bin/rclone-{pull,push} "$HOME"/{pull,push}_remote.sh
 
-    if rclone ls $RCLONE_REMOTE_PATH; then
+    if rclone ls "$RCLONE_REMOTE_PATH"; then
 
         if [ $RCLONE_AUTO_PULL = "true" ]; then
             # grab the files from the remote instead of running project_init()
@@ -107,7 +118,7 @@ else
 
     else
 
-        if [ $RCLONE_AUTO_PUSH = "true" ]; then
+        if [ "$RCLONE_AUTO_PUSH" = "true" ]; then
             # we need to clone the git repo and sync
             echo "[$PREFIX] Pushing initial files to remote..."
             project_init
@@ -126,4 +137,4 @@ sudo apt update
 
 echo "[$PREFIX] Starting code-server..."
 # Now we can run code-server with the default entrypoint
-/usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8080 $START_DIR
+/usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8080 "$START_DIR"
