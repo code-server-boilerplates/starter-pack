@@ -6,7 +6,7 @@ on:
       - "Dockerfile"
       - ".trigger-rebuild"
       - "toolkits/container/entrypoint.sh"
-      - "toolkits/packages/scripts/*"
+      - "toolkits/packages/scripts/**"
   pull_request:
     branches: [ main ]
 
