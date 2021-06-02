@@ -1,5 +1,3 @@
-# NOTE: This was copied from ./config/values-examples.yml for compartiblity reasons
-
 # Default values for cdrs-starter-pack.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -19,7 +17,7 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
-hostnameOverride: ""
+hostnameOverride: "code-server"
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -38,9 +36,19 @@ podSecurityContext: {}
 ## Pod Security Context
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 securityContext:
-  # capabilities:
-  #   drop:
-  #   - ALL
+  capabilities:
+     add:
+       # If you use Ngnix inside your code-server pod,
+       # let's allow to bind service to the network.
+       - NET_BIND_SERVICE
+       # We may also need to ping your website right?
+       - NET_RAW
+       # What about sudo and chown (or even fixuid)?
+       - CHOWN
+       - SETGID
+       - SETUID
+     drop:
+       - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   runAsUser: 1000
@@ -51,19 +59,21 @@ service:
   port: 8080
 
 ingress:
-  enabled: false
+  # If you prefer to manually port-forward the SSH way, disable Ingress.
+  enabled: true
   annotations:
     # For users outside of Okteto Cloud, uncomment these
     # lines to use Nginx as reverse-proxy and probably use
     # Let's Encrypt for certificates.
     #kubernetes.io/ingress.class: nginx
-    #kubernetes.io/tls-acme: "true"
+    #kubernetes.io/tls-acme: true
 
     # Configuration for Okteto Cloud
     # Comment them out if you're not on Okteto Cloud
-    dev.okteto.com/generate-host: "true"
+    dev.okteto.com/generate-host: true
     # If password is unset, make sure to enable Private Endpoints
-    #dev.okteto.com/auto-ingress: "private"
+    # by setting this into "private"
+    dev.okteto.com/auto-ingress: true
 
     ports:
       - port: 8080
@@ -83,15 +93,14 @@ extraVars: {}
   #- name: DISABLE_TELEMETRY
   #  value: true
 
-##
 ## Init containers parameters:
 ## volumePermissions: Change the owner of the persist volume mountpoint to RunAsUser:fsGroup
-##
 volumePermissions:
   enabled: true
   securityContext:
     runAsUser: 0
 
+## Resources management
 resources:
   # Please edit these files as needed
    limits:
@@ -129,6 +138,9 @@ persistence:
 
 ## Enable an Specify container in extraContainers.
 ## This is meant to allow adding cdrs-starter-pack dependencies, like docker-dind.
+## ONLY UNCOMMENT IF YOUR KUBERNETETS CLUSTER PROVIDER ALLOWS
+## PRIVILEGED CONTAINERS, OTHERWISE HOST IT ON YOUR OWN ON-PERM
+## CLUSTERS
 #extraContainers: |
 #  - name: docker-dind
 #    image: docker:20.10-dind

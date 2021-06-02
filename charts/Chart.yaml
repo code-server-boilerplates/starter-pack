@@ -1,8 +1,10 @@
 apiVersion: v2
 
 # For name, it should be cdrs-<template-slug-here>
+# The upstream repo (cdr/code-server) is excluded from that rule.
 name: cdrs-starter-pack
-description: A Helm chart for cdrs-starter-pack-boilerplate
+# For description, update this to tell users what to included in your chart.
+description: A Helm chart for deploying code-server, with all the essientials like Cloudflare Tunnel and croc.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -24,3 +26,23 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # TL;DR: Check the base Docker image in the root Dockerfile and update this version
 appVersion: 3.10.2
+
+# List of Helm Charts maintainers, this is requored for human reviews to get passed
+# before being merged to our Helm Charts repo on GitHub Pages.
+maintainers:
+  - name: 'Andrei Jiroh Halili' # Your screen name on GitHub or legal name
+    email: 'andreijiroh@madebythepins.tk' # Your email address you generally used for commits
+    url: 'https://github.com/AndreiJirohHaliliDev2006' # GitHub profile
+
+keywords:
+  - starter-pack
+  # Comment out this one below if you ever forked me instead of using
+  # the repo generator tool.
+  - github-repo-templates
+
+# Homepage and sources should be your repo's URL.
+home: "https://github.com/code-server-boilerplates/starter-pack"
+sources:
+  - https://github.com/code-server-boilerplates/starter-pack
+  # Don't forget to include code-server repo URL.
+  - https://github.com/cdr/code-server
