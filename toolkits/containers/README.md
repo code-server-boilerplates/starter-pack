@@ -41,17 +41,19 @@ COPY toolkits/packages/@rtapp-non-thejuicemedia-ref/DO-NOT-MERGE.gildedguy-and-y
 
 | Variable Name     | Description                                                                                      | Default Value       |
 | ----------------- | ------------------------------------------------------------------------------------------------ | ------------------- |
+| `GENERATE_PASSWORD` | Set it to `true` to generate new password on boot. As usual, check your logs.                                        | `false`
 | `PASSWORD` | Password for code-server                                                                                |                     |
 | `HASHED_PASSWORD` | Overrrides PASSWORD. [SHA-256 hash](https://xorbin.com/tools/sha256-hash-calculator) of password |
 | `USE_LINK` | Use code-server --link instead of a password (coming soon)                                              | false               |
 | `GIT_REPO` | A git repository to clone                                                                               |                     |
 | `START_DIR` | The directory code-server opens (and clones repos in)                                                  | /home/coder/project |
-| `GIT_USER_EMAIL` | An email address to be used in commits and tags                                                   | RecapTime@users.noreply.github.com |
+| `GIT_USER_EMAIL` | An email address to be used in commits and tags                                                   | rtappbot-noreply@madebythepins.tk |
 | `GIT_USER_NAME` | An screen name to be used in commits and tags                                                      | Recap Time Bot |
-| `GITHUB_TOKEN` | GitHub.com/GHE personal access token                                                                |                |
+| `GITHUB_LOGIN` | GitHub.com or GHE username                |                |
+| `GITHUB_TOKEN` | GitHub.com or GHE personal access token                                                                |                |
 | `GHE_HOST`     | GitHub Enterprise hostname                                                                          | github.com     |
-| `GITLAB_LOGIN` | GitLab username                                                          |                |
-| `GITLAB_TOKEN` | GitLab SaaS personal access token                                                              |                |
+| `GITLAB_LOGIN` | GitLab SaaS or on-perm username                                                          |                |
+| `GITLAB_TOKEN` | GitLab SaaS/on-perm personal access token                                               |                |
 | `GITLAB_HOST`  | GitLab CE/EE instance domain (without HTTP protocol)                                            | `gitlab.com`  |
 
 Other code-server environment variables (such as `CODE_SERVER_CONFIG` ) can also be used. See the [code-server FAQ](https://github.com/cdr/code-server/blob/main/docs/FAQ.md) for details.
