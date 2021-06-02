@@ -25,6 +25,7 @@ curl -fsSL https://code-server.dev/install.sh | sh
 # add our helper server to redirect to the proper URL for --link
 echo "==> Downloading helper tools for proper URL redirection..."
 git clone https://github.com/bpmct/coder-cloud-redirect-server
+# shellcheck disable=SC2164
 cd coder-cloud-redirect-server
 cp coder-cloud-redirect.service /etc/systemd/system/
 cp coder-cloud-redirect.py /usr/bin/
@@ -82,9 +83,11 @@ cp -r /root/.ssh /home/coder/.ssh
 chown -R coder:coder /home/coder/.ssh
 
 # use a more unique hostname (for Linode)
+# comment these lines out if you don't want
 echo "==> Changing hostname into linode-$LINODE_ID"
-sudo hostnamectl set-hostname linode-$LINODE_ID
-source /root/.bashrc
+sudo hostnamectl set-hostname "linode-$LINODE_ID"
+# shellcheck disable=SC1091
+. "/root/.bashrc"
 
 # configure code-server to use --link with the "coder" user
 echo "==> Telling the server to use the link flag by default..."
@@ -98,5 +101,6 @@ echo "==> Enabling code-server and cloud-redirect..."
 systemctl enable --now code-server@coder
 systemctl enable --now coder-cloud-redirect
 
-echo "You're now ready to rumble! Check the logs with systemctl status code-server@coder for the link"
-echo "Having coding!"
+echo "info: You're now ready to rumble! Check the logs if it's ready to receive traffic:"
+echo "info:      systemctl status code-server@coder"
+echo "info: Having coding!"
