@@ -1,23 +1,33 @@
-version: 3
+# This Docker Compose file is for Okteto Cloud, as configured in the
+# okteto-pipeline.yml
+
+version: "3"
 
 services:
-    cdrs-starter-pack:
-        image: "ghcr.io/code-server-boilerplates/starter-pack:cdr-latest"
-        volumes:
-            - code-server:/home/coder/project
-        ports:
-            - 8080:8080
-        dns:
-            # We're fans of Cloudflare DNS, so we'll use 1.1.1.1 for this one.
-            # Prefer to use Google Public DNS? Replace these below.
-            - 1.1.1.1
-            - 1.0.0.1
-        environment:
-            - "GIT_REPO=https://github.com/code-server-boilerplates/charts"
-            # Only uncomment this line below if you're on Okteto Cloud
-            # going with Docker Compose.
-            #- "PASSWORD=do-not-commit-your-secrets-plz"
-            # Please see toolkits/containers/README.md for supported variables
+  code-server:
+    image: ghcr.io/code-server-boilerplates/starter-pack
+    volumes:
+      - code-server-projectHome:/home/coder/project:rw
+    ports:
+      - 8080:8080
+    dns:
+      # We're fans of Cloudflare DNS, so we'll use 1.1.1.1 for this one.
+      # Prefer to use Google Public DNS? Replace these below.
+      # But since Okteto Build service ignore these values, this should
+      # be fine.
+      - 1.1.1.1
+      - 1.0.0.1
+    # Please see https://cdrs-docs.rtapp.tk/config-vars-compose for configuring
+    # your code-server instance. To get started, use the .env.example file
+    # as your template for your .env file.
+    env_file: .env
+    cap_add:
+       - ALL
+    cap_drop:
+       - NET_ADMIN
+       - SYS_ADMIN
 
 volumes:
-    code-server:
+  code-server-projectHome:
+    driver_opts: 
+      type: overlay2

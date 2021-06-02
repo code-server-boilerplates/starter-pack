@@ -4,61 +4,98 @@
 version: 3
 
 services:
-    cdrs-starter-pack:
-       build:
-         context: .
-         file: Dockerfile
-        volumes:
-            - code-server-projectHome:/home/coder/project
-        ports:
-            - 8080:8080
-        dns:
-            # We're fans of Cloudflare DNS, so we'll use 1.1.1.1 for this one.
-            # Prefer to use Google Public DNS? Replace these below.
-            - 1.1.1.1
-            - 1.0.0.1
-        environment:
-            # Replace ${GIT_REPO} with your repo URL if you copied this Docker Compose file
-            # into the Deploy from UI workflow, under the From Compose option.
-            GIT_REPO: ${GIT_REPO}
-            GIT_USER_NAME: ${GIT_USER_NAME}
-            GIT_USER_EMAIL: ${GIT_USER_EMAIL}
-            # GitHub
-            GITHUB_LOGIN: ${GITHUB_LOGIN}
-            GITHUB_TOKEN: ${GITHUB_TOKEN}
-            #GHE_HOST: "https://github.com"
-            # GitLab
-            GITLAB_LOGIN: ${GITLAB_LOGIN}
-            GITLAB_TOKEN: ${GITLAB_TOKEN}
-            #GITLAB_HOST: "https://gitlab.com"
-            # Check the logs for the generated password, right before
-            # code-server starts
-            GENERATE_PASSWORD: true
-        cap_add:
-           - ALL
-        cap_drop:
-           - NET_ADMIN
-           - SYS_ADMIN
+  code-server:
+    build:
+      context: .
+      file: Dockerfile
+    volumes:
+      - code-server-projectHome:/home/coder/project
+    ports:
+      - 8080:8080
+    dns:
+      # We're fans of Cloudflare DNS, so we'll use 1.1.1.1 for this one.
+      # Prefer to use Google Public DNS? Replace these below.
+      # But since Okteto Build service ignore these values, this should
+      # be fine.
+      - 1.1.1.1
+      - 1.0.0.1
+    # Please see https://cdrs-docs.rtapp.tk/config-vars-compose for configuring
+    # your code-server instance
+    environment:
+      # Replace ${GIT_REPO} with your repo URL if you copied this Docker Compose file
+      # into the Deploy from UI workflow, under the From Compose option.
+      GIT_REPO: ${GIT_REPO}
+      GIT_USER_NAME: ${GIT_USER_NAME}
+      GIT_USER_EMAIL: ${GIT_USER_EMAIL}
+      # GitHub
+      GITHUB_LOGIN: ${GITHUB_LOGIN}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      #GHE_HOST: "https://github.com"
+      # GitLab
+      GITLAB_LOGIN: ${GITLAB_LOGIN}
+      GITLAB_TOKEN: ${GITLAB_TOKEN}
+      #GITLAB_HOST: "https://gitlab.com"
+      # Check the logs for the generated password, right before
+      # code-server starts
+      GENERATE_PASSWORD: true
+    cap_add:
+       - ALL
+    cap_drop:
+       - NET_ADMIN
+       - SYS_ADMIN
 
 volumes:
   code-server-projectHome:
     driver_opts:
       size: 1Gi
 
+# We don't want to do Ngnix proxying stuff for Okteto Cloud users,
+# but these endpoints is abit mess as only the port ranges of 3000-3010
+# are only allowed to be accessible through devenv-X-NAMESPACE.cloud.okteto.net.
+# As usual, we're gonna use Cloudflare Tunnel (or other options at your liking)
+# for other ports.
 endpoints:
   devenv-0:
     - path: /
-      service: cdrs-starter-pack
+      service: code-server
       port: 3000
   devenv-1:
     - path: /
-      service: cdrs-starter-pack
+      service: code-server
       port: 3001
   devenv-2:
     - path: /
-      service: cdrs-starter-pack
+      service: code-server
       port: 3002
   devenv-3:
     - path: /
-      service: cdrs-starter-pack
+      service: code-server
       port: 3003
+  devenv-4:
+    - path: /
+      service: code-server
+      port: 3004
+  devenv-5:
+    - path: /
+      service: code-server
+      port: 3005
+  devenv-6:
+    - path: /
+      service: code-server
+      port: 3006
+  devenv-7:
+    - path: /
+      service: code-server
+      port: 3007
+  devenv-8:
+    - path: /
+      service: code-server
+      port: 3008
+  devenv-9:
+    - path: /
+      service: code-server
+      port: 3009
+  devenv-10:
+    - path: /
+      service: code-server
+      port: 3010
