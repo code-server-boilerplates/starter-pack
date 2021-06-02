@@ -1,0 +1,64 @@
+# This Docker Compose file is for Okteto Cloud, as configured in the
+# okteto-pipeline.yml
+
+version: 3
+
+services:
+    cdrs-starter-pack:
+       build:
+         context: .
+         file: Dockerfile
+        volumes:
+            - code-server-projectHome:/home/coder/project
+        ports:
+            - 8080:8080
+        dns:
+            # We're fans of Cloudflare DNS, so we'll use 1.1.1.1 for this one.
+            # Prefer to use Google Public DNS? Replace these below.
+            - 1.1.1.1
+            - 1.0.0.1
+        environment:
+            # Replace ${GIT_REPO} with your repo URL if you copied this Docker Compose file
+            # into the Deploy from UI workflow, under the From Compose option.
+            GIT_REPO: ${GIT_REPO}
+            GIT_USER_NAME: ${GIT_USER_NAME}
+            GIT_USER_EMAIL: ${GIT_USER_EMAIL}
+            # GitHub
+            GITHUB_LOGIN: ${GITHUB_LOGIN}
+            GITHUB_TOKEN: ${GITHUB_TOKEN}
+            #GHE_HOST: "https://github.com"
+            # GitLab
+            GITLAB_LOGIN: ${GITLAB_LOGIN}
+            GITLAB_TOKEN: ${GITLAB_TOKEN}
+            #GITLAB_HOST: "https://gitlab.com"
+            # Check the logs for the generated password, right before
+            # code-server starts
+            GENERATE_PASSWORD: true
+        cap_add:
+           - ALL
+        cap_drop:
+           - NET_ADMIN
+           - SYS_ADMIN
+
+volumes:
+  code-server-projectHome:
+    driver_opts:
+      size: 1Gi
+
+endpoints:
+  devenv-0:
+    - path: /
+      service: cdrs-starter-pack
+      port: 3000
+  devenv-1:
+    - path: /
+      service: cdrs-starter-pack
+      port: 3001
+  devenv-2:
+    - path: /
+      service: cdrs-starter-pack
+      port: 3002
+  devenv-3:
+    - path: /
+      service: cdrs-starter-pack
+      port: 3003
