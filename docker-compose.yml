@@ -7,7 +7,7 @@ services:
   code-server:
     image: ghcr.io/code-server-boilerplates/starter-pack
     volumes:
-      - code-server-projectHome:/home/coder/project:rw
+      - code-server-projectHome:/workspace:rw
     ports:
       - 8080:8080
     dns:
@@ -29,5 +29,3 @@ services:
 
 volumes:
   code-server-projectHome:
-    driver_opts: 
-      type: overlay2
