@@ -1,10 +1,14 @@
-name: "Docker Builds CI (using official code-server images)"
+name: "Docker CI (using official code-server images)"
 
 on:
   push:
     paths:
       - "Dockerfile"
       - ".trigger-rebuild"
+      - "toolkits/container/entrypoint.sh"
+      - "toolkits/packages/scripts/*"
+  pull_request:
+    branches: [ main ]
 
 jobs:
   test:
@@ -27,7 +31,7 @@ jobs:
   publish:
      needs: [ test ]
      runs-on: "ubuntu-latest"
-     if: ${{ github.ref == 'refs/heads/main' }}
+     if: ${{ github.ref == 'refs/heads/main' && !github.event.issue.pull_request }}
      steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"

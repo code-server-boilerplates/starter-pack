@@ -4,11 +4,13 @@ START_DIR="${START_DIR:-/home/coder/project}"
 
 PREFIX=${TEMPLATE_SLUG_PREFIX}
 
-mkdir -p $START_DIR
+if [[ ! -d $START_DIR ]]; then
+   mkdir -p $START_DIR
+fi
 
 useDefaultConfig() {
        git config  --global user.name "Recap Time Bot"
-       git config --global user.email "service-accounts@madebythepins.tk"
+       git config --global user.email "rtappbot-noreply@madebythepins.tk"
 }
 
 
@@ -36,7 +38,7 @@ if [[ $GITHUB_TOKEN != "" ]]; then
   printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GITHUB_TOKEN\n" > ~/.netrc
 elif [[ $GITHUB_TOKEN != "" ]] && [[ $GHE_HOST != "" ]]; then
   echo "[$PREFIX] GHE user detected, setting up config..."
-  printf "machine github.com\nlogin $GITHUB_LOGIN\npassword $GITHUB_TOKEN\n" > ~/.netrc
+  printf "machine $GHE_HOST\nlogin $GITHUB_LOGIN\npassword $GITHUB_TOKEN\n" > ~/.netrc
 else
   echo "[$PREFIX] No GitHub.com access token found. You may need to manually copy your PATs from"
   echo "[$PREFIX] your password manager or generate one if you have. Implementing SSH storage is still an"
@@ -46,11 +48,13 @@ fi
 ### GITLAB SAAS (gitlab.com) ###
 if [[ $GITLAB_TOKEN != "" ]] && [[ $GITLAB_LOGIN != "" ]]; then
   echo "[$PREFIX] Setting up auth for GitLab SaaS"
+  echo >> ~/.netrc
   # shellcheck disable=SC2059
   printf "machine gitlab.com\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" >> ~/.netrc
 elif [[ $GITLAB_TOKEN != "" ]] && [[ $GITLAB_LOGIN == "" ]] && [[ $GITLAB_HOST != "" ]]; then
   echo "[$PREFIX] Setting up auth for GitLab self-hosted"
   # shellcheck disable=SC2059
+  echo >> ~/.netrc
   printf "machine $GITLAB_HOST\nlogin $GITLAB_LOGIN\npassword $GITLAB_TOKEN\n" >> ~/.netrc
 else
   echo "[$PREFIX] No GitLab SaaS access token found. You may need to manually copy your PATs from your"
@@ -60,12 +64,25 @@ fi
 
 # function to clone the git repo or add a user's first file if no repo was specified.
 project_init () {
-    if [ -f "$START_DIR" ]; then
+    if [[ -d "$START_DIR/.git" ]]; then
       echo "[$PREFIX] Fetching updates from remotes..."
       git fetch --all
     else
       [ -z "${GIT_REPO}" ] && echo "[$PREFIX] No GIT_REPO specified" && echo "Example file. Have questions? Join us at https://community.coder.com" > $START_DIR/coder.txt || git clone $GIT_REPO $START_DIR
     fi
+}
+
+generatePassword() {
+  if [[ $GENERATE_PASSWORD == "true" ]]; then
+     export PASSWORD=$(openssl rand -base64 32)
+     echo "[$PREIFX] Your Web IDE password is: $PASSWORD"
+     echo "[$PREFIX] Use this to securely log you into your web IDE. To permanently set PASSWORD into that,"
+     echo "[$PREFIX] set GENERATE_PASSWORD to false and set PASSWORD to it in your PaaS service/Docker Compose config file."
+  else
+     echo "[$PREFIX] Your Web IDE secret is: $PASSWORD"
+     echo "[$PREFIX] Keep this secret as long as possible. If sharing devenvs with someone,"
+     echo "[$PREFIX] use secure channels and don't leak it anyway."
+  fi
 }
 
 # add rclone config and start rclone, if supplied
@@ -134,6 +151,10 @@ fi
 
 echo "[$PREIFX] Updating package list caches..."
 sudo apt update
+
+echo
+generatePassword
+echo
 
 echo "[$PREFIX] Starting code-server..."
 # Now we can run code-server with the default entrypoint
