@@ -75,10 +75,10 @@ ingress:
 
     # Configuration for Okteto Cloud
     # Comment them out if you're not on Okteto Cloud
-    dev.okteto.com/generate-host: true
+    dev.okteto.com/generate-host: "true"
     # If password is unset, make sure to enable Private Endpoints
     # by setting this into "private"
-    dev.okteto.com/auto-ingress: true
+    dev.okteto.com/auto-ingress: "true"
 
     ports:
       - port: 8080
