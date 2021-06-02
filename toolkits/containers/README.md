@@ -31,7 +31,7 @@ RUN code-server --install-extension esbenp.prettier-vscode
 # Install apt packages:
 RUN sudo apt-get install -y ubuntu-make
 
-# Copy files: 
+# Copy files:
 COPY toolkits/packages/@rtapp-non-thejuicemedia-ref/DO-NOT-MERGE.gildedguy-and-yoopia /home/coder/.local/more-corporate-clickbait-bullshit.headquarters.com.au
 ```
 
@@ -99,7 +99,7 @@ $ sh /home/coder/push_remote.sh # save your uncomitted files to the remote
 $ sh /home/coder/pull_remote.sh # get latest files from the remote
 
 # In VS Code:
-# use items in bottom bar or ctrl + P, run task: push_remote or pull_remote or 
+# use items in bottom bar or ctrl + P, run task: push_remote or pull_remote or
 ```
 
 ### Popular rclone flags
