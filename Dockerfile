@@ -5,26 +5,32 @@ FROM codercom/code-server:3.10.2
 # Replace code-server-boilerplates with username-here/repo
 LABEL org.opencontainers.image.source="https://github.com/code-server-boilerplates/starter-pack" \
       org.opencontainers.image.vendor="code-server Community" \
-      org.opencontainers.image.documentation="https://rtapp.tk/cdrs-boilerplates-docs"
+      org.opencontainers.image.documentation="https://cdrs-docs.rtapp.tk"
 
 # Update PATH to enusre both user-wide scripts and our stuff
 # on /usr/local/bin are available to summon
 ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
     # prefix for thr entrypoint logs, in which you should update into
     # @namespace/template-slug
-    TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/example-project"
+    TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/starter-pack"
 
 USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
     && chsh -s /bin/bash coder && chsh -s /bin/bash
 
+# Use bash shell, just in case.
+ENV SHELL=/bin/bash
+
+# Init Gitpod-styled workspace directory. This is needed to only
+# presist files mounted into volumes
+RUN mkdir /workspace && touch hello-world \
+    && chown -R coder:coder /workspace
+VOLUME [ "/workspace" ]
+
 USER coder
 # Apply VS Code settings
 COPY toolkits/containers/settings.json .local/share/code-server/User/settings.json
-
-# Use bash shell, just in case.
-ENV SHELL=/bin/bash
 
 # Install unzip + rclone (support for remote filesystem)
 # Also don't forget wget for that. jq included too
@@ -80,5 +86,4 @@ EXPOSE 8080
 COPY toolkits/containers/entrypoint.sh /usr/bin/cdr-server-launchpad
 RUN echo "[code-server] Workspace image ready to deploy"
 
-VOLUME [ "/home/coder/project", "/workspace" ]
 ENTRYPOINT ["/usr/bin/cdr-server-launchpad"]

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-START_DIR="${START_DIR:-/home/coder/project}"
+START_DIR="${START_DIR:-/workspace/home}"
 
 PREFIX=${TEMPLATE_SLUG_PREFIX}
 
@@ -73,8 +73,10 @@ project_init () {
 }
 
 generatePassword() {
-  if [[ $GENERATE_PASSWORD == "true" ]]; then
-     export PASSWORD=$(openssl rand -base64 32)
+  OPENSSL_GENERATED_PASSWORD=$(openssl rand -base64 32)
+  if [[ $GENERATE_PASSWORD == "true" ]] && [[ $PASSWORD != "" ]]; then
+  elif [[ $GENERATE_PASSWORD == "true" ]]; then
+     export PASSWORD="$OPENSSL_GENERATED_PASSWORD"
      echo "[$PREIFX] Your Web IDE password is: $PASSWORD"
      echo "[$PREFIX] Use this to securely log you into your web IDE. To permanently set PASSWORD into that,"
      echo "[$PREFIX] set GENERATE_PASSWORD to false and set PASSWORD to it in your PaaS service/Docker Compose config file."
