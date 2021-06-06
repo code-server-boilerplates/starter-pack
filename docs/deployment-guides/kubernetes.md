@@ -10,11 +10,10 @@ For the rest of the documentation, for the rest of this documentation we'll use 
 
 ```sh
 # to use the primary repo, you need to remove our mirrors first.
-helm repo add cdrs-deploy https://code-server-boilerplates.github.io/charts
+helm repo add deploy-code-server https://code-server-boilerplates.github.io/charts
 
 # to use official mirrors, you may need to remove the current one.
 # They'll be go online soon, so don't get hyped!
-helm repo add cdrs-deploy https://madebythepinshub.gitlab.io/charts/csb
 helm repo add cdrs-deploy https://csb-charts.netlify.app
 ```
 
@@ -36,9 +35,20 @@ $EDITOR values.yaml
 5. Finally, deploy the chart and hit the road.
 
 ```sh
-helm install cdrs-starter-pack cdrs-deploy/starter-pack
+# change my-starter-pack to whatever name you want
+helm install my-starter-pack deploy-code-server/starter-pack -f values.yaml
+```
+
+6. To update the chart on your Kubernetes cluster or update its configuration, just do:
+```sh
+# if updating the chart itself, please do this first
+helm repo update
+
+# change my-starter-pack to whatever name you used
+# when you did step 5.
+helm upgrade my-starter-pack deploy-code-server/starter-pack -f values.yaml
 ```
 
 ## Deploying without Helm
 
-We don't want to do yet another chaos manangement in adding friction to deploying your own code-server instances in Kubernetes. Please, use Helm.
+We don't want to do yet another chaos manangement in adding friction to deploying your own code-server instances in Kubernetes. Please, use Helm instead.

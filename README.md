@@ -28,7 +28,8 @@ This template repository is good for:
 
 * [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case.
 * [ ] Replace any references by using the Search and Replace feature in VS Code (or any modern IDE).
-  * Old reference to search: `{cdrs-starter-pack, [Example Project], code-server-boilerplates/starter-pack, example-project}`. (Proceed at your own risk if replacing all files using this regexp.)
+  * Old reference to search: `{cdrs-starter-pack, starter-pack, [Example Project], code-server-boilerplates/starter-pack, example-project}`. (Proceed at your own risk if replacing all files using this regexp.)
+* [ ] At `charts/Chart.yaml`, reset the version into `0.1.0`. Also change the Chart name and Artifact Hub annonations.
 * [ ] Add your tools you want into `Dockerfile`. Just remember that anything requires `systemd` will not work (particularly Snaps and Flatpaks, AppImages are fine).
   * Carefullu read the comments as you edit the file
 * [ ] Edit `toolkits/virtual-machines/*bootstrapper` scripts to include needed tools lile what you did in your Dockerfile (optional, but recommended). Now, feel free to add systemd-required tools like Snaps, just look for these lines.
@@ -47,14 +48,15 @@ This template repository is good for:
 ############################################################
 ```
 
-* [ ] Update deployment docs in `guides` directory. Ensure that replace any `https://cdrs-deploy.repohubdev.tk/<METHOD>/example-project` into `https://cdrs-deploy.repohubdev.tk/<METHOD>/<SLUGGIFIED-PROJECT-NAME-HERE>`. (`<METHOD>` is either `railway`, `heroku`, or `divio`, but every PaaS with Dockerfile support should be fine)
+* [ ] Update deployment docs in `docs/deployment-guides` directory. Ensure that replace any `https://cdrs-deploy.repohubdev.tk/<METHOD>/example-project` into `https://cdrs-deploy.repohubdev.tk/<METHOD>/<SLUGGIFIED-PROJECT-NAME-HERE>`. (`<METHOD>` is either `railway`, `heroku`, or `divio`, but every PaaS with Dockerfile support should be fine)
 * [ ] Have any referral links for Linode or Digital Ocean? Replace `https://rtapp.tk/SERVICEHERE-thepinsteam` into `https://rtapp.tk/SERVICEHERE-yourusernamehere`. Remember to create these shortlinks using our Kutt.it instance at <https://rtapp.tk>. (`SERVICEHERE` is either `linode` or `digitalocean`)
 * [ ] Change `Andrei Jiroh, Code Server Boilerplates maintainers, and its Contributors` in LICENSE file into `<Your name> and its Contributors` if you prefer not to bring this template into the `@code-server-boilerplates` org. Otherwise, change it into `<Your name>, Code Server Boilerplates maintainers, and its Contributors`.
 * [ ] Create an PAT using your account (service account is always preferred and we usually use them here). If you prefer not to, [request for our service account's PAT](rtapp.tk/ghp-request-form) and invite `RecapTimeBot` into your repi as an collaborator (or as an outside collaborator with write access). Remember that the PAT we gave to you is valid for 2 years and can be renewable, as long as you comply with the policies.
 * [ ] Read any comments in [`.github/workflows/push-to-registry.yml`](/.github/workflows/push-to-registry.yml)` if there's needed changes.
 * [ ] Adopt [the Community Code of Conduct](https://github.com/MadeByThePinsHub/policies/blob/main/CODE_OF_CONDUCT.md), which based on Contributor Convenant v2.0. If you prefer not to go to
 * [ ] Finally, register your Code Server Boilerplate [here](https://cdr-deploy.repohubdev.tk/register) and our robots will send you both an invite into `@code-server-boilerplates` org through mail and also an new issue in your repo on instructions.
-* [ ] Cheer, you just made it here! Congratulate yourself!
+  * Once merged, we'll add your chart into our Helm Charts repo so you can see it on Artifact Hub and others to install it within the next hours or so.
+* [ ] Cheer, you just made it here! Congratulate yourself! Now make an new release using `v0.1.0` as the tag name and `v0.1.0 - Initial release` as the release title. In the release description, describe the initial release as you prefer and publish!
   * Probably now create new boilerplates straight to the org or even [join The Pins Team](https://rtapp.tk/join-thepinsteam) (it's optional btw, and if you're interested you'll be invited into `@MadeByThePinsHub/Community-Hubs-Network-Board` first by humans soon once you maintain atleast 3 boilerplates here, you can leave anytime) to help us maintain them, among other tasks.
 
 Additional documentation for managing GitHub Actions workflows, issue templates and Dependabot are on [this documentation page](/docs/dotgithub-files.md).
