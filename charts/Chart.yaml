@@ -1,7 +1,7 @@
 apiVersion: v2
 
 # For name, it should be <template-slug-here> because most of the Kubernetes
-# deployment guides we wrote usually used the alias 'cdrs-deploy' for our 
+# deployment guides we wrote usually used the alias 'cdrs-deploy' for our
 # Helm Charts repo. The upstream repo (cdr/code-server) is excluded from that rule.
 name: starter-pack
 # For description, update this to tell users what to included in your chart.
