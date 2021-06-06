@@ -47,3 +47,25 @@ sources:
   - https://github.com/code-server-boilerplates/starter-pack
   # Don't forget to include code-server repo URL.
   - https://github.com/cdr/code-server
+
+# Artifact Hub annonations
+# ref: https://artifacthub.io/docs/topics/annotations/helm/
+annonations:
+  artifacthub.io/images: |
+    # Update image names to point into your own images instead for image security scanning.
+    - name: Canonical GHCR image
+      image: ghcr.io/code-server-boilerplates/starter-pack
+    - name: Canonical Red Hat Quay Container Registry image
+      image: quay.io/code-server-boilerplates/starter-pack
+  artifacthub.io/maintainers: |
+    - name: Andrei Jiroh Halili
+      email: andreijiroh@madebythepins.tk
+  artifacthub.io/license: MIT
+  artifacthub.io/links: |
+    - name: code-server Changelog
+      url: https://github.com/cdr/code-server/releases
+    - name: Chart Changelog
+      # Update this link to use your repository's Releases page.
+      url: https://github.com/code-server-boilerplates/starter-pack/releases
+    - name: Ask questions on GitHub
+      url: https://github.com/code-server-boilerplates/community/discussions
