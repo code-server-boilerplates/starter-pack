@@ -75,6 +75,10 @@ project_init () {
 generatePassword() {
   OPENSSL_GENERATED_PASSWORD=$(openssl rand -base64 32)
   if [[ $GENERATE_PASSWORD == "true" ]] && [[ $PASSWORD != "" ]]; then
+     echo "[$PREFIX] warning: Using your defined password instead"
+     echo "[$PREFIX] Your Web IDE secret is: $PASSWORD"
+     echo "[$PREFIX] Keep this secret as long as possible. If sharing devenvs with someone,"
+     echo "[$PREFIX] use secure channels and don't leak it anyway."
   elif [[ $GENERATE_PASSWORD == "true" ]]; then
      export PASSWORD="$OPENSSL_GENERATED_PASSWORD"
      echo "[$PREIFX] Your Web IDE password is: $PASSWORD"
