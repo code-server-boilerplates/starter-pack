@@ -20,7 +20,7 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
+version: 0.1.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
@@ -51,16 +51,35 @@ sources:
 # Artifact Hub annonations
 # ref: https://artifacthub.io/docs/topics/annotations/helm/
 annonations:
+  # Once released, remove existing content and write anew
+  # changelog before bumping version and tag. This will be
+  # used for the chart's page at Artifact Hub.
+  artifacthub.io/changes: |
+    - kind: added
+      description: Update docs, especially the Chart README
+    - kind: added
+      description: Add .github/FUNDING.yml for the Sponsor button
+    - kind: changed
+      description: Update .env.example file for Docker-based and Docker Compose instances
+    - kind: added
+      dewcription: Add Artifact Hub annonations for the web UI
+
   artifacthub.io/images: |
     # Update image names to point into your own images instead for image security scanning.
     - name: Canonical GHCR image
       image: ghcr.io/code-server-boilerplates/starter-pack
     - name: Canonical Red Hat Quay Container Registry image
       image: quay.io/code-server-boilerplates/starter-pack
+
+  # For the email address, make sure you use the same email
+  # on your artifacthub.io account.
   artifacthub.io/maintainers: |
     - name: Andrei Jiroh Halili
       email: andreijiroh@madebythepins.tk
+
+  # Must match the LICENSE file at root directory of the repi.
   artifacthub.io/license: MIT
+
   artifacthub.io/links: |
     - name: code-server Changelog
       url: https://github.com/cdr/code-server/releases

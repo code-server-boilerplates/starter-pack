@@ -1,6 +1,6 @@
 {
   "name": "@cdrs-boilerplates/starter-pack",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Tools and scripts for the template",
   "directories": {
     "doc": "docs"
