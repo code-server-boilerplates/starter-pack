@@ -62,7 +62,7 @@ annonations:
     - kind: changed
       description: Update .env.example file for Docker-based and Docker Compose instances
     - kind: added
-      dewcription: Add Artifact Hub annonations for the web UI
+      description: Add Artifact Hub annonations for the web UI
 
   artifacthub.io/images: |
     # Update image names to point into your own images instead for image security scanning.
