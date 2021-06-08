@@ -1,4 +1,4 @@
-name: "Docker CI (image development)"
+name: "Docker CI (image releaser)"
 
 env:
   # Change this to match GITHUB_REPOSITORY.
@@ -7,14 +7,8 @@ env:
   repository: code-server-boilerplates/starter-pack
 
 on:
-  push:
-    paths:
-      - "Dockerfile"
-      - ".trigger-rebuild"
-      - "toolkits/container/entrypoint.sh"
-      - "toolkits/packages/scripts/**"
-  pull_request:
-    branches: [ main ]
+  release:
+    type: [published] # only trigger when an release is published
 
 jobs:
   test:
@@ -80,8 +74,12 @@ jobs:
          with:
            push: true
            tags: |
-             ghcr.io/${{ env.repository }}:develop
-             quay.io/${{ env.repository }}:develop
+             ghcr.io/${{ env.repository }}:stable
+             quay.io/${{ env.repository }}:stable
+             ghcr.io/${{ env.repository }}:latest
+             quay.io/${{ env.repository }}:latest
+             ghcr.io/${{ env.repository }}:${{ github.event.release.tag_name }}
+             quay.io/${{ env.repository }}:${{ github.event.release.tag_name }}
            context: .
            platforms: linux/amd64,linux/arm64
        - name: Echo image digest
