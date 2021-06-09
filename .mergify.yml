@@ -5,6 +5,7 @@ pull_request_rules:
       - label=Updated by Dependabot
       - label=packages/docker-base-images
       - base=main
+      - status-success=Test build Docker image
     actions:
       review:
         type: APPROVE
@@ -20,12 +21,19 @@ pull_request_rules:
            through <https://cdrs-docs.rtapp.tk/base-images-dependabot
            in case your copy of maintainers' docs go outdated.
 
+           To automatically merge this, simply add `Ready to Ship` label
+           after you review the changelog and appeoce it by yourself.
+
            --
 
            To control chaos cause by these automated merges, you need to
            manually merge this PR once you completed reviewed its
            release changelog. If you want chaos, please read your copy
            of `docs/post-repo-creation/mergify.md` or through <https://cdrs-docs.rtapp.tk/mergify>.
+      assign:
+        add_users:
+          # Replace mine with your username.
+          - AndreiJirohHaliliDev2006
   - name: Automagically comment for merging when LGTM
     conditions:
       - "#approved-reviews-by<=1"
