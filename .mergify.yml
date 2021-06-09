@@ -1,17 +1,36 @@
 pull_request_rules:
-  - name: automatic merge for Dependabot pull requests
+  - name: Automate base image upgrade review process from Dependabot
     conditions:
       - author~=^dependabot(|-preview)\[bot\]$
       - label=Updated by Dependabot
       - label=packages/docker-base-images
+      - base=main
     actions:
       review:
         type: APPROVE
         message: |
-           Approving @dependabot's pull request, this will only update the following tags: `latest`, `cdr-latest` and `cdr-latest.debian-10`.
+           Approving @dependabot's pull request, this will only update the following tags: `develop`
 
-           Maintainers have been advised to to enable an CI for release-based builds to avoid newer versions being pushed into older version tags. See https://cdrs-docs.rtapp.tk/release-based-builds-ci for details
+           Maintainers have been advised to to create an new release regarding
+           this base image upgrade as soon as possible for patches, including security fixes, and
+           within the next 48-72 hours for minor releases.
+           For major releases, expect breaking changes and notify your users accordingly before creating an new GitHub release.
 
-           /cc @AndreiJirohHaliliDev2006 @code-server-boilerplates/starter-pack-builders
-      merge:
-        method: merge
+           To learn more about this guideline, please read your `docs/release-management/automated-base-image-upgrades.md` or
+           through <https://cdrs-docs.rtapp.tk/base-images-dependabot
+           in case your copy of maintainers' docs go outdated.
+
+           --
+
+           To control chaos cause by these automated merges, you need to
+           manually merge this PR once you completed reviewed its
+           release changelog. If you want chaos, please read your copy
+           of `docs/post-repo-creation/mergify.md` or through <https://cdrs-docs.rtapp.tk/mergify>.
+  - name: Automagically comment for merging when LGTM
+    conditions:
+      - "#approved-reviews-by<=1"
+      - label=Ready to ship
+      - base=main
+    actions:
+      comment:
+        message: Now shipping into the `develop` Docker image tag. (The Merge bot action might take an while to merge this automagically.)

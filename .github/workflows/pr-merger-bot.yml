@@ -1,0 +1,37 @@
+name: Merge Bot
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - ready_for_review
+      - review_request_removed
+      - review_requested
+      - synchronize
+      - unlabeled
+  pull_request_review:
+    types:
+      - dismissed
+      - submitted
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    name: Merge
+    steps:
+    # This might break if you implement this in Mergify and still keep this workflow enabled.
+    - name: Integration check
+      uses: squalrus/merge-bot@v0.4.5
+      with:
+        GITHUB_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
+        test: true
+        reviewers: true
+        # To automagically merge, maintainers need to add the
+        # Ready to Ship label first.
+        labels: Ready to Ship
+        # If not yet ready, block with this labep instead.
+        blocking_labels: Blocked from Merging
+        checks_enabled: true
+        method: merge
+        # Probably handled by the the delete merged branches setting in GH
+        delete_source_branch: false
