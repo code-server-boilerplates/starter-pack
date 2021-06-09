@@ -9,7 +9,7 @@ module.exports = {
           "global",
           "helm-charts", // BUILD, FEAT, or CHORE
           "github-actions", // CI, BUILD, or CHORE
-          "mergify-config",
+          "mergify-config", "mergify",
           "deps", // CI, CHORE
           "deps-dev", // CI, CHORE
           "deps-peer", // CI, CHORE
@@ -24,7 +24,12 @@ module.exports = {
           "lockfiles", // CHORE
           "deployment-guides", // CHORE, DOCS
           "toolkits-packages:scripts",
-          "toolkits-packages:nonsense-bullshit" // probably for our example packages
+          "toolkits-packages:nonsense-bullshit", // probably for our example packages
+          "post-repo-creation",
+          "issue-templates",
+          "pr-templates",
+          "husky",
+          "ignorefiles"
         ],
       ],
     },
