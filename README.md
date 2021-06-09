@@ -11,6 +11,7 @@ In this boilerplate, we included the following packages out of the box:
   * Add extensions here
 * [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps) for accessing other ports through to [Cloudflare Argo Tunnel](https://www.cloudflare.com/en-gb/products/argo-tunnel/)
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
+* [Homebrew on Linux](https://brew.sh) for installing tools without sudo - installed through our custom script (soon)
 * `jq` for prettifying your JSON stuff, especially if parsing JSON responses from some APIs.
 * Basics like `curl`, `wget`, and more.
 * Add more tools here
@@ -26,11 +27,11 @@ This template repository is good for:
 
 ## Checklist
 
-* [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case.
+* [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case or [duplicate this repo](/docs/duplicate-repo.md) to receive docs updates and more through the Pull app.
 * [ ] Replace any references by using the Search and Replace feature in VS Code (or any modern IDE).
   * Old reference to search: `{cdrs-starter-pack, starter-pack, [Example Project], code-server-boilerplates/starter-pack, example-project}`. (Proceed at your own risk if replacing all files using this regexp.)
 * [ ] At `charts/Chart.yaml`, reset the version into `0.1.0`. Also change the Chart name and Artifact Hub annonations.
-* [ ] Add your tools you want into `Dockerfile`. Just remember that anything requires `systemd` will not work (particularly Snaps and Flatpaks, AppImages are fine).
+* [ ] Add your tools you want into `Dockerfile`. Just remember that anything requires `systemd` will not work (particularly Snaps and Flatpaks, AppImages are not fine).
   * Carefullu read the comments as you edit the file
 * [ ] Edit `toolkits/virtual-machines/*bootstrapper` scripts to include needed tools lile what you did in your Dockerfile (optional, but recommended). Now, feel free to add systemd-required tools like Snaps, just look for these lines.
 
@@ -52,15 +53,19 @@ This template repository is good for:
 * [ ] Have any referral links for Linode or Digital Ocean? Replace `https://rtapp.tk/SERVICEHERE-thepinsteam` into `https://rtapp.tk/SERVICEHERE-yourusernamehere`. Remember to create these shortlinks using our Kutt.it instance at <https://rtapp.tk>. (`SERVICEHERE` is either `linode` or `digitalocean`)
 * [ ] Change `Andrei Jiroh, Code Server Boilerplates maintainers, and its Contributors` in LICENSE file into `<Your name> and its Contributors` if you prefer not to bring this template into the `@code-server-boilerplates` org. Otherwise, change it into `<Your name>, Code Server Boilerplates maintainers, and its Contributors`.
 * [ ] Create an PAT using your account (service account is always preferred and we usually use them here). If you prefer not to, [request for our service account's PAT](rtapp.tk/ghp-request-form) and invite `RecapTimeBot` into your repi as an collaborator (or as an outside collaborator with write access). Remember that the PAT we gave to you is valid for 2 years and can be renewable, as long as you comply with the policies.
-* [ ] Read any comments in [`.github/workflows/push-to-registry.yml`](/.github/workflows/push-to-registry.yml)` if there's needed changes.
+* [ ] [Read this doc](/docs/post-repo-creation/setup-workflows.md) to setup GitHub Actions
 * [ ] Adopt [the Community Code of Conduct](https://github.com/MadeByThePinsHub/policies/blob/main/CODE_OF_CONDUCT.md), which based on Contributor Convenant v2.0. If you prefer not to go to
 * [ ] Finally, register your Code Server Boilerplate [here](https://cdr-deploy.repohubdev.tk/register) and our robots will send you both an invite into `@code-server-boilerplates` org through mail and also an new issue in your repo on instructions.
   * Once merged, we'll add your chart into our Helm Charts repo so you can see it on Artifact Hub and others to install it within the next hours or so.
-* [ ] Cheer, you just made it here! Congratulate yourself! Now make an new release using `v0.1.0` as the tag name and `v0.1.0 - Initial release` as the release title. In the release description, describe the initial release as you prefer and publish!
+* [ ] Cheer, you just made it here! Congratulate yourself! Now make an new release using `v0.1.0` as the tag name and `v0.1.0 - Initial release` as the release title. In the release description, describe the initial release as you prefer and publish! ([Example release description available](/docs/release-management/template.txt))
   * Probably now create new boilerplates straight to the org or even [join The Pins Team](https://rtapp.tk/join-thepinsteam) (it's optional btw, and if you're interested you'll be invited into `@MadeByThePinsHub/Community-Hubs-Network-Board` first by humans soon once you maintain atleast 3 boilerplates here, you can leave anytime) to help us maintain them, among other tasks.
 
 Additional documentation for managing GitHub Actions workflows, issue templates and Dependabot are on [this documentation page](/docs/dotgithub-files.md).
 For base images we maintain for different Linux distros (Ubuntu, Arch Linux/Manjaro and Alpine), please see <https://github.com/code-server-boilerplates/base-docker-images>. The Debian base image in the root Dockerfile uses the official image from Coder called `codercom/code-server` in Docker Hub.
+
+### To fork or not to fork?
+
+In order for your contributions to count, you need to either duplicate the repo or generate anew one based on this one (which making updating the maintainers' docs harder). As per the GitHub Docs, contributions from forks are not counted except when merged to the upstream.
 
 ## Deploy
 
@@ -72,15 +77,11 @@ In your Dockerfile, use `code-server-boilerplates/starter-pack` as your base ima
 and then add your needed tools and finally the `CMD ["cdr-launchpad-server]` stuff at the end.
 
 ```dockerfile
-# Latest tag tracks the latest version of code-server
-# Tags are formatted in form of BASE-IMAGE-NAME:cdr-<CODE-SERVER-VER>.<distro-version>
-# e.g.: BASE-IMAGE-NAME:cdr-latest or cdr-latest.debian10
-# For the base OS (we might do reproducible builds soon), use the format
-# BASE-IMAGE-NAME:debian10 or BASE-IMAGE-NAME:ubuntu-latest (tl;dr: ubuntu-latest == latest LTS)
-# Also using the latest tag will use the image we built using the same Dockerfile.
-# where BASE-IMAGE-NAME is an image within code-server-boilerplates namespace
-# in Docker Hub.
+# latest/stable = tracks latest image release
+# develop = latest development image builds, usually new
+# versions of code-server lands on first
 FROM code-server-boilerplates/starter-pack:latest
+# Also the old cdr-*.<DISTRO-VERSION> is deprecated
 
 # ensures croc is up-to-date
 RUN curl https://getcroc.schollz.com | sudo bash
@@ -92,6 +93,8 @@ RUN bash /home/coder/.dotfiles/setup.sh --no-secrets-repo --noprompt --nosystemd
 # finally, hit the road
 CMD ["/usr/bin/cdr-launchpad-server"]
 ```
+
+If you want to make your own deploy-code-server template by using our image, [here's the final product](https://github.com/code-server-boilerplates/starter-pack-as-base-image) you can generate from.
 
 ## Virtual machines/private servers or Docker containers?
 
