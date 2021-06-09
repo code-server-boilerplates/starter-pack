@@ -12,6 +12,11 @@ If your template is on the `code-servee-boilerplates` org or wants to trnasfer t
     * If you want them all, choose **All repositories**.
 3. Finally hit `Install` button. You'll be redirected to Mergify Dashboard.
 
+## Additional Configuration Needed
+
+In line 36 on `.mergify.yml`, replace `AndreiJirohHaliliDev2006` inti
+your username to get assigned.
+
 ## Example Configurations
 
 Pick once, paste into your `.mergify.yml` file and customize as needed. More will be added soon.
@@ -58,3 +63,12 @@ Pick once, paste into your `.mergify.yml` file and customize as needed. More wil
 ## Reminders
 
 Don't use both Mergify and [the merging bot workflow](/.github/workflows/pr-merger-bot.yml) or things might turn into chaos.
+
+## FAQ
+
+### Why assigning my bot account even if it's not used?
+
+We assign your bot account automatically in case you're lazy enough
+to approve the PR and add the `Ready ti Ship` label. To do that,
+just type `@your-bot-account-here LGTM` (or the shortcut `LGTM`, through
+you need your repo musy belong to an org to use teams).
