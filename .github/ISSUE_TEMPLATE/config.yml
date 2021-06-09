@@ -1,5 +1,11 @@
 links:
+  - name: Please read the docs first before filing a new issue or creating an new discussion post.
+    link: https://cdrs-docs.rtapp.tk
+    about: "Only proceed after RTFM. Otherwise, your discussion post will be locked due to the reason 'Resolved'."
   - name: Problems in using code-server?
     link: https://community.coder.com
-    about: Please get help in Coder Community Forums instead.
-  - name:
+    about: Please get help in Coder community Slack instead.
+  - name: Need help using this Docker image or Helm Chart?
+    # If you enabled discussions on your repo, please point the link there instead.
+    link: https://github.com/code-server-boilerplates/community/discussions
+    about: Get support from the community and ask questions there. This is to avoid clutter in the issue tracker.
