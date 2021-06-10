@@ -74,7 +74,7 @@ RUN curl https://getcroc.schollz.com | sudo bash
 RUN mkdir ~/.cache && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/" \
     MANPATH="$MANPATH:/home/linuxbrew/.linuxbrew/share/man" \
-    INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info"
+    INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info" \
     HOMEBREW_NO_AUTO_UPDATE=1
 RUN sudo apt remove -y cmake \
     && brew install cmake
