@@ -76,8 +76,6 @@ ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/"
     MANPATH="$MANPATH:/home/linuxbrew/.linuxbrew/share/man" \
     INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info" \
     HOMEBREW_NO_AUTO_UPDATE=1
-RUN sudo apt remove -y cmake \
-    && brew install cmake
 
 # -----------
 

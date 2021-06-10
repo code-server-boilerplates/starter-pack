@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ARCH=$(uname -m)
+ARCH=$(arch)
 
 if [[ ARCH == "x86_64" ]]; then
     mkdir ~/.cache && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
