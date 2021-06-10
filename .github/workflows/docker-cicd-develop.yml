@@ -41,13 +41,13 @@ jobs:
 
        - name: Build image
          uses: docker/build-push-action@v2
-         id: test-build
+         id: docker_build
          with:
            context: .
            platforms: linux/amd64,linux/arm64
 
        - name: Check wasted space
-         run: CI=true dive ${{ steps.test-build.outputs.digest }} --source docker://ghcr.io/${{ env.repository }}
+         run: CI=true dive ${{ steps.docker_build.outputs.digest }} --source docker://ghcr.io/${{ env.repository }} || true
 
   publish-to-dev:
      name: Publish as canary
