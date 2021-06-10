@@ -71,7 +71,7 @@ RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
 RUN curl https://getcroc.schollz.com | sudo bash
 
 # Homebrew on Linux
-RUN mkdir ~/.cache && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+RUN mkdir ~/.cache && /home/coder/.local/bin/linuxbrew-installer
 ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/" \
     MANPATH="$MANPATH:/home/linuxbrew/.linuxbrew/share/man" \
     INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info" \
