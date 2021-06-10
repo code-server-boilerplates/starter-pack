@@ -11,7 +11,7 @@ In this boilerplate, we included the following packages out of the box:
   * Add extensions here
 * [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps) for accessing other ports through to [Cloudflare Argo Tunnel](https://www.cloudflare.com/en-gb/products/argo-tunnel/)
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
-* [Homebrew on Linux](https://brew.sh) for installing tools without sudo - installed through our custom script (soon)
+* [Homebrew on Linux](https://brew.sh) for installing tools without sudo - support for ARM are on best-effort basis, since there's [no bottles yet for 64-bit ARM-based systems](https://docs.brew.sh/Homebrew-on-Linux#arm).
 * `jq` for prettifying your JSON stuff, especially if parsing JSON responses from some APIs.
 * Basics like `curl`, `wget`, and more.
 * Add more tools here
