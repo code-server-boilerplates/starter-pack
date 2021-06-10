@@ -36,9 +36,11 @@ pull_request_rules:
           - AndreiJirohHaliliDev2006
   - name: Automagically comment for merging when LGTM
     conditions:
-      - "#approved-reviews-by<=1"
+      - "#approved-reviews-by>=1"
       - label=Ready to ship
       - base=main
+      - -label=Blocked from Merging
+      - -label=WIP
     actions:
       comment:
         message: Now shipping into the `develop` Docker image tag. (The Merge bot action might take an while to merge this automagically.)
