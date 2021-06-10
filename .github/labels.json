@@ -41,7 +41,7 @@
   },
   {
     "name": "automation/mergify-approve-rule",
-    "color": "C66003"
+    "color": "C66003",
     "description": "An label for automated PR approvals through Mergify."
   },
   {
