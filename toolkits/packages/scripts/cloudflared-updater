@@ -7,6 +7,11 @@
 # pull the builder's arch first
 ARCH_TO_USE="$IMAGE_ARCH"
 
+wgetFailExit(){
+  EXIT_CODE=$?
+  echo "[cloudflared-updater] Install script failed to download the binary file with exit code ${EDIT_CODE}" && exit "$EDIT_CODE"
+}
+
 if [[ $ARCH_TO_USE == "" ]]; then
   ARCH_TO_USE="$(uname -p)"
 fi
@@ -20,15 +25,17 @@ CLOUDFLARED_VERSION=$(curl --silent "https://api.github.com/repos/cloudflare/clo
 
 echo "[cloudflared-updater] Installing latest version of Argo Tunnel agent.."
 if [[ $ARCH_TO_USE == "aarch64" ]]; then
-  sudo wget https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared
+  if ! sudo wget --fail https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm64 -O /usr/local/bin/cloudflared; then
+     wgetFailedExit
+  else
+     true
+  fi
 else
-  sudo wget https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared
+  if ! sudo wget --fail https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64 -O /usr/local/bin/cloudflared; then
+     wgetFailedExit
+  else
+     true
+  fi;
 fi
-sudo chmod +x /usr/local/bin/cloudflared
 
-if [[ $? == "0" ]]; then
-  echo "[cloudflared-installer] Successfully updated!"
-else
-  echo "[cloudlfared-installer] Installer failed, exiting..."
-  exit $?
-fi
+sudo chmod +x /usr/local/bin/cloudflared

@@ -1,7 +1,8 @@
 #!/bin/bash
 
 echo "[toolkit-scripts] Installing Argo Tunnel agent"
-/home/coder/.local/bin/cloudflared-updater
-echo "[toolkit-scripts] Installer script exited with $?, please bug the image maintainers"
-echo "[toolkit-scripts] if the exit code isn't zero."
 
+if ! /home/coder/.local/bin/cloudflared-updater; then
+  echo "[tooklit-scripts] Failed to install/update Cloudflared. Please bug the image maintainers if symptoms presists."
+  exit 1
+fi

@@ -1,3 +1,8 @@
+# README stuff
+tooklits/packages/dotbashrcdir/README.md
+toolkits/packages/scripts/README.md
+
+## OUR GITIGNORE STUFF GOES BELOW THIS LINE ##
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux,node,yarn
@@ -184,3 +189,5 @@ main.zip
 # custom configurations
 chart/config/*.yml
 chart/config/*-example.yml
+## OUR GITIGNORE STUFF GOES ABOVE THIS LINE ##
+

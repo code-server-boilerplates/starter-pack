@@ -61,6 +61,8 @@ RUN sudo chown -R coder:coder /home/coder/.local
 
 # Helper scripts
 COPY toolkits/packages/scripts/ /home/coder/.local/bin/
+COPY toolkits/packages/dotbashrcdir /home/coder/.bashrc_d
+RUN (echo; echo "for i in \$(ls \$HOME/.bashrc.d/*); do source \$i; done"; echo) >> /home/coder/.bashrc
 
 # Cloudflared
 RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
@@ -68,13 +70,23 @@ RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
 
+# Homebrew on Linux
+RUN mkdir ~/.cache && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/" \
+    MANPATH="$MANPATH:/home/linuxbrew/.linuxbrew/share/man" \
+    INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info"
+    HOMEBREW_NO_AUTO_UPDATE=1
+RUN sudo apt remove -y cmake \
+    && brew install cmake
+
 # -----------
 
 # Cleanup
 RUN echo "[code-server] Dependency installation completed, cleaning up..." \
     && rm -rv /home/coder/*.deb || true \
-    && sudo rm -rvf /var/lib/apt/lists/* \
     && sudo apt clean \
+    && sudo rm -rvf /var/lib/apt/lists/* \
+    && sudo rm -rvf /var/tmp/* \
     && echo "[code-server] Cleanup done"
 
 # Since the entrypoint script is running the server in port 8080
