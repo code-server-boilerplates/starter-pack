@@ -6,7 +6,9 @@ pull_request_rules:
       - label=packages/docker-base-images
       - base=main
       - -closed
-      - status-success=Docker CI (image development) / test (pull_request)
+      # Things start to blur when you use GH Actions.
+      # see https://docs.mergify.io/conditions/#github-actions
+      - status-success=Test and analyize image build
     actions:
       review:
         type: APPROVE
@@ -35,15 +37,31 @@ pull_request_rules:
         add_users:
           # Replace mine with your username.
           - AndreiJirohHaliliDev2006
+  - name: Approve from an label
+    conditions:
+      - label=automation/mergify-approve-rule
+      - -label=WIP
+      - "-#approved-reviews-by<=1"
+    actions:
+      review:
+        type: APPROVE
+        message: |
+          Hey, @{{author}}! Your PR is approved through an automated process using Mergify.
+          You or they will merge it soon, either manually or when the
+          `Ready to Ship` label is being added.
+      label:
+        remove: "automation/mergify-approve-rule"
   - name: Automagically comment for merging when LGTM
     conditions:
       - "#approved-reviews-by>=1"
       - base=main
-      - status-success=Docker CI (image development) / test (pull_request)
+      # Things start to blur when you use GH Actions.
+      # see https://docs.mergify.io/conditions/#github-actions
+      - status-success=Test and analyize image build
       - -label=Blocked from Merging
       - -label=WIP
     actions:
       label:
-        add: [ "Ready to Merge" ]
+        add: [ "Ready to Ship" ]
       comment:
         message: Now shipping into the `develop` Docker image tag. (The Merge bot action might take an while to merge this automagically.)

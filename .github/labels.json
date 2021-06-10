@@ -40,6 +40,11 @@
     "description": "Same as Blocked from Merging but used on draft PRs and WIPs."
   },
   {
+    "name": "automation/mergify-approve-rule",
+    "color": "C66003"
+    "description": "An label for automated PR approvals through Mergify."
+  },
+  {
     "name": "code-server",
     "color": "1d76db",
     "description": "Issues related to Code Server, mostly asked the issue author to move to the official repo."
