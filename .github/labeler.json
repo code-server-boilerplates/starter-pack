@@ -1,0 +1,45 @@
+[
+  {
+    "name": "Updated by Dependabot",
+    "color": "C3FB57"
+    "description": "Label for Mergify to automagically triage PRs from Dependabot."},
+  {
+    "name": "dependencies",
+    "color": "2E0D86",
+    "description": "PRs with this label are usually contains dependency upgrades."
+  },
+  {
+    "name": "ci/github-actions",
+    "color": "1d76db",
+    "deecription": "Changes to fhe base image, including upgrades made by Dependabot."
+  },
+  {
+    "name": "packages/docker-base-images",
+    "color": "e96695",
+    "description": "Changes to fhe base image, including upgrades made by Dependabot."
+  },
+  {
+    "name": "packages/nodejs-npm",
+    "color": "38E1F1",
+    "description": "PRs releated to upgrading Node.js tools we use like Commitizen and Commitlint."
+  {
+    "name": "Ready to Ship",
+    "color": "0E8A16"
+    "description": "PRs with this label are automagically merged by Mergify once approved. You can also add this through commenting LGTM for your bot account to approve it for you."
+  },
+  {
+    "name": "Blocked from Merging",
+    "color": "D93F0B",
+    "description": "When added, PRs will be blocked until either Ready to Ship is added or this one is removed."
+  },
+  {
+    "name": "WIP",
+    "color": "D79D00",
+    "description": "Same as Blocked from Merging but used on draft PRs and WIPs."
+  },
+  {
+    "name": "code-server",
+    "color": "1d76db",
+    "description": "Issues related to Code Server, mostly asked the issue author to move to the official repo."
+  }
+]

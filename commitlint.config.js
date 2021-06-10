@@ -27,6 +27,7 @@ module.exports = {
           "toolkits-packages:nonsense-bullshit", // probably for our example packages
           "post-repo-creation",
           "issue-templates",
+          "issue-labels",
           "pr-templates",
           "husky",
           "ignorefiles"
