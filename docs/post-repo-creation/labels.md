@@ -2,9 +2,9 @@
 
 The following list are the labels you need for all the automation, among other things, to work. You can change the descriptio and hex color as you wish, but keep the name intact or things might break if you don't update your config too.
 
-## Managing labels with `.github/labeler.json`
+## Managing labels with `.github/labels.json`
 
-These labels are managed through the [`.github/labeler.json`](/.github/labeler.json) file.
+These labels are managed through the [`.github/labeler.json`](/.github/labels.json) file.
 You can add new entries, edit or delete and once pushed they'll be automgaically updated via an workflow. You can trigger this CI through `workflow_dispatch` via UI (the workflow name is `Setup issue labels from file`) or API:
 
 ```sh
