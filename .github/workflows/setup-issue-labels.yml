@@ -1,0 +1,18 @@
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - ".github/labeler.json"
+
+name: Setup issue labels from file
+
+jobs:
+  labels:
+    name: Add needed labels
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@1.0.0
+      - uses: lannonbr/issue-label-manager-action@3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}

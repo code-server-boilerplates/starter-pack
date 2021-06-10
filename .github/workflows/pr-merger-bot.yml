@@ -24,13 +24,13 @@ jobs:
       uses: squalrus/merge-bot@v0.4.5
       with:
         GITHUB_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
-        test: true
+        test: false
         reviewers: true
         # To automagically merge, maintainers need to add the
         # Ready to Ship label first.
         labels: Ready to Ship
-        # If not yet ready, block with this labep instead.
-        blocking_labels: Blocked from Merging
+        # If not yet ready, block with this label instead.
+        blocking_labels: Blocked from Merging, WIP
         checks_enabled: true
         method: merge
         # Probably handled by the the delete merged branches setting in GH
