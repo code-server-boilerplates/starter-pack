@@ -1,8 +1,9 @@
 [
   {
     "name": "Updated by Dependabot",
-    "color": "C3FB57"
-    "description": "Label for Mergify to automagically triage PRs from Dependabot."},
+    "color": "C3FB57",
+    "description": "Label for Mergify to automagically triage PRs from Dependabot."
+  },
   {
     "name": "dependencies",
     "color": "2E0D86",
@@ -22,9 +23,10 @@
     "name": "packages/nodejs-npm",
     "color": "38E1F1",
     "description": "PRs releated to upgrading Node.js tools we use like Commitizen and Commitlint."
+  },
   {
     "name": "Ready to Ship",
-    "color": "0E8A16"
+    "color": "0E8A16",
     "description": "PRs with this label are automagically merged by Mergify once approved. You can also add this through commenting LGTM for your bot account to approve it for you."
   },
   {
