@@ -17,7 +17,7 @@ on:
 jobs:
   merge:
     runs-on: ubuntu-latest
-    name: Merge
+    name: Run integration checks
     steps:
     # This might break if you implement this in Mergify and still keep this workflow enabled.
     - name: Integration check
@@ -30,7 +30,7 @@ jobs:
         # Ready to Ship label first.
         labels: Ready to Ship
         # If not yet ready, block with this label instead.
-        blocking_labels: Blocked from Merging, WIP
+        blocking_labels: Blocked from Merging
         checks_enabled: true
         method: merge
         # Probably handled by the the delete merged branches setting in GH
