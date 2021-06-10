@@ -24,6 +24,7 @@ module.exports = {
           "lockfiles", // CHORE
           "deployment-guides", // CHORE, DOCS
           "toolkits-packages:scripts",
+          "toolkits-packages:dotbashrcdir",
           "toolkits-packages:nonsense-bullshit", // probably for our example packages
           "post-repo-creation",
           "issue-templates",
