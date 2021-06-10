@@ -26,13 +26,13 @@ CLOUDFLARED_VERSION=$(curl --silent "https://api.github.com/repos/cloudflare/clo
 echo "[cloudflared-updater] Installing latest version of Argo Tunnel agent.."
 if [[ $ARCH_TO_USE == "aarch64" ]]; then
   if ! sudo wget"https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-arm64" -O /usr/local/bin/cloudflared; then
-     wgetFailedExit
+     wgetFailExit
   else
      true
   fi
 else
   if ! sudo wget"https://github.com/cloudflare/cloudflared/releases/download/${CLOUDFLARED_VERSION}/cloudflared-linux-amd64" -O /usr/local/bin/cloudflared; then
-     wgetFailedExit
+     wgetFailExit
   else
      true
   fi;
