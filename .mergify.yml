@@ -5,7 +5,8 @@ pull_request_rules:
       - label=Updated by Dependabot
       - label=packages/docker-base-images
       - base=main
-      - status-success=Docker CI (image development) / test (push)
+      - -closed
+      - status-success=Docker CI (image development) / test (pull_request)
     actions:
       review:
         type: APPROVE
@@ -37,11 +38,12 @@ pull_request_rules:
   - name: Automagically comment for merging when LGTM
     conditions:
       - "#approved-reviews-by>=1"
-      - label=Ready to ship
       - base=main
-      - status-success=Docker CI (image development) / test (push)
+      - status-success=Docker CI (image development) / test (pull_request)
       - -label=Blocked from Merging
       - -label=WIP
     actions:
+      label:
+        add: [ "Ready to Merge" ]
       comment:
         message: Now shipping into the `develop` Docker image tag. (The Merge bot action might take an while to merge this automagically.)

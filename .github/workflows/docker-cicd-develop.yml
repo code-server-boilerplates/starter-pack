@@ -50,7 +50,7 @@ jobs:
 
   publish-to-dev:
      name: Publish as canary
-     needs: [ test-image-build ]
+     needs: [ test-image-builds ]
      runs-on: "ubuntu-latest"
      if: ${{ github.ref == 'refs/heads/main' && !github.event.issue.pull_request }}
      steps:
