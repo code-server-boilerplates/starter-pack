@@ -35,8 +35,8 @@ jobs:
 
        - name: Install Dive
          run: |
-           wget https://github.com/wagoodman/dive/releases/download/v0.10.0/dive_0.10.0_linux_amd64.deb -O $GITHUB_HOME/dive_linux_amd64.deb
-           sudo apt install $GITHUB_HOME/dive_linux_amd64.deb
+           wget https://github.com/wagoodman/dive/releases/download/v0.10.0/dive_0.10.0_linux_amd64.deb -O $HOME/work/_temp/dive_linux_amd64.deb
+           sudo apt install $HOME/work/_temp/dive_linux_amd64.deb
 
        - name: Build image
          uses: docker/build-push-action@v2
