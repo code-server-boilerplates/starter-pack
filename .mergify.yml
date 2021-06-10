@@ -5,7 +5,7 @@ pull_request_rules:
       - label=Updated by Dependabot
       - label=packages/docker-base-images
       - base=main
-      - status-success=Test build Docker image
+      - status-success=Docker CI (image development) / test (push)
     actions:
       review:
         type: APPROVE
@@ -39,6 +39,7 @@ pull_request_rules:
       - "#approved-reviews-by>=1"
       - label=Ready to ship
       - base=main
+      - status-success=Docker CI (image development) / test (push)
       - -label=Blocked from Merging
       - -label=WIP
     actions:
