@@ -8,30 +8,69 @@ env:
 
 on:
   release:
-    type: [published] # only trigger when an release is published
+    # only trigger on releases
+    type: [published]
 
 jobs:
-  test:
+  # For prereleases, push to beta tag.
+  publish-to-beta:
+     name: Release to beta
+     name: Release to stable
      runs-on: "ubuntu-latest"
+     if: ${{ github.event.release.prerelease == "true" }}
      steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
+
+       # Setup QEMU for multiarch builds
        - name: Set up QEMU
          uses: docker/setup-qemu-action@v1
+       # and of course, we need to setup Buildx
        - name: Set up Docker Buildx
          uses: docker/setup-buildx-action@v1
          with:
            driver-opts: "image=moby/buildkit:master,network=host"
-       - name: Build image
+
+       # repeat this for other registries you want to use
+       # especially the official Docker Hub Registry
+       - name: Login to GitHub Container Registry
+         uses: docker/login-action@v1
+         with:
+           registry: ghcr.io
+           # change the username into yours if not using our bot
+           username: RecapTimeBot
+           # may not work on personal accounts if using our PAT
+           # we may try soon
+           password: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
+       - name: Login to Red Hat Quay Container Registry
+         uses: docker/login-action@v1
+         with:
+           registry: quay.io
+           # change the username into yours if not using our bot
+           username: ${{ secrets.QUAYIO_USERNAME }}
+           # may not work on personal accounts if using our PAT
+           # we may try soon
+           password: ${{ secrets.QUAYIO_PASSWORD }}
+
+       # after building, we may retag them for DockerHub instead
+       # of building again
+       - name: Build and push to GHCR + DockerHub (amd64)
+         id: image-build
          uses: docker/build-push-action@v2
          with:
+           push: true
+           tags: |
+             ghcr.io/${{ env.repository }}:beta
+             quay.io/${{ env.repository }}:beta
+             ghcr.io/${{ env.repository }}:${{ github.event.release.tag_name }}
+             quay.io/${{ env.repository }}:${{ github.event.release.tag_name }}
            context: .
            platforms: linux/amd64,linux/arm64
 
-  publish:
-     needs: [ test ]
+  publish-to-stable:
+     name: Release to stable
      runs-on: "ubuntu-latest"
-     if: ${{ github.ref == 'refs/heads/main' && !github.event.issue.pull_request }}
+     if: ${{ github.event.release.prerelease == "false" }}
      steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"

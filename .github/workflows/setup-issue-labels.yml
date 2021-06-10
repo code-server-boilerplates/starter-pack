@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - ".github/labeler.json"
+      - ".github/labels.json"
 
 name: Setup issue labels from file
 

@@ -11,7 +11,9 @@ on:
     paths:
       - "Dockerfile"
       - ".trigger-rebuild"
-      - "toolkits/container/entrypoint.sh"
+      - ".dockerignore"
+      - "toolkits/containers/entrypoint.sh"
+      - "toolkits/containers/settings.json"
       - "toolkits/packages/scripts/**"
       - "toolkits/packages/dotbashrcdir/**"
   pull_request:
@@ -33,7 +35,7 @@ jobs:
 
        - name: Install Dive
          run: |
-           wget https://github.com/wagoodman/dive/releases/download/v0.9.2/dive_0.9.2_linux_amd64.deb -O $GITHUB_HOME/dive_linux_amd64.deb
+           wget https://github.com/wagoodman/dive/releases/download/v0.10.0/dive_0.10.0_linux_amd64.deb -O $GITHUB_HOME/dive_linux_amd64.deb
            sudo apt install $GITHUB_HOME/dive_linux_amd64.deb
 
        - name: Build image
@@ -95,5 +97,3 @@ jobs:
              quay.io/${{ env.repository }}:develop
            context: .
            platforms: linux/amd64,linux/arm64
-       - name: Echo image digest
-         run: echo Image digest is ${{ steps.image-build.outputs.digest }}
