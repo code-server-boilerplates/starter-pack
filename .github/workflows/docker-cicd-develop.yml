@@ -20,7 +20,8 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  test-image-builds:
+     name: Test and analyize image build
      runs-on: "ubuntu-latest"
      steps:
        - name: "Create checkmates"
@@ -47,7 +48,8 @@ jobs:
        - name: Check wasted space
          run: CI=true dive ${{ steps.image-build.outputs.digest }} --source docker://ghcr.io/${{ env.repository }}
 
-  publish:
+  publish-to-dev:
+     name: Publish as canary
      needs: [ test ]
      runs-on: "ubuntu-latest"
      if: ${{ github.ref == 'refs/heads/main' && !github.event.issue.pull_request }}
