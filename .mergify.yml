@@ -50,7 +50,7 @@ pull_request_rules:
           You or they will merge it soon, either manually or when the
           `Ready to Ship` label is being added.
       label:
-        remove: "automation/mergify-approve-rule"
+        remove: [ "automation/mergify-approve-rule" ]
   - name: Automagically comment for merging when LGTM
     conditions:
       - "#approved-reviews-by>=1"
