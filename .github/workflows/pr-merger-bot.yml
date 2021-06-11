@@ -31,7 +31,7 @@ jobs:
         labels: Ready to Ship
         # If not yet ready, block with this label instead.
         blocking_labels: Blocked from Merging
-        checks_enabled: true
+        checks_enabled: false
         method: merge
         # Probably handled by the the delete merged branches setting in GH
         delete_source_branch: false
