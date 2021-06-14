@@ -46,12 +46,15 @@ jobs:
          id: build
          with:
            context: .
+           # push is disabled, because we used an imaginary registry
+           push: false
+           # Needed to extract the image digest btw
+           tags: registry.repohub.dev/csb/${{ env.repository }}
            platforms: linux/amd64,linux/arm64
 
        - name: Check wasted space
          run: |
-           echo ::debug::${{ toJSON(steps) }}
-           CI=true dive ${{ steps.build.outputs.digest }} --source docker://ghcr.io/${{ env.repository }} || true
+           CI=true dive ${{ steps.build.outputs.digest }} --source docker://ghcr.io/${{ env.namespace}}/${{ env.repository }} || true
 
   publish-to-dev:
      name: Publish as canary
