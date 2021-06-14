@@ -73,8 +73,8 @@ Most deployment documentation are moved into  [the Guides section](/docs/deploym
 
 ### As an base image in your Dockerfile
 
-In your Dockerfile, use `code-server-boilerplates/starter-pack` as your base image
-and then add your needed tools and finally the `CMD ["cdr-launchpad-server]` stuff at the end.
+In your Dockerfile, use `code-server-boilerplates/starter-pack` as your base image and then add your needed tools.
+Don't forget to publish your changes so GitHub Actions will publish them for you.
 
 ```dockerfile
 # latest/stable = tracks latest image release
@@ -90,8 +90,8 @@ RUN curl https://getcroc.schollz.com | sudo bash
 RUN git clone https://gitlab.com/MadeByThePinsHub/dotfiles /home/coder/.dotfiles
 RUN bash /home/coder/.dotfiles/setup.sh --no-secrets-repo --noprompt --nosystemd
 
-# finally, hit the road
-CMD ["/usr/bin/cdr-launchpad-server"]
+# no need for this one, but you can add it if needed
+# CMD ["/usr/bin/cdr-launchpad-server"]
 ```
 
 If you want to make your own deploy-code-server template by using our image, [here's the final product](https://github.com/code-server-boilerplates/starter-pack-as-base-image) you can generate from.
