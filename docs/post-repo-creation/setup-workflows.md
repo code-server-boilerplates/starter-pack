@@ -13,9 +13,9 @@ variables at repo level, if you prefer not to transfer the repo into `@code-serv
 
 ## What to edit
 
-In L7 of `.github/workflows/docker-cicd-{develop,release}.yml`, edit `env.repository` to match into the repository URL.
+In L7-9 of `.github/workflows/docker-cicd-{develop,release}.yml`, edit `env.{repository,namespace,namespace_dockerhub}` to match into the repository URL. Please be reminded that Docker Hub namespaces don't like dashes.
 
-Remember that Docker image names only supports lowercase alphanumberic characters with only dashes.
+Remember that Docker image names only supports lowercase alphanumberic characters with only dashes, with exception of Docker Hub.
 
 ## Testing out changes
 
@@ -39,3 +39,25 @@ curl -i -H "Authorization: Bearer GH_TOKEN_HERE" \
     https://api.github.com/repos/owner/repo/actions/workflows/trigger-rebuild.yml/dispatches \
     -d '{"ref":"main"}'
 ```
+
+Once the new image is successfully propagated across the internet (you should wait up to 5 minutes before you can pull new builds), pull the image and use [our dev test kit](https://github.com/code-server-boilerplates/dev-testkit).
+
+```
+# pull latest dev builds first
+# replace registry.domain.tld with your favorite container registries where your image lives
+# or omit it althogether if you're on Docker Hub.
+docker build registry.domain.tld/namespace/repo:develop
+
+# clone our dev toolkit repo, and generate an new directory
+git clone https://github.com/code-server-boilerplates/dev-testkit && cd dev-testkit
+# template-name is needed so we can download the .env.example file
+./scripts/generate-directory template-name registry.domain.tld/namespaxe/repo
+
+# After generating it, edit its dotenv file we downloaded from the template's repo
+./scripts/edit-dotenv template-name
+
+# Now start things up (you can change directories after the init process)
+./run template-name
+```
+
+Now, open your browser and navigate to `localhost:8080`, either get the password on the logs (if password generation is enabled) or use your own password and have fun testing stuff.

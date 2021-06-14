@@ -4,7 +4,9 @@ env:
   # Change this to match GITHUB_REPOSITORY.
   # But please be reminded that Docker images only support
   # lowercased letters.
-  repository: code-server-boilerplates/starter-pack
+  namespace: code-server-boilerplates
+  namespace_dockerhub: codeserverboilerplates
+  repository: starter-pack
 
 on:
   push:
@@ -48,7 +50,7 @@ jobs:
 
        - name: Check wasted space
          run: |
-           echo ::debug::${{ steps }}
+           echo ::debug::${{ toJSON(steps) }}
            CI=true dive ${{ steps.build.outputs.digest }} --source docker://ghcr.io/${{ env.repository }} || true
 
   publish-to-dev:
@@ -71,6 +73,11 @@ jobs:
 
        # repeat this for other registries you want to use
        # especially the official Docker Hub Registry
+       - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
        - name: Login to GitHub Container Registry
          uses: docker/login-action@v1
          with:
