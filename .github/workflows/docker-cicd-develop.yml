@@ -41,7 +41,7 @@ jobs:
 
        - name: Build and check for wasted space
          run: |
-            CI=true dive build --tag registry.repohub.dev/${{env.namespace}}/${{env.repository}} || true
+            CI=true dive build --tag registry.repohub.dev/${{env.namespace}}/${{env.repository}} . || true
 
   publish-to-dev:
      name: Publish as canary
