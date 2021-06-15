@@ -2,6 +2,9 @@
 tooklits/packages/dotbashrcdir/README.md
 toolkits/packages/scripts/README.md
 
+# dotgit files because it's so fricking large and sexy
+.git/
+
 ## OUR GITIGNORE STUFF GOES BELOW THIS LINE ##
 # File created using '.gitignore Generator' for Visual Studio Code: https://bit.ly/vscode-gig
 
@@ -190,4 +193,3 @@ main.zip
 chart/config/*.yml
 chart/config/*-example.yml
 ## OUR GITIGNORE STUFF GOES ABOVE THIS LINE ##
-

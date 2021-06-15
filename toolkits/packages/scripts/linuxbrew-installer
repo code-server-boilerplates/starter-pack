@@ -2,8 +2,9 @@
 
 ARCH=$(arch)
 
-if [[ ARCH == "x86_64" ]]; then
+if [[ $ARCH == "x86_64" ]]; then
     mkdir ~/.cache && /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 else
     echo "warning: Homebrew isn't supported on ARM Linux yet."
+    exit
 fi
