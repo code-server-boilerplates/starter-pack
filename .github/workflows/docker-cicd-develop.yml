@@ -68,7 +68,7 @@ jobs:
 
        - name: Print out values
          env:
-           METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) })
+           METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) }}
          run: "echo '$METADATA_OUTPUTS'"
 
        # Setup QEMU for multiarch builds
