@@ -1,12 +1,13 @@
 name: "Docker CI (image development)"
 
 env:
-  # Change this to match GITHUB_REPOSITORY.
+  # Change this to match GITHUB_REPOSITORY or any name you want.
   # But please be reminded that Docker images only support
-  # lowercased letters.
+  # lowercased letters as as long as there's an label called
+  # org.opencontainers.image.source.
+  repository: starter-pack
   namespace: code-server-boilerplates
   namespace_dockerhub: codeserverboilerplates
-  repository: starter-pack
 
 on:
   push:
@@ -14,10 +15,7 @@ on:
       - "Dockerfile"
       - ".trigger-rebuild"
       - ".dockerignore"
-      - "toolkits/containers/entrypoint.sh"
-      - "toolkits/containers/settings.json"
       - "toolkits/packages/scripts/**"
-      - "toolkits/packages/dotbashrcdir/**"
   pull_request:
     branches: [ main ]
 
@@ -41,20 +39,9 @@ jobs:
            wget https://github.com/wagoodman/dive/releases/download/v0.10.0/dive_0.10.0_linux_amd64.deb -O $HOME/work/_temp/dive_linux_amd64.deb
            sudo apt install $HOME/work/_temp/dive_linux_amd64.deb
 
-       - name: Build image
-         uses: docker/build-push-action@v2
-         id: build
-         with:
-           context: .
-           # push is disabled, because we used an imaginary registry
-           push: false
-           # Needed to extract the image digest btw
-           tags: registry.repohub.dev/csb/${{ env.repository }}
-           platforms: linux/amd64,linux/arm64
-
-       - name: Check wasted space
+       - name: Build and check for wasted space
          run: |
-           CI=true dive ${{ steps.build.outputs.digest }} --source docker://ghcr.io/${{ env.namespace}}/${{ env.repository }} || true
+            CI=true dive build --tag registry.repohub.dev/${{env.namespace}}/${{env.repository}} || true
 
   publish-to-dev:
      name: Publish as canary
@@ -64,6 +51,25 @@ jobs:
      steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
+
+       - name: Generate metadata for Docker builds
+         id: meta
+         uses: docker/metadata-action@v3
+         with:
+           images: |
+             ${{ env.namespace_dockerhub }}/${{ env.repository }}
+             quay.io/${{ env.namespace }}/${{ env.repository }}
+             ghcr.io/${{ env.namespace }}/${{ env.repository }}
+           tags: |
+             type=raw,value=develop
+             type=sha,format=long
+           flavor: |
+             latest=false
+
+       - name: Print out values
+         env:
+           METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) })
+         run: "echo '$METADATA_OUTPUTS'"
 
        # Setup QEMU for multiarch builds
        - name: Set up QEMU
@@ -87,8 +93,7 @@ jobs:
            registry: ghcr.io
            # change the username into yours if not using our bot
            username: RecapTimeBot
-           # may not work on personal accounts if using our PAT
-           # we may try soon
+           # you need to manually add our bot with write access if you use our PAT
            password: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
        - name: Login to Red Hat Quay Container Registry
          uses: docker/login-action@v1
@@ -100,16 +105,12 @@ jobs:
            # we may try soon
            password: ${{ secrets.QUAYIO_PASSWORD }}
 
-       # after building, we may retag them for DockerHub instead
-       # of building again
        - name: Build and push to GHCR + DockerHub and RHQC
          id: image-build
          uses: docker/build-push-action@v2
          with:
            push: true
-           tags: |
-             ghcr.io/${{ env.repository }}:develop
-             quay.io/${{ env.repository }}:develop
-             ${{ env.namespace_dockerhub }}/${{ env.repository }}:develop
+           tags: ${{ steps.meta.outputs.tags }}
+           labels: ${{ steps.meta.outputs.labels }}
            context: .
            platforms: linux/amd64,linux/arm64

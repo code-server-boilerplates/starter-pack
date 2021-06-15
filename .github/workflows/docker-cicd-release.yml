@@ -1,16 +1,16 @@
-name: "Docker CI (image releaser)"
+name: "Docker CI (image development)"
 
 env:
-  # Change this to match GITHUB_REPOSITORY.
+  # Change this to match GITHUB_REPOSITORY or any name you want.
   # But please be reminded that Docker images only support
-  # lowercased letters.
+  # lowercased letters as as long as there's an label called
+  # org.opencontainers.image.source.
   repository: starter-pack
   namespace: code-server-boilerplates
   namespace_dockerhub: codeserverboilerplates
 
 on:
   release:
-    # only trigger on releases
     type: [published]
 
 jobs:
@@ -22,6 +22,25 @@ jobs:
      steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
+
+       - name: Generate metadata for Docker builds
+         id: meta
+         uses: docker/metadata-action@v3
+         with:
+           images: |
+             ${{ env.namespace_dockerhub }}/${{ env.repository }}
+             quay.io/${{ env.namespace }}/${{ env.repository }}
+             ghcr.io/${{ env.namespace }}/${{ env.repository }}
+           tags: |
+             type=semver,pattern={{version}}
+             type=raw,value=beta
+           flavor: |
+             latest=false
+
+       - name: Print out values
+         env:
+           METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) })
+         run: "echo '$METADATA_OUTPUTS'"
 
        # Setup QEMU for multiarch builds
        - name: Set up QEMU
@@ -45,8 +64,7 @@ jobs:
            registry: ghcr.io
            # change the username into yours if not using our bot
            username: RecapTimeBot
-           # may not work on personal accounts if using our PAT
-           # we may try soon
+           # you need to manually add our bot with write access if you use our PAT
            password: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
        - name: Login to Red Hat Quay Container Registry
          uses: docker/login-action@v1
@@ -58,30 +76,40 @@ jobs:
            # we may try soon
            password: ${{ secrets.QUAYIO_PASSWORD }}
 
-       # after building, we may retag them for DockerHub instead
-       # of building again
-       - name: Build and push to GHCR + DockerHub (amd64)
+       - name: Build and push to GHCR + DockerHub and RHQC
          id: image-build
          uses: docker/build-push-action@v2
          with:
            push: true
-           tags: |
-             ${{ env.namespace_dockerhub }}/${{ env.repository }}:beta
-             ghcr.io/${{ env.namespace }}/${{ env.repository }}:beta
-             quay.io/${ env.namespace }}/${{ env.repository }}:beta
-             ${{ env.namespace_dockerhub }}/${{ env.repository }}:${{ github.event.release.tag_name }}
-             ghcr.io/${{ env.repository }}:${{ github.event.release.tag_name }}
-             quay.io/${{ env.repository }}:${{ github.event.release.tag_name }}
+           tags: ${{ steps.meta.outputs.tags }}
+           labels: ${{ steps.meta.outputs.labels }}
            context: .
-           platforms: linux/amd64,linux/arm64
-
+           platforms: linux/amd64
   publish-to-stable:
      name: Release to stable
      runs-on: "ubuntu-latest"
-     if: ${{ github.event.release.prerelease == "false" }}
+     if: ${{ github.event.release.prerelease != "true" }}
      steps:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
+
+       - name: Generate metadata for Docker builds
+         id: meta
+         uses: docker/metadata-action@v3
+         with:
+           images: |
+             ${{ env.namespace_dockerhub }}/${{ env.repository }}
+             quay.io/${{ env.namespace }}/${{ env.repository }}
+             ghcr.io/${{ env.namespace }}/${{ env.repository }}
+           tags: |
+             type=semver,pattern={{version}}
+           flavor: |
+             latest=true
+
+       - name: Print out values
+         env:
+           METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) })
+         run: "echo '$METADATA_OUTPUTS'"
 
        # Setup QEMU for multiarch builds
        - name: Set up QEMU
@@ -94,14 +122,18 @@ jobs:
 
        # repeat this for other registries you want to use
        # especially the official Docker Hub Registry
+       - name: Login to Docker Hub
+         uses: docker/login-action@v1
+         with:
+           username: ${{ secrets.DOCKERHUB_USERNAME }}
+           password: ${{ secrets.DOCKERHUB_PASSWORD }}
        - name: Login to GitHub Container Registry
          uses: docker/login-action@v1
          with:
            registry: ghcr.io
            # change the username into yours if not using our bot
            username: RecapTimeBot
-           # may not work on personal accounts if using our PAT
-           # we may try soon
+           # you need to manually add our bot with write access if you use our PAT
            password: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
        - name: Login to Red Hat Quay Container Registry
          uses: docker/login-action@v1
@@ -113,24 +145,12 @@ jobs:
            # we may try soon
            password: ${{ secrets.QUAYIO_PASSWORD }}
 
-       # after building, we may retag them for DockerHub instead
-       # of building again
-       - name: Build and push to GHCR + DockerHub (amd64)
+       - name: Build and push to GHCR + DockerHub and RHQC
          id: image-build
          uses: docker/build-push-action@v2
          with:
            push: true
-           tags: |
-             ${{ env.namespace_dockerhub }}/${{ env.repository }}:stable
-             ghcr.io/${{ env.repository }}:stable
-             quay.io/${{ env.repository }}:stable
-             ${{ env.namespace_dockerhub }}/${{ env.repository }}:latest
-             ghcr.io/${{ env.repository }}:latest
-             quay.io/${{ env.repository }}:latest
-             ${{ env.namespace_dockerhub }}/${{ env.repository }}:${{ github.event.release.tag_name }}
-             ghcr.io/${{ env.repository }}:${{ github.event.release.tag_name }}
-             quay.io/${{ env.repository }}:${{ github.event.release.tag_name }}
+           tags: ${{ steps.meta.outputs.tags }}
+           labels: ${{ steps.meta.outputs.labels }}
            context: .
-           platforms: linux/amd64,linux/arm64
-       - name: Echo image digest
-         run: echo Image digest is ${{ steps.image-build.outputs.digest }}
+           platforms: linux/amd64
