@@ -28,6 +28,7 @@ This template repository is good for:
 ## Checklist
 
 * [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case or [duplicate this repo](/docs/duplicate-repo.md) to receive docs updates and more through the Pull app.
+* [ ] [Complete this checklist](/docs/post-repo-creation/README.md) to setup GitHub Actions, among other things
 * [ ] Replace any references by using the Search and Replace feature in VS Code (or any modern IDE).
   * Old reference to search: `{cdrs-starter-pack, starter-pack, [Example Project], code-server-boilerplates/starter-pack, example-project}`. (Proceed at your own risk if replacing all files using this regexp.)
 * [ ] At `charts/Chart.yaml`, reset the version into `0.1.0`. Also change the Chart name and Artifact Hub annonations.
@@ -53,7 +54,6 @@ This template repository is good for:
 * [ ] Have any referral links for Linode or Digital Ocean? Replace `https://rtapp.tk/SERVICEHERE-thepinsteam` into `https://rtapp.tk/SERVICEHERE-yourusernamehere`. Remember to create these shortlinks using our Kutt.it instance at <https://rtapp.tk>. (`SERVICEHERE` is either `linode` or `digitalocean`)
 * [ ] Change `Andrei Jiroh, Code Server Boilerplates maintainers, and its Contributors` in LICENSE file into `<Your name> and its Contributors` if you prefer not to bring this template into the `@code-server-boilerplates` org. Otherwise, change it into `<Your name>, Code Server Boilerplates maintainers, and its Contributors`.
 * [ ] Create an PAT using your account (service account is always preferred and we usually use them here). If you prefer not to, [request for our service account's PAT](rtapp.tk/ghp-request-form) and invite `RecapTimeBot` into your repi as an collaborator (or as an outside collaborator with write access). Remember that the PAT we gave to you is valid for 2 years and can be renewable, as long as you comply with the policies.
-* [ ] [Read this doc](/docs/post-repo-creation/setup-workflows.md) to setup GitHub Actions
 * [ ] Adopt [the Community Code of Conduct](https://github.com/MadeByThePinsHub/policies/blob/main/CODE_OF_CONDUCT.md), which based on Contributor Convenant v2.0. If you prefer not to go to
 * [ ] Finally, register your Code Server Boilerplate [here](https://cdr-deploy.repohubdev.tk/register) and our robots will send you both an invite into `@code-server-boilerplates` org through mail and also an new issue in your repo on instructions.
   * Once merged, we'll add your chart into our Helm Charts repo so you can see it on Artifact Hub and others to install it within the next hours or so.
@@ -73,15 +73,17 @@ Most deployment documentation are moved into  [the Guides section](/docs/deploym
 
 ### As an base image in your Dockerfile
 
-In your Dockerfile, use `code-server-boilerplates/starter-pack` as your base image and then add your needed tools.
+In your Dockerfile, use `ghcr.io/code-server-boilerplates/starter-pack` as your base image and then add your needed tools.
 Don't forget to publish your changes so GitHub Actions will publish them for you.
 
 ```dockerfile
 # latest/stable = tracks latest image release
-# develop = latest development image builds, usually new
-# versions of code-server lands on first
-FROM code-server-boilerplates/starter-pack:latest
+# develop = latest development image builds, usually new versions of code-server lands on first
+# you can also drill down on commits based on their long SHA forms
+FROM ghcr.io/code-server-boilerplates/starter-pack:latest
 # Also the old cdr-*.<DISTRO-VERSION> is deprecated
+# That same image is also available at RHQCR on same namespace and on
+# Docker Hub as codeserverboilerplate as its namespace.
 
 # ensures croc is up-to-date
 RUN curl https://getcroc.schollz.com | sudo bash
@@ -108,11 +110,11 @@ If you want to make your own deploy-code-server template by using our image, [he
   - Storage may not be redundant. You may have to use [rclone](https://rclone.org/) to store your filesystem on a cloud service, for info:
   - [Docs for using the container image](toolkits/containers)
 
-## License and Contributing
+## Support, License and Contributing
+
+Support resources are available at [SUPPORT.md](/SUPPORT.md) file.
 
 This repository's contents is licensed under the MIT License.
-By contributing to this repository, you agree to
-[Developer's Certificate of Origin][dco] and
-[The Pins Team Community Code of conduct](CODE_OF_CONDUCT.md).
+By contributing to this repository or participating in the community, you agree to [Developer's Certificate of Origin][dco] and [The Pins Team Community Code of conduct](CODE_OF_CONDUCT.md).
 
 [dco]: https://developercertificate.org

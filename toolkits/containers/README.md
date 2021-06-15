@@ -14,8 +14,9 @@ environment
 Note to maintainers: Update links to your Docker images below!
 -->
 
-* Docker Hub Image: [`code-server-boilerplates/starter-pack`](https://hub.docker.com/r/code-server-boilerplates/starter-pack)
-* GitHub Container Registry Image; [`ghrc.io/code-server-boilerplates/starter-pack`](https://github.com/)
+* Docker Hub Image: [`code-server-boilerplates/starter-pack`](https://hub.docker.com/r/codeserverboilerplates/starter-pack)
+* GitHub Container Registry Image: [`ghcr.io/code-server-boilerplates/starter-pack`](https://github.com/orgs/code-server-boilerplates/packages/container/package/starter-pack)
+* Red Hat Quay Container Registry Image: [`quay.io/code-server-boilerplates/starter-pack`](https://quay.io/repository/code-server-boilerplates/starter-pack?tab=tags)
 
 ## Modifying your code-server environment
 
