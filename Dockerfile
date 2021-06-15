@@ -26,7 +26,6 @@ ENV SHELL=/bin/bash
 # presist files mounted into volumes
 RUN mkdir /workspace && touch hello-world \
     && chown -R coder:coder /workspace
-VOLUME [ "/workspace" ]
 
 USER coder
 # Apply VS Code settings
@@ -59,7 +58,8 @@ RUN sudo chown -R coder:coder /home/coder/.local
 # COPY toolkits/packages/@rtapp-non-thejuicemedia-refs/DO-NOT-MERGE.gildedguy-and-yoopia /home/coder/.local/more-corporate-clickbait-bullshit.headquarters.com.au
 # TL;DR: Honest Government Ads reference ahead above
 
-# Helper scripts
+# Helper scripts and custom bashrc stuff so we can
+# skip editing the main ~/.bashrc on our own
 COPY toolkits/packages/scripts/ /home/coder/.local/bin/
 COPY toolkits/packages/dotbashrcdir /home/coder/.bashrc_d
 RUN (echo; echo "for i in \$(ls \$HOME/.bashrc.d/*); do source \$i; done"; echo) >> /home/coder/.bashrc
@@ -72,6 +72,7 @@ RUN curl https://getcroc.schollz.com | sudo bash
 
 # Homebrew on Linux
 RUN mkdir ~/.cache && /home/coder/.local/bin/linuxbrew-installer
+# These should be fine for now.
 ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/" \
     MANPATH="$MANPATH:/home/linuxbrew/.linuxbrew/share/man" \
     INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info" \
@@ -96,4 +97,10 @@ EXPOSE 8080
 COPY toolkits/containers/entrypoint.sh /usr/bin/cdr-server-launchpad
 RUN echo "[code-server] Workspace image ready to deploy"
 
+# Prepare volumes stuff
+VOLUME [ "/workspace" ]
+VOLUME [ "/home/linuxbrew/.linuxbrew" ]
+
+# Then we can summon the Server Launchpad (aka toolkits/containers/entry.sh file on source code)
+# Not to be confused with Launchpad.net
 ENTRYPOINT ["/usr/bin/cdr-server-launchpad"]
