@@ -18,6 +18,11 @@ on:
       - "toolkits/packages/scripts/**"
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      force_push:
+        description: Leave it blank to only run test build, otherwise set to true.
+        required: false
 
 jobs:
   test-image-builds:
@@ -27,13 +32,6 @@ jobs:
        - name: "Create checkmates"
          uses: "actions/checkout@v2"
 
-       - name: Set up QEMU
-         uses: docker/setup-qemu-action@v1
-       - name: Set up Docker Buildx
-         uses: docker/setup-buildx-action@v1
-         with:
-           driver-opts: "image=moby/buildkit:master,network=host"
-
        - name: Install Dive
          run: |
            wget https://github.com/wagoodman/dive/releases/download/v0.10.0/dive_0.10.0_linux_amd64.deb -O $HOME/work/_temp/dive_linux_amd64.deb
@@ -41,7 +39,8 @@ jobs:
 
        - name: Build and check for wasted space
          run: |
-            CI=true dive build --tag registry.repohub.dev/${{env.namespace}}/${{env.repository}} . || true
+            docker build --tag registry.repohub.dev/${{env.namespace}}/${{env.repository}} .
+            CI=true dive registry.repohub.dev/${{env.namespace}}/${{env.repository}}
 
   publish-to-dev:
      name: Publish as canary
@@ -69,7 +68,7 @@ jobs:
        - name: Print out values
          env:
            METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) }}
-         run: "echo '$METADATA_OUTPUTS'"
+         run: "echo -e $METADATA_OUTPUTS"
 
        # Setup QEMU for multiarch builds
        - name: Set up QEMU
