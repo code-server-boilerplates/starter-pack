@@ -1,5 +1,7 @@
 # Boilerplate for [Example Project]
 
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4982/badge)](https://bestpractices.coreinfrastructure.org/projects/4982)
+
 <!--
 Note to new boilerplate maintainers: Please update this part
 to include the tools you're added into the bootstrapper
