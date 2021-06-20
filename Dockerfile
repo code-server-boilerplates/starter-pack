@@ -5,7 +5,7 @@ FROM codercom/code-server:3.10.2
 # Replace code-server-boilerplates with username-here/repo
 LABEL org.opencontainers.image.source="https://github.com/code-server-boilerplates/starter-pack" \
       org.opencontainers.image.vendor="code-server Community" \
-      org.opencontainers.image.documentation="https://cdrs-docs.rtapp.tk"
+      org.opencontainers.image.documentation="https://csb-docs.community-lores.gq"
 
 # Update PATH to enusre both user-wide scripts and our stuff
 # on /usr/local/bin are available to summon
@@ -32,9 +32,10 @@ USER coder
 COPY toolkits/containers/settings.json .local/share/code-server/User/settings.json
 
 # Install unzip + rclone (support for remote filesystem)
-# Also don't forget wget for that. jq included too
+# Also don't forget wget and jq btw. We may also need gpg for signing keys stuff
+# and for commit/tag signing in Git for some users
 RUN sudo apt-get update \
-    && sudo apt-get install unzip jq wget tree -y \
+    && sudo apt-get install unzip jq wget tree gpg gpg-agent -y \
     && curl https://rclone.org/install.sh | sudo bash
 
 # Copy rclone tasks to /tmp, to potentially be used
