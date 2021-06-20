@@ -1,6 +1,7 @@
 # Boilerplate for [Example Project]
 
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/4982/badge)](https://bestpractices.coreinfrastructure.org/projects/4982)
+[![Docker CI (image development)](https://github.com/code-server-boilerplates/starter-pack/actions/workflows/docker-cicd-develop.yml/badge.svg)](https://github.com/code-server-boilerplates/starter-pack/actions/workflows/docker-cicd-develop.yml)
 
 <!--
 Note to new boilerplate maintainers: Please update this part
@@ -62,8 +63,9 @@ This template repository is good for:
 * [ ] Cheer, you just made it here! Congratulate yourself! Now make an new release using `v0.1.0` as the tag name and `v0.1.0 - Initial release` as the release title. In the release description, describe the initial release as you prefer and publish! ([Example release description available](/docs/release-management/template.txt))
   * Probably now create new boilerplates straight to the org or even [join The Pins Team](https://rtapp.tk/join-thepinsteam) (it's optional btw, and if you're interested you'll be invited into `@MadeByThePinsHub/Community-Hubs-Network-Board` first by humans soon once you maintain atleast 3 boilerplates here, you can leave anytime) to help us maintain them, among other tasks.
 
-Additional documentation for managing GitHub Actions workflows, issue templates and Dependabot are on [this documentation page](/docs/dotgithub-files.md).
-For base images we maintain for different Linux distros (Ubuntu, Arch Linux/Manjaro and Alpine), please see <https://github.com/code-server-boilerplates/base-docker-images>. The Debian base image in the root Dockerfile uses the official image from Coder called `codercom/code-server` in Docker Hub.
+Documentation for template maintainers [are now moving into this site](https://csb-docs.community-lores.gq) soon, as we're preparing
+to make these `cdrs-docs.rtappp.tk` and `csb-docs.rtapp.tk` short links active within 3-6 months. For the build process, the Debian base image in the root
+Dockerfile uses the official image from the upstream called `codercom/code-server` in Docker Hub.
 
 ### To fork or not to fork?
 
