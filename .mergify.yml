@@ -36,7 +36,7 @@ pull_request_rules:
       assign:
         add_users:
           # Replace mine with your username.
-          - AndreiJirohHaliliDev2006
+          - ajhalili2006
   - name: Approve from an label
     conditions:
       - label=automation/mergify-approve-rule
