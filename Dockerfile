@@ -14,6 +14,9 @@ ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
     # @namespace/template-slug
     TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/starter-pack"
 
+# Resolve "codeDecodeError: ‘ascii’ codec can’t decode byte 0xc5" error by this env.
+ENV LC_ALL=C.UTF-8
+
 USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
@@ -26,6 +29,9 @@ ENV SHELL=/bin/bash
 # presist files mounted into volumes
 RUN mkdir /workspace && touch hello-world \
     && chown -R coder:coder /workspace
+
+# Ref: https://computingforgeeks.com/how-to-install-add-apt-repository-on-debian-ubuntu/
+RUN apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates
 
 USER coder
 # Apply VS Code settings
