@@ -25,6 +25,9 @@ RUN echo "[code-server] Image build starts on $(arch)" \
 # Use bash shell, just in case.
 ENV SHELL=/bin/bash
 
+# Update local cache
+RUN apt-get update
+
 # Init Gitpod-styled workspace directory. This is needed to only
 # presist files mounted into volumes
 RUN mkdir /workspace && touch hello-world \
@@ -40,8 +43,7 @@ COPY toolkits/containers/settings.json .local/share/code-server/User/settings.js
 # Install unzip + rclone (support for remote filesystem)
 # Also don't forget wget and jq btw. We may also need gpg for signing keys stuff
 # and for commit/tag signing in Git for some users
-RUN sudo apt-get update \
-    && sudo apt-get install unzip jq wget tree gpg gpg-agent -y \
+RUN sudo apt-get install unzip jq wget tree gpg gpg-agent -y \
     && curl https://rclone.org/install.sh | sudo bash
 
 # Copy rclone tasks to /tmp, to potentially be used
@@ -72,7 +74,7 @@ COPY toolkits/packages/dotbashrcdir /home/coder/.bashrc_d
 RUN (echo; echo "for i in \$(ls \$HOME/.bashrc.d/*); do source \$i; done"; echo) >> /home/coder/.bashrc
 
 # Cloudflared
-RUN IMAGE_ARCH=$(arch) $PWD/.local/bin/cloudflare-updater
+RUN IMAGE_ARCH=$(arch) /home/coder/.local/bin/cloudflare-updater
 
 # croc
 RUN curl https://getcroc.schollz.com | sudo bash
@@ -91,8 +93,7 @@ ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/"
 RUN echo "[code-server] Dependency installation completed, cleaning up..." \
     && rm -rv /home/coder/*.deb || true \
     && sudo apt clean \
-    && sudo rm -rvf /var/lib/apt/lists/* \
-    && sudo rm -rvf /var/tmp/* \
+    && sudo rm -rvf /var/lib/apt/lists/* /var/cache/debconf/* /tmp/* /var/tmp/* \
     && echo "[code-server] Cleanup done"
 
 # Since the entrypoint script is running the server in port 8080
@@ -105,8 +106,11 @@ COPY toolkits/containers/entrypoint.sh /usr/bin/cdr-server-launchpad
 RUN echo "[code-server] Workspace image ready to deploy"
 
 # Prepare volumes stuff
+# Gitpod-styled /workspace directory, we recommend to place packages over here
+# to presist between restarts.
 VOLUME [ "/workspace" ]
-VOLUME [ "/home/linuxbrew/.linuxbrew" ]
+# Linuxbrew storage, currently commented out.
+# VOLUME [ "/home/linuxbrew/.linuxbrew" ]
 
 # Then we can summon the Server Launchpad (aka toolkits/containers/entry.sh file on source code)
 # Not to be confused with Launchpad.net
