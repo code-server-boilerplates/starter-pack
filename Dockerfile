@@ -34,7 +34,7 @@ RUN mkdir /workspace && touch hello-world \
     && chown -R coder:coder /workspace
 
 # Ref: https://computingforgeeks.com/how-to-install-add-apt-repository-on-debian-ubuntu/
-RUN apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates
+RUN apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates --no-install-recommends
 
 USER coder
 # Apply VS Code settings
@@ -43,7 +43,7 @@ COPY toolkits/containers/settings.json .local/share/code-server/User/settings.js
 # Install unzip + rclone (support for remote filesystem)
 # Also don't forget wget and jq btw. We may also need gpg for signing keys stuff
 # and for commit/tag signing in Git for some users
-RUN sudo apt-get install unzip jq wget tree gpg gpg-agent -y \
+RUN sudo apt-get install unzip jq wget tree gpg gpg-agent -y --no-install-recommends \
     && curl https://rclone.org/install.sh | sudo bash
 
 # Copy rclone tasks to /tmp, to potentially be used
