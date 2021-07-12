@@ -2,12 +2,12 @@
   "name": "@cdrs-boilerplates/starter-pack",
   "version": "0.1.1",
   "description": "Tools and scripts for the template",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
     "prepare": "husky install",
-    "commit": "cz --signoff"
+    "commit": "cz --signoff",
+    "build": "DOCKER_BUILDKIT=1 docker build --tag registry.repohub.dev/code-server-boilerplates/starter-pack .",
+    "start": "docker-compose up -d",
+    "logs": "docker-compose logs -f -t --tail=all"
   },
   "config": {
     "commitizen": {
