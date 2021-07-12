@@ -1,11 +1,32 @@
-#!/bin/bash
+#!/bin/dumb-init /bin/bash
+# shellcheck shell=bash
+
+# Instead of using code-server's main entrypoint script
+set -eu
 
 START_DIR="${START_DIR:-/workspace/home}"
-
 PREFIX=${TEMPLATE_SLUG_PREFIX}
 
 if [[ ! -d $START_DIR ]]; then
-   mkdir -p $START_DIR
+   mkdir -p "$START_DIR"
+fi
+
+# We do this first to ensure sudo works below when renaming the user.
+# Otherwise the current container UID may not exist in the passwd database.
+eval "$(fixuid -q)"
+
+if [ "${DOCKER_USER-}" ]; then
+  echo "[$PREFIX] Fixing possible uid/gid mismatches..."
+  USER="$DOCKER_USER"
+  if [ "$DOCKER_USER" != "$(whoami)" ]; then
+    echo "$DOCKER_USER ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers.d/nopasswd > /dev/null
+    # Unfortunately we cannot change $HOME as we cannot move any bind mounts
+    # nor can we bind mount $HOME into a new home as that requires a privileged container.
+    sudo usermod --login "$DOCKER_USER" coder
+    sudo groupmod -n "$DOCKER_USER" coder
+
+    sudo sed -i "/coder/d" /etc/sudoers.d/nopasswd
+  fi
 fi
 
 useDefaultConfig() {
@@ -162,6 +183,11 @@ echo
 generatePassword
 echo
 
-echo "[$PREFIX] Starting code-server..."
-# Now we can run code-server with the default entrypoint
-/usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8080 "$START_DIR"
+if [[ $1 == "" ]] || [[ $1 == "start" ]]; then
+  echo "[$PREFIX] Starting code-server..."
+  exec /usr/bin/code-server --bind-addr 0.0.0.0:8080 "$START_DIR"
+elif [[ $1 == "shell" ]]; then
+  bash -i --login
+else
+  exec "$@"
+fi

@@ -12,9 +12,11 @@ LABEL org.opencontainers.image.source="https://github.com/code-server-boilerplat
 ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
     # prefix for thr entrypoint logs, in which you should update into
     # @namespace/template-slug
-    TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/starter-pack"
-    # Resolve "codeDecodeError: ‘ascii’ codec can’t decode byte 0xc5" error by this env.\
-    LC_ALL=C.UTF-8
+    TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/starter-pack" \
+    # Resolve "codeDecodeError: ‘ascii’ codec can’t decode byte 0xc5" error by this env.
+    LC_ALL=C.UTF-8 \
+    # dumb-init release, please update this when new release has arrived
+    DUMB_INIT_RELEASE=1.2.5
 
 USER root
 # use Bash by default
@@ -69,9 +71,13 @@ RUN sudo chown -R coder:coder /home/coder/.local
 
 # Helper scripts and custom bashrc stuff so we can
 # skip editing the main ~/.bashrc on our own
-COPY toolkits/packages/scripts/ /home/coder/.local/bin/
-COPY toolkits/packages/dotbashrcdir /home/coder/.bashrc_d
+COPY --chown=coder:coder toolkits/packages/scripts/ /home/coder/.local/bin/
+COPY --chown=coder:coder toolkits/packages/dotbashrcdir /home/coder/.bashrc.d
 RUN (echo; echo "for i in \$(ls \$HOME/.bashrc.d/*); do source \$i; done"; echo) >> /home/coder/.bashrc
+
+# dumb-init
+RUN wget -O /home/coder/ https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_RELEASE}/dumb-init_${DUMB_INIT_RELEASE}_amd64.deb \
+    && sudo dpkg -i dumb-init_*.deb
 
 # Cloudflared
 RUN IMAGE_ARCH=$(arch) /home/coder/.local/bin/cloudflare-updater
@@ -113,5 +119,7 @@ VOLUME [ "/workspace" ]
 # VOLUME [ "/home/linuxbrew/.linuxbrew" ]
 
 # Then we can summon the Server Launchpad (aka toolkits/containers/entry.sh file on source code)
-# Not to be confused with Launchpad.net
-ENTRYPOINT ["/usr/bin/cdr-server-launchpad"]
+# Not to be confused with Launchpad.net. And since we'll use dumb-init as our init system, we'll
+# swap the bash shell process with code-server binary through 
+ENTRYPOINT ["dumb-init"]
+CMD ["/usr/bin/cdr-server-launchpad","start"]
