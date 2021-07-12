@@ -13,9 +13,8 @@ ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
     # prefix for thr entrypoint logs, in which you should update into
     # @namespace/template-slug
     TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/starter-pack"
-
-# Resolve "codeDecodeError: ‘ascii’ codec can’t decode byte 0xc5" error by this env.
-ENV LC_ALL=C.UTF-8
+    # Resolve "codeDecodeError: ‘ascii’ codec can’t decode byte 0xc5" error by this env.\
+    LC_ALL=C.UTF-8
 
 USER root
 # use Bash by default
@@ -30,8 +29,9 @@ RUN apt-get update
 
 # Init Gitpod-styled workspace directory. This is needed to only
 # presist files mounted into volumes
-RUN mkdir /workspace && touch hello-world \
-    && chown -R coder:coder /workspace
+RUN mkdir /workspace && touch /workspace/.hello-world \
+    # fixes for permission errors due to uid/guid mismatches
+    && chown -R coder:coder /workspace && chmod -R 777 /workspace
 
 # Ref: https://computingforgeeks.com/how-to-install-add-apt-repository-on-debian-ubuntu/
 RUN apt -y install software-properties-common dirmngr apt-transport-https lsb-release ca-certificates --no-install-recommends
