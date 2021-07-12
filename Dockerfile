@@ -75,9 +75,9 @@ COPY --chown=coder:coder toolkits/packages/scripts/ /home/coder/.local/bin/
 COPY --chown=coder:coder toolkits/packages/dotbashrcdir /home/coder/.bashrc.d
 RUN (echo; echo "for i in \$(ls \$HOME/.bashrc.d/*); do source \$i; done"; echo) >> /home/coder/.bashrc
 
-# dumb-init
-RUN wget -O /home/coder/ https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_RELEASE}/dumb-init_${DUMB_INIT_RELEASE}_amd64.deb \
-    && sudo dpkg -i dumb-init_*.deb
+# dumb-init, possibly build from source soon
+#RUN wget -O /home/coder/ https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_RELEASE}/dumb-init_${DUMB_INIT_RELEASE}_amd64.deb \
+#    && sudo dpkg -i dumb-init_*.deb
 
 # Cloudflared
 RUN IMAGE_ARCH=$(arch) /home/coder/.local/bin/cloudflare-updater
@@ -121,5 +121,4 @@ VOLUME [ "/workspace" ]
 # Then we can summon the Server Launchpad (aka toolkits/containers/entry.sh file on source code)
 # Not to be confused with Launchpad.net. And since we'll use dumb-init as our init system, we'll
 # swap the bash shell process with code-server binary through 
-ENTRYPOINT ["dumb-init"]
-CMD ["/usr/bin/cdr-server-launchpad","start"]
+ENTRYPOINT ["/usr/bin/cdr-server-launchpad","start"]
