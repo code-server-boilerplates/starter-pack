@@ -34,11 +34,14 @@ jobs:
 
        - name: Install Dive
          run: |
-           wget https://github.com/wagoodman/dive/releases/download/v0.10.0/dive_0.10.0_linux_amd64.deb -O $HOME/work/_temp/dive_linux_amd64.deb
-           sudo apt install $HOME/work/_temp/dive_linux_amd64.deb
+           wget https://github.com/wagoodman/dive/releases/download/v0.10.0/dive_0.10.0_linux_amd64.deb -O /tmp/dive_linux_amd64.deb
+           sudo apt install /tmp/dive_linux_amd64.deb
 
        - name: Build and check for wasted space
+         env:
+           DOCKER_BUILDKIT: 1
          run: |
+            set -eux
             docker build --tag registry.repohub.dev/${{env.namespace}}/${{env.repository}} .
             CI=true dive registry.repohub.dev/${{env.namespace}}/${{env.repository}}
 
@@ -65,11 +68,6 @@ jobs:
            flavor: |
              latest=false
 
-       - name: Print out values
-         env:
-           METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) }}
-         run: "echo -e $METADATA_OUTPUTS"
-
        # Setup QEMU for multiarch builds
        - name: Set up QEMU
          uses: docker/setup-qemu-action@v1
@@ -90,7 +88,8 @@ jobs:
          uses: docker/login-action@v1
          with:
            registry: ghcr.io
-           # change the username into yours if not using our bot
+           # change the username into yours if not using our bot, might use
+           # an env or secrets way in the future
            username: RecapTimeBot
            # you need to manually add our bot with write access if you use our PAT
            password: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
