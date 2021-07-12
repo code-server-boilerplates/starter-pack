@@ -1,13 +1,16 @@
-# This Docker Compose file is for Okteto Cloud, as configured in the
-# okteto-pipeline.yml
+# This Docker Compose file is for local installations of code-server inside
+# Docker Compose
 
 version: "3"
 
 services:
   code-server:
-    image: ghcr.io/code-server-boilerplates/starter-pack
+    # We use the same tag name from our CI/CD workflows.
+    image: registry.repohub.dev/code-server-boilerplates/starter-pack
+    build: .
     volumes:
-      - code-server-projectHome:/workspace:rw
+      - ./data/workspace:/workspace:rw
+      - ./data/linuxbrew:/home/linuxbrew:rw
     ports:
       - 8080:8080
     dns:
@@ -26,6 +29,4 @@ services:
     cap_drop:
        - NET_ADMIN
        - SYS_ADMIN
-
-volumes:
-  code-server-projectHome:
+    restart: unless-stopped

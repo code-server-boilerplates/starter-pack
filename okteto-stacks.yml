@@ -5,11 +5,12 @@ version: 3
 
 services:
   code-server:
-    build:
-      context: .
-      file: Dockerfile
+    # Our starter pack image is also available at GHCR as same namespace and repo
+    # and Docker Hub as codeserverboilerplates as its namespace. See their image tags
+    # section to pick the tags you want to use.
+    image: quay.io/code-server-boilerplates/starter-pack:develop
     volumes:
-      - code-server-projectHome:/home/coder/project
+      - code-server-projectHome:/workspace:rw
     ports:
       - 8080:8080
     dns:
