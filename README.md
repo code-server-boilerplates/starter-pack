@@ -14,14 +14,13 @@ In this boilerplate, we included the following packages out of the box:
   * Add extensions here
 * [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps) for accessing other ports through to [Cloudflare Argo Tunnel](https://www.cloudflare.com/en-gb/products/argo-tunnel/)
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
-* [Homebrew on Linux](https://brew.sh) for installing tools without sudo - support for ARM are on best-effort basis, since there's [no bottles yet for 64-bit ARM-based systems](https://docs.brew.sh/Homebrew-on-Linux#arm).
+* [Homebrew on Linux](https://brew.sh) for installing tools without sudo - ~~Support for ARM are on best-effort basis, since there's [no bottles yet for 64-bit ARM-based systems](https://docs.brew.sh/Homebrew-on-Linux#arm).~~ We stopped building arm64 support for our images based on the official `codercom/code-server`, but we'll working on to bring it back using [Linuxserver.io's images](https://github.com/linuxserver/code-server) in the future.
 * `jq` for prettifying your JSON stuff, especially if parsing JSON responses from some APIs.
 * Basics like `curl`, `wget`, and more.
 * Add more tools here
 
 <!--
-Note to new boilerplate maintainers: Explain what this
-template repo is for.
+Note to new boilerplate maintainers: Explain what this template repo is for.
 -->
 This template repository is good for:
 
@@ -29,6 +28,8 @@ This template repository is good for:
 * just want to have the bare minimum dependencies in their `code-server` instance
 
 ## Checklist
+
+Note to new template maintainers: After completing this checklist, update links below and reset progress if you marked your repository as an template.
 
 * [X] [Generate an new repo](https://cdrs-deploy.repohubdev.tk/generate/example-project) for an specific user case or [duplicate this repo](/docs/duplicate-repo.md) to receive docs updates and more through the Pull app.
 * [ ] [Complete this checklist](/docs/post-repo-creation/README.md) to setup GitHub Actions, among other things
