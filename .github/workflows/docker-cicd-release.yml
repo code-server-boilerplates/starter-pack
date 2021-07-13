@@ -39,11 +39,6 @@ jobs:
            flavor: |
              latest=false
 
-       - name: Print out values
-         env:
-           METADATA_OUTPUTS: ${{ toJSON(steps.meta.outputs) }}
-         run: "echo '$METADATA_OUTPUTS'"
-
        # Setup QEMU for multiarch builds
        - name: Set up QEMU
          uses: docker/setup-qemu-action@v1
@@ -87,7 +82,8 @@ jobs:
            tags: ${{ steps.meta.outputs.tags }}
            labels: ${{ steps.meta.outputs.labels }}
            context: .
-           platforms: linux/amd64,linux/arm64
+           # arm64 can sometimes experience weird GnuTLS errors
+           platforms: linux/amd64
   publish-to-stable:
      name: Release to stable
      runs-on: "ubuntu-latest"
@@ -155,4 +151,5 @@ jobs:
            tags: ${{ steps.meta.outputs.tags }}
            labels: ${{ steps.meta.outputs.labels }}
            context: .
-           platforms: linux/amd64,linux/arm64
+           # arm64 can sometimes experience weird GnuTLS errors
+           platforms: linux/amd64

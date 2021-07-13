@@ -111,4 +111,5 @@ jobs:
            tags: ${{ steps.meta.outputs.tags }}
            labels: ${{ steps.meta.outputs.labels }}
            context: .
-           platforms: linux/amd64,linux/arm64
+           # arm64 can sometimes experience weird GnuTLS errors
+           platforms: linux/amd64
