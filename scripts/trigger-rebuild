@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -eux
+
+date | base64 > .trigger-rebuild
+git add .trigger-rebuild
+git commit --signoff -m 'chore(github-actions): manually trigger Docker builds CI'
+git push

@@ -1,5 +1,5 @@
 {
-  "name": "@cdrs-boilerplates/starter-pack",
+  "name": "@code-server-boilerplates/starter-pack",
   "version": "0.1.1",
   "description": "Tools and scripts for the template",
   "scripts": {
@@ -7,7 +7,8 @@
     "commit": "cz --signoff",
     "build": "DOCKER_BUILDKIT=1 docker build --tag registry.repohub.dev/code-server-boilerplates/starter-pack .",
     "start": "docker-compose up -d",
-    "logs": "docker-compose logs -f -t --tail=all"
+    "logs": "docker-compose logs --follow --timestamps --tail=all",
+    "ci:trigger-ci": "./scripts/trigger-rebuild"
   },
   "config": {
     "commitizen": {
