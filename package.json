@@ -10,7 +10,9 @@
     "build": "npm run build:buildkit",
     "start": "docker-compose up -d",
     "logs": "docker-compose logs --follow --timestamps --tail=all",
-    "ci:trigger-gha": "./scripts/trigger-rebuild"
+    "ci:trigger-gha": "./scripts/trigger-rebuild",
+    "shellcheck:entrypoint": "shellcheck toolkits/containers/entrypoint.sh",
+    "shellcheck:scripts": "shellcheck scripts/commit scripts/trigger-rebuild"
   },
   "config": {
     "commitizen": {
