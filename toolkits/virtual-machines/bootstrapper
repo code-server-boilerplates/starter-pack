@@ -47,10 +47,11 @@ echo "==> Installing tools for [example-project]"
 
 # sudo -u coder might be an nice option, but since we're
 # root, we don't need to re-enter our password
-alias userland-install="su coder"
+userland-install() {
+    su coder -c "$@"
+}
 
 # Cloudflared
-# install Cloudflared
 wget -q https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
     && dpkg -i cloudflared-stable-linux-amd64.deb
 
@@ -89,5 +90,5 @@ systemctl enable --now coder-cloud-redirect
 
 echo "info: You're now ready to rumble! Check the logs for the link with:"
 echo "info:   systemctl status code-server@coder"
-echo "info: Having coding-slash-cloud developing!"
+echo "info: Enjoy developing cloud-native applications inside code-server!"
 }
