@@ -93,6 +93,11 @@ ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/"
     INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info" \
     HOMEBREW_NO_AUTO_UPDATE=1
 
+# VSC Extensions from Open VSX
+RUN code-server --install-extension vscode-icons-team.vscode-icons \
+    && code-server --install-extension eamodio.gitlens \
+    && code-server --install-extension gitlab.gitlab-workflow
+
 # -----------
 
 # Cleanup

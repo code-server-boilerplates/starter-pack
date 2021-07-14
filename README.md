@@ -11,7 +11,9 @@ scripts and into the main Dockerfile.
 In this boilerplate, we included the following packages out of the box:
 
 * [`code-server`](https://github.com/cdr/code-server) for the VS Code in the browser
-  * Add extensions here
+  * [GitLens](https://open-vsx.org/extension/eamodio/gitlens)
+  * [VS Code Icons](https://open-vsx.org/extension/vscode-icons-team/vscode-icons)
+  * [GitLab Workflow](https://open-vsx.org/extension/gitlab/gitlab-workflow)
 * [`cloudflared`](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps) for accessing other ports through to [Cloudflare Argo Tunnel](https://www.cloudflare.com/en-gb/products/argo-tunnel/)
 * [`croc`](https://github.com/schollz/croc) for sharing files between computers without that Mega.nz (or Telegram client) chaos
 * [Homebrew on Linux](https://brew.sh) for installing tools without sudo - ~~Support for ARM are on best-effort basis, since there's [no bottles yet for 64-bit ARM-based systems](https://docs.brew.sh/Homebrew-on-Linux#arm).~~ We stopped building arm64 support for our images based on the official `codercom/code-server`, but we'll working on to bring it back using [Linuxserver.io's images](https://github.com/linuxserver/code-server) in the future.
