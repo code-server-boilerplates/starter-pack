@@ -3,6 +3,6 @@
 echo "[toolkit-scripts] Installing Argo Tunnel agent"
 
 if ! /home/coder/.local/bin/cloudflared-updater; then
-  echo "[tooklit-scripts] Failed to install/update Cloudflared. Please bug the image maintainers if symptoms presists."
+  echo "[tooklit-scripts] Failed to install/update Cloudflared. Please bug the image maintainers if symptoms presists. Use the above console output to help us debug the issue. If this issue errored out during the image builds CI, please send usa PR fixing the issuse."
   exit 1
 fi

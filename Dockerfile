@@ -15,16 +15,16 @@ ENV PATH="/usr/local/bin:/home/coder/.local/bin:$PATH" \
     TEMPLATE_SLUG_PREFIX="@code-server-boilerplates/starter-pack" \
     # Resolve "codeDecodeError: ‘ascii’ codec can’t decode byte 0xc5" error by this env.
     LC_ALL=C.UTF-8 \
-    # dumb-init release, please update this when new release has arrived
-    DUMB_INIT_RELEASE=1.2.5
+    # Use bash shell, just in case.
+    SHELL=/bin/bash
+
+# dumb-init release, please update this when new release has arrived
+ARG DUMB_INIT_RELEASE=1.2.5
 
 USER root
 # use Bash by default
 RUN echo "[code-server] Image build starts on $(arch)" \
     && chsh -s /bin/bash coder && chsh -s /bin/bash
-
-# Use bash shell, just in case.
-ENV SHELL=/bin/bash
 
 # Update local cache
 RUN apt-get update
@@ -75,9 +75,9 @@ COPY --chown=coder:coder toolkits/packages/scripts/ /home/coder/.local/bin/
 COPY --chown=coder:coder toolkits/packages/dotbashrcdir /home/coder/.bashrc.d
 RUN (echo; echo "for i in \$(ls \$HOME/.bashrc.d/*); do source \$i; done"; echo) >> /home/coder/.bashrc
 
-# dumb-init, possibly build from source soon
-#RUN wget -O /home/coder/ https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_RELEASE}/dumb-init_${DUMB_INIT_RELEASE}_amd64.deb \
-#    && sudo dpkg -i dumb-init_*.deb
+# dumb-init
+RUN sudo wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v${DUMB_INIT_RELEASE}/dumb-init_${DUMB_INIT_RELEASE}_$(arch) \
+    && sudo chmod +x /usr/local/bin/dumb-init
 
 # Cloudflared
 RUN IMAGE_ARCH=$(arch) /home/coder/.local/bin/cloudflare-updater
@@ -87,7 +87,7 @@ RUN curl https://getcroc.schollz.com | sudo bash
 
 # Homebrew on Linux
 RUN /home/coder/.local/bin/linuxbrew-installer
-# These should be fine for now.
+# Add Linuxbrew's PATH, manpages/info path and ensure autoupdates are disabled
 ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/" \
     MANPATH="$MANPATH:/home/linuxbrew/.linuxbrew/share/man" \
     INFOPATH="$INFOPATH:/home/linuxbrew/.linuxbrew/share/info" \
@@ -97,7 +97,7 @@ ENV PATH="$PATH:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin/"
 
 # Cleanup
 RUN echo "[code-server] Dependency installation completed, cleaning up..." \
-    && rm -rv /home/coder/*.deb || true \
+    && rm -rfv /home/coder/*.deb /tmp/*.deb || true \
     && sudo apt clean \
     && sudo rm -rvf /var/lib/apt/lists/* /var/cache/debconf/* /tmp/* /var/tmp/* \
     && echo "[code-server] Cleanup done"
@@ -120,5 +120,6 @@ VOLUME [ "/workspace" ]
 
 # Then we can summon the Server Launchpad (aka toolkits/containers/entry.sh file on source code)
 # Not to be confused with Launchpad.net. And since we'll use dumb-init as our init system, we'll
-# swap the bash shell process with code-server binary through 
-ENTRYPOINT ["/usr/bin/cdr-server-launchpad","start"]
+# swap the bash shell process with code-server binary through exec.
+ENTRYPOINT ["/usr/bin/cdr-server-launchpad"]
+CMD ["start"]

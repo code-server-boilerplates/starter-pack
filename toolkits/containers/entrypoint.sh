@@ -1,8 +1,13 @@
-#!/bin/dumb-init /bin/bash
+#!/usr/local/bin/dumb-init /bin/bash
 # shellcheck shell=bash
 
-# Instead of using code-server's main entrypoint script
-set -eu
+# Instead of using code-server's main entrypoint script, we'll bring stuff from there
+# into here.
+set -e
+
+if [[ $1 == "shell" ]]; then
+  exec bash -l
+fi
 
 START_DIR="${START_DIR:-/workspace/home}"
 PREFIX=${TEMPLATE_SLUG_PREFIX}
@@ -100,8 +105,8 @@ generatePassword() {
      echo "[$PREFIX] Your Web IDE secret is: $PASSWORD"
      echo "[$PREFIX] Keep this secret as long as possible. If sharing devenvs with someone,"
      echo "[$PREFIX] use secure channels and don't leak it anyway."
-  elif [[ $GENERATE_PASSWORD == "true" ]]; then
-     export PASSWORD="$OPENSSL_GENERATED_PASSWORD"
+  elif [[ $GENERATE_PASSWORD == "true" ]] || [[ $PASSWORD == "" ]]; then
+     export PASSWORD=$OPENSSL_GENERATED_PASSWORD
      echo "[$PREIFX] Your Web IDE password is: $PASSWORD"
      echo "[$PREFIX] Use this to securely log you into your web IDE. To permanently set PASSWORD into that,"
      echo "[$PREFIX] set GENERATE_PASSWORD to false and set PASSWORD to it in your PaaS service/Docker Compose config file."
@@ -176,7 +181,7 @@ else
 
 fi
 
-echo "[$PREIFX] Updating package list caches..."
+echo "[$PREFIX] Updating package list caches..."
 sudo apt update
 
 echo
@@ -186,8 +191,4 @@ echo
 if [[ $1 == "" ]] || [[ $1 == "start" ]]; then
   echo "[$PREFIX] Starting code-server..."
   exec /usr/bin/code-server --bind-addr 0.0.0.0:8080 "$START_DIR"
-elif [[ $1 == "shell" ]]; then
-  bash -i --login
-else
-  exec "$@"
 fi
