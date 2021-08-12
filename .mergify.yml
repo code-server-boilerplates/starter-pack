@@ -13,31 +13,15 @@ pull_request_rules:
       review:
         type: APPROVE
         message: |
-           Approving @dependabot's pull request, this will only update the following tags: `develop`
+           Approving @dependabot's pull request, this will only update the following tags: `develop`. Maintainers have been advised to to create an new release regarding this base image upgrade as soon as possible for patches, including security fixes, and within the next 48-72 hours for minor releases. For major releases, expect breaking changes and notify your users accordingly before creating an new GitHub release.
 
-           Maintainers have been advised to to create an new release regarding
-           this base image upgrade as soon as possible for patches, including security fixes, and
-           within the next 48-72 hours for minor releases.
-           For major releases, expect breaking changes and notify your users accordingly before creating an new GitHub release.
-
-           To learn more about this guideline, please read your `docs/release-management/automated-base-image-upgrades.md` or
-           through <https://cdrs-docs.rtapp.tk/base-images-dependabot
-           in case your copy of maintainers' docs go outdated.
-
-           To automatically merge this, simply add `Ready to Ship` label
-           after you review the changelog and appeoce it by yourself.
-
+           To learn more about this guideline, see <https://csb-docs.rtapp.tk/base-images-dependabot> in your maintainer's handbook.
+           
            --
 
-           To control chaos cause by these automated merges, you need to
-           manually merge this PR once you completed reviewed its
-           release changelog. If you want chaos, please read your copy
-           of `docs/post-repo-creation/mergify.md` or through <https://cdrs-docs.rtapp.tk/mergify>.
-      assign:
-        add_users:
-          # Replace mine with your username.
-          - ajhalili2006
+           To control chaos cause by these automated merges, you need to manually merge this PR once you completed reviewed its release changelog. If you want chaos, please check <https://csb-docs.rtapp.tk/mergify>.
   - name: Approve from an label
+    # TODO: Update this to check whetever Mergify approve them in the past
     conditions:
       - label=automation/mergify-approve-rule
       - -label=WIP
@@ -46,9 +30,7 @@ pull_request_rules:
       review:
         type: APPROVE
         message: |
-          Hey, @{{author}}! Your PR is approved through an automated process using Mergify.
-          You or they will merge it soon, either manually or when the
-          `Ready to Ship` label is being added.
+          Hey, @{{author}}! Your PR is approved through an automated process using Mergify. You or they will merge it soon, either manually or when the `Ready to Ship` label is being added.
       label:
         remove: [ "automation/mergify-approve-rule" ]
   - name: Automagically comment for merging when LGTM
@@ -64,4 +46,7 @@ pull_request_rules:
       label:
         add: [ "Ready to Ship" ]
       comment:
-        message: Now shipping into the `develop` Docker image tag. (The Merge bot action might take an while to merge this automagically.)
+        message: |
+          :shipit: Now shipping into the `develop` Docker image tag, please allow the automerge bot to run any final checks before automerging.
+          
+          > In case the bot doesn't automerge this PR for you, please check for any pending review requests and remove these. You probably also check the action logs for possible red flags.
