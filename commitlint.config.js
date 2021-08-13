@@ -18,7 +18,7 @@ module.exports = {
           "commitizen", // mostly CHORE
           "containers", // FIX, CHORE, FEAT
           "virtual-machines", // FIX, FEAT, CHORE
-          "github-org-files", // CHORE
+          "github-org-files", // in-repo docs are being deperated, please DO NOT REMOVE to ensure CI aren't failing
           "deployment-guides", // DOCS
           "readme", // DOCS, CHORE
           "lockfiles", // CHORE
@@ -26,12 +26,14 @@ module.exports = {
           "toolkits-packages:scripts",
           "toolkits-packages:dotbashrcdir",
           "toolkits-packages:nonsense-bullshit", // probably for our example packages
-          "post-repo-creation",
+          "post-repo-creation", // in-repo docs are being deperated, please DO NOT REMOVE to ensure CI aren't failing
           "issue-templates",
           "issue-labels",
           "pr-templates",
           "husky",
-          "ignorefiles"
+          "ignorefiles",
+          "gitpod",
+          "vscode"
         ],
       ],
     },
