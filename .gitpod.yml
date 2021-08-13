@@ -1,0 +1,29 @@
+
+checkoutLocation: csb/starter-pack
+workspaceLocation: csb
+
+# Dockerfile stuff
+image:
+  file: .gitpod.Dockerfile
+
+# Gitpod Tasks
+tasks:
+  - name: Setup Workspace
+    # First, we'll install the latest LTS of Node.js with latest npmjs version
+    # Then, ensure Node.js deps are installed
+    init: |
+      nvm install lts/* --reinstall-packages-from=default --latest-npm
+      npm install
+    # Then we'll clone these stuff to the workspace.
+    command: bash ./scripts/setup-gitpod-ws.sh
+
+vscode:
+  # Ensure they match with .vscode/extensions.json[recommendations] stuff.
+  extensions:
+    - ms-azuretools.vscode-docker
+    - eamodio.gitlens
+    - vscode-icons-team.vscode-icons
+    - davidanson.vscode-markdownlint
+    - exiasr.hadolint
+    - mikestead.dotenv
+    - timonwong.shellcheck
