@@ -16,7 +16,7 @@ pull_request_rules:
            Approving @dependabot's pull request, this will only update the following tags: `develop`. Maintainers have been advised to to create an new release regarding this base image upgrade as soon as possible for patches, including security fixes, and within the next 48-72 hours for minor releases. For major releases, expect breaking changes and notify your users accordingly before creating an new GitHub release.
 
            To learn more about this guideline, see <https://csb-docs.rtapp.tk/base-images-dependabot> in your maintainer's handbook.
-           
+
            --
 
            To control chaos cause by these automated merges, you need to manually merge this PR once you completed reviewed its release changelog. If you want chaos, please check <https://csb-docs.rtapp.tk/mergify>.
@@ -48,5 +48,5 @@ pull_request_rules:
       comment:
         message: |
           :shipit: Now shipping into the `develop` Docker image tag, please allow the automerge bot to run any final checks before automerging.
-          
+
           > In case the bot doesn't automerge this PR for you, please check for any pending review requests and remove these. You probably also check the action logs for possible red flags.
