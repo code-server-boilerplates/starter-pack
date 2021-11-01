@@ -98,6 +98,9 @@ RUN code-server --install-extension vscode-icons-team.vscode-icons \
     && code-server --install-extension eamodio.gitlens \
     && code-server --install-extension gitlab.gitlab-workflow
 
+# Tailscale
+RUN curl -fsSL https://tailscale.com/install.sh | sh
+
 # -----------
 
 # Cleanup
