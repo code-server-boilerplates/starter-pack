@@ -1,4 +1,4 @@
-FROM gitpod/workspace-full
+FROM quay.io/gitpodified-workspace-images/full:commit-4830bab
 
 # this is just set for our Setup Gitpod Workspace script to work.
 ENV GITPOD=1
