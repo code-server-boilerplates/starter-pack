@@ -1,5 +1,5 @@
 # Start from the code-server Debian base image
-FROM codercom/code-server:3.12.0
+FROM codercom/code-server:4.8.1
 
 # Add image labels here, but read comments as you edit
 # Replace code-server-boilerplates with username-here/repo
