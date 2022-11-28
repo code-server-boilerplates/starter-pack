@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@1.0.0
-      - uses: lannonbr/issue-label-manager-action@3.0.0
+      - uses: lannonbr/issue-label-manager-action@4.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
