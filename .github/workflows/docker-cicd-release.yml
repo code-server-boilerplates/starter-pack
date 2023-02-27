@@ -23,7 +23,7 @@ jobs:
      if: ${{ github.event.release.prerelease == "true" }}
      steps:
        - name: "Create checkmates"
-         uses: "actions/checkout@v2"
+         uses: "actions/checkout@v3.3.0"
 
        - name: Generate metadata for Docker builds
          id: meta
@@ -90,7 +90,7 @@ jobs:
      if: ${{ github.event.release.prerelease != "true" }}
      steps:
        - name: "Create checkmates"
-         uses: "actions/checkout@v2"
+         uses: "actions/checkout@v3.3.0"
 
        - name: Generate metadata for Docker builds
          id: meta
