@@ -8,7 +8,7 @@ jobs:
      runs-on: ubuntu-latest
      steps:
       - name: Checkout stuff
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.3.0
         with:
           token: ${{ secrets.GH_SERVICE_ACCOUNT_API_KEY }}
       - name: Configure Git
